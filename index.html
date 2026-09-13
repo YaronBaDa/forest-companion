@@ -100,7 +100,7 @@
   .stage-header {
     width: 100%;
     max-width: 420px;
-    padding: 16px 20px 12px;
+    padding: 12px 20px 8px;
     display: flex;
     align-items: center;
     gap: 14px;
@@ -122,10 +122,11 @@
   .stage-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
+    flex: 1;
   }
 
-  .stage-name {
+  .stage-name-display {
     font-family: var(--font-serif);
     font-size: 20px;
     font-weight: 400;
@@ -139,6 +140,26 @@
     line-height: 1.4;
     font-weight: 400;
   }
+
+  /* Archetype badge */
+  .archetype-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(124,111,255,0.2);
+    width: fit-content;
+  }
+
+  .archetype-badge.hidden { display: none; }
 
   /* ===== GARDEN ===== */
   .garden-wrap {
@@ -154,9 +175,15 @@
     overflow: hidden;
     background: linear-gradient(180deg, #162016 0%, #1a2e18 40%, #243a1f 70%, #3d2b1f 100%);
     border: 1px solid var(--border);
+    transition: filter 1.2s ease;
   }
 
-  /* Atmospheric layers */
+  /* Phenotype filters */
+  .garden.phenotype-sun { filter: sepia(0.15) saturate(1.25) hue-rotate(-8deg) brightness(1.05); }
+  .garden.phenotype-water { filter: hue-rotate(12deg) saturate(1.15) brightness(1.02); }
+  .garden.phenotype-nutrient { filter: hue-rotate(-18deg) saturate(1.1) contrast(1.05); }
+  .garden.phenotype-night { filter: brightness(0.88) contrast(1.08) saturate(0.95); }
+
   .garden-sky {
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -173,7 +200,6 @@
     pointer-events: none;
   }
 
-  /* Soil mound */
   .soil-mound {
     position: absolute;
     bottom: 0; left: -10%; right: -10%;
@@ -196,7 +222,6 @@
     pointer-events: none;
   }
 
-  /* Grass tufts */
   .grass-tuft {
     position: absolute;
     bottom: 55px;
@@ -207,7 +232,6 @@
     transform-origin: bottom center;
   }
 
-  /* Fireflies (subtle, organic) */
   .firefly {
     position: absolute;
     width: 3px; height: 3px;
@@ -225,7 +249,6 @@
     75% { transform: translate(15px,-10px); opacity: 0.9; }
   }
 
-  /* Plant */
   .plant-wrapper {
     position: absolute;
     bottom: 50px;
@@ -256,7 +279,6 @@
     50% { transform: rotate(1.5deg); }
   }
 
-  /* Particles */
   .particle {
     position: absolute;
     pointer-events: none;
@@ -399,7 +421,7 @@
     100% { transform: scale(3); opacity: 0; }
   }
 
-  /* ===== STATS (minimal, distinct from actions) ===== */
+  /* ===== STATS ===== */
   .stats-row {
     width: 100%;
     max-width: 420px;
@@ -421,10 +443,7 @@
     gap: 6px;
   }
 
-  .stat-emoji {
-    font-size: 14px;
-    line-height: 1;
-  }
+  .stat-emoji { font-size: 14px; line-height: 1; }
 
   .stat-label {
     font-size: 10px;
@@ -459,11 +478,11 @@
     margin-top: 2px;
   }
 
-  /* ===== ACTIONS (large, clear, distinct) ===== */
+  /* ===== ACTIONS ===== */
   .actions-row {
     width: 100%;
     max-width: 420px;
-    padding: 8px 16px 16px;
+    padding: 8px 16px 12px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
@@ -503,11 +522,7 @@
   .action-btn:hover::before { opacity: 1; }
   .action-btn:active { transform: translateY(0) scale(0.97); }
 
-  .action-icon {
-    font-size: 28px;
-    line-height: 1;
-    z-index: 1;
-  }
+  .action-icon { font-size: 28px; line-height: 1; z-index: 1; }
 
   .action-name {
     font-size: 12px;
@@ -520,7 +535,56 @@
   .action-btn.sun .action-name { color: var(--sun); }
   .action-btn.nutrient .action-name { color: var(--nutrient); }
 
-  /* ===== STAGE JOURNEY (stepper instead of generic bar) ===== */
+  /* ===== GROWTH ROW (share + help) ===== */
+  .growth-row {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 16px 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .growth-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .growth-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+
+  .growth-btn.sos {
+    border-color: rgba(91,192,222,0.3);
+    color: var(--water);
+  }
+
+  .growth-btn.sos:hover {
+    border-color: var(--water);
+    background: var(--water-soft);
+  }
+
+  .growth-btn.share:hover {
+    background: var(--accent-soft);
+  }
+
+  .growth-btn.hidden { display: none; }
+
+  /* ===== JOURNEY ===== */
   .journey-wrap {
     width: 100%;
     max-width: 420px;
@@ -593,9 +657,7 @@
     z-index: -1;
   }
 
-  .journey-line.completed {
-    background: var(--grass-light);
-  }
+  .journey-line.completed { background: var(--grass-light); }
 
   .journey-name {
     font-size: 9px;
@@ -606,13 +668,8 @@
     transition: color 0.3s;
   }
 
-  .journey-step.active .journey-name {
-    color: var(--text-primary);
-  }
-
-  .journey-step.completed .journey-name {
-    color: var(--grass-light);
-  }
+  .journey-step.active .journey-name { color: var(--text-primary); }
+  .journey-step.completed .journey-name { color: var(--grass-light); }
 
   /* ===== MODALS ===== */
   .modal-overlay {
@@ -688,6 +745,19 @@
 
   .modal-btn:hover { background: #8b7cff; transform: translateY(-1px); }
 
+  .modal-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    margin-top: 10px;
+  }
+
+  .modal-btn.secondary:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: var(--accent-soft);
+  }
+
   /* ===== EVOLUTION FLASH ===== */
   .evolution-flash {
     position: fixed;
@@ -707,6 +777,20 @@
   @keyframes flash-pulse {
     0% { opacity: 0.5; }
     100% { opacity: 0; }
+  }
+
+  /* ===== SHARE MODAL / CANVAS ===== */
+  .share-preview {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .share-preview canvas {
+    width: 100%;
+    display: block;
   }
 
   /* ===== SEED SELECTION ===== */
@@ -764,11 +848,7 @@
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
   }
 
-  .seed-option-emoji {
-    font-size: 40px;
-    margin-bottom: 10px;
-    line-height: 1;
-  }
+  .seed-option-emoji { font-size: 40px; margin-bottom: 10px; line-height: 1; }
 
   .seed-option-name {
     font-family: var(--font-serif);
@@ -777,11 +857,7 @@
     letter-spacing: 0.3px;
   }
 
-  .seed-option-desc {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 400;
-  }
+  .seed-option-desc { font-size: 11px; color: var(--text-secondary); font-weight: 400; }
 
   /* ===== NOTIFICATION ===== */
   .notification {
@@ -802,9 +878,7 @@
     color: var(--text-primary);
   }
 
-  .notification.show {
-    transform: translateX(-50%) translateY(0);
-  }
+  .notification.show { transform: translateX(-50%) translateY(0); }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 380px) {
@@ -861,12 +935,13 @@
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
 
-  <!-- Merged Stage Header -->
+  <!-- Stage Header -->
   <div class="stage-header">
     <div class="stage-icon" id="stageIcon">🌰</div>
     <div class="stage-text">
-      <div class="stage-name" id="stageName">Seed</div>
+      <div class="stage-name-display" id="stageName">Seed</div>
       <div class="stage-desc" id="stageDesc">A sleeping seed awaits your care</div>
+      <div class="archetype-badge hidden" id="archetypeBadge"></div>
     </div>
   </div>
 
@@ -886,7 +961,7 @@
     </div>
   </div>
 
-  <!-- Stats (minimal, distinct) -->
+  <!-- Stats -->
   <div class="stats-row">
     <div class="stat-item">
       <div class="stat-top">
@@ -936,15 +1011,23 @@
     </button>
   </div>
 
-  <!-- Stage Journey (stepper) -->
+  <!-- Growth row: Share + SOS -->
+  <div class="growth-row">
+    <button class="growth-btn share" id="shareBtn" onclick="openShareModal()">
+      <span>📸</span> Share Journey
+    </button>
+    <button class="growth-btn sos hidden" id="sosBtn" onclick="generateSOSLink()">
+      <span>💧</span> Call Rain
+    </button>
+  </div>
+
+  <!-- Stage Journey -->
   <div class="journey-wrap">
     <div class="journey-label">
       <span>Life Journey</span>
       <span class="journey-goal">Goal: Ancient Guardian</span>
     </div>
-    <div class="journey-track" id="journeyTrack">
-      <!-- Injected by JS -->
-    </div>
+    <div class="journey-track" id="journeyTrack"></div>
   </div>
 
 </div>
@@ -952,13 +1035,35 @@
 <!-- Evolution Flash -->
 <div class="evolution-flash" id="evolutionFlash"></div>
 
-<!-- Modal -->
+<!-- Standard Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-icon" id="modalIcon">🌱</div>
     <div class="modal-title" id="modalTitle">Title</div>
     <div class="modal-text" id="modalText">Text</div>
-    <button class="modal-btn" onclick="closeModal()">Continue</button>
+    <button class="modal-btn" id="modalBtn" onclick="closeModal()">Continue</button>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal" style="max-width: 360px;">
+    <div class="modal-icon">📸</div>
+    <div class="modal-title" style="font-size:20px;">Share Your Journey</div>
+    <div class="share-preview" id="sharePreview"></div>
+    <button class="modal-btn" onclick="shareCard()">Share Card</button>
+    <button class="modal-btn secondary" onclick="closeShareModal()">Close</button>
+  </div>
+</div>
+
+<!-- Help Modal (referral landing) -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal">
+    <div class="modal-icon" id="helpIcon">💧</div>
+    <div class="modal-title" id="helpTitle">A Friend Needs You</div>
+    <div class="modal-text" id="helpText">Your friend's tree is thirsty. Send a drop of care.</div>
+    <button class="modal-btn" id="helpBtn" onclick="sendHelpDrop()">Send a Drop 💧</button>
+    <button class="modal-btn secondary" id="helpSecondary" onclick="dismissHelpAndStart()">Plant Your Own Seed</button>
   </div>
 </div>
 
@@ -966,15 +1071,9 @@
 <div class="notification" id="notification"></div>
 
 <script>
-// ===== GAME STATE =====
+// ===== CONSTANTS =====
 const STAGES = ['seed', 'sprout', 'sapling', 'tree', 'ancient'];
-const STAGE_NAMES = {
-  seed: 'Seed',
-  sprout: 'Sprout',
-  sapling: 'Sapling',
-  tree: 'Tree',
-  ancient: 'Ancient'
-};
+const STAGE_NAMES = { seed: 'Seed', sprout: 'Sprout', sapling: 'Sapling', tree: 'Tree', ancient: 'Ancient' };
 
 const STAGE_INFO = {
   seed: { icon: '🌰', name: 'Seed', desc: 'A sleeping seed awaits your care. Keep water, sun, and nutrients balanced.' },
@@ -985,12 +1084,21 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63' },
-  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65' },
-  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0' },
-  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50' }
+  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63', bgFrom: '#1a3015', bgTo: '#0f1f0f' },
+  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65', bgFrom: '#1a2e15', bgTo: '#0f1a0f' },
+  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0', bgFrom: '#2e151a', bgTo: '#1a0f12' },
+  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50', bgFrom: '#0f2615', bgTo: '#0a1a0f' }
 };
 
+const ARCHETYPES = {
+  sun: { name: 'Solar-Chaser', prefix: 'Sun-Drenched', filter: 'phenotype-sun' },
+  water: { name: 'Hydro-Bloom', prefix: 'Rain-Drinker', filter: 'phenotype-water' },
+  nutrient: { name: 'Earth-Bound', prefix: 'Deep-Rooted', filter: 'phenotype-nutrient' },
+  night: { name: 'Night Owl', prefix: 'Nocturnal', filter: 'phenotype-night' },
+  balanced: { name: 'Equilibrium Seeker', prefix: 'Harmonious', filter: '' }
+};
+
+// ===== GAME STATE =====
 let gameState = {
   seedType: null,
   stage: 'seed',
@@ -1001,11 +1109,44 @@ let gameState = {
   growth: 0,
   totalGrowth: 0,
   visitors: [],
-  lastTick: Date.now()
+  lastTick: Date.now(),
+  createdAt: Date.now(),
+  // Personality tracking
+  actionsCount: { water: 0, sun: 0, nutrients: 0 },
+  actionTimestamps: [],
+  archetype: null,
+  ownerName: 'Gardener'
 };
 
 let audioCtx = null;
 let decayLoop = null;
+
+// ===== LOCAL STORAGE =====
+const SAVE_KEY = 'forest_companion_v2';
+
+function saveGame() {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+  } catch (e) { /* ignore quota errors */ }
+}
+
+function loadGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const saved = JSON.parse(raw);
+    // Migrate safely
+    gameState = { ...gameState, ...saved };
+    // Ensure new fields exist
+    if (!gameState.actionsCount) gameState.actionsCount = { water: 0, sun: 0, nutrients: 0 };
+    if (!gameState.actionTimestamps) gameState.actionTimestamps = [];
+    if (!gameState.createdAt) gameState.createdAt = Date.now();
+    if (!gameState.ownerName) gameState.ownerName = 'Gardener';
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 // ===== AUDIO =====
 function initAudio() {
@@ -1174,10 +1315,92 @@ function createGrass() {
   });
 }
 
+// ===== PERSONALITY / ARCHETYPE ENGINE =====
+function recordAction(type) {
+  gameState.actionsCount[type] = (gameState.actionsCount[type] || 0) + 1;
+  gameState.actionTimestamps.push(Date.now());
+  // Keep last 200 timestamps to avoid bloat
+  if (gameState.actionTimestamps.length > 200) {
+    gameState.actionTimestamps = gameState.actionTimestamps.slice(-200);
+  }
+}
+
+function computeArchetype() {
+  const counts = gameState.actionsCount;
+  const total = counts.water + counts.sun + counts.nutrients;
+  if (total < 5) return null; // Not enough data
+
+  // Check night owl behavior (>50% actions after 9 PM)
+  const nightCount = gameState.actionTimestamps.filter(ts => {
+    const hour = new Date(ts).getHours();
+    return hour >= 21 || hour < 5;
+  }).length;
+  const nightRatio = gameState.actionTimestamps.length > 0 ? nightCount / gameState.actionTimestamps.length : 0;
+
+  // Check balance (all within 20% of average)
+  const avg = total / 3;
+  const balanced = Math.abs(counts.water - avg) < avg * 0.25 &&
+                   Math.abs(counts.sun - avg) < avg * 0.25 &&
+                   Math.abs(counts.nutrients - avg) < avg * 0.25;
+
+  if (nightRatio > 0.5 && total >= 8) {
+    return ARCHETYPES.night;
+  }
+
+  if (balanced && total >= 10) {
+    return ARCHETYPES.balanced;
+  }
+
+  const max = Math.max(counts.water, counts.sun, counts.nutrients);
+  if (max === counts.sun && counts.sun > counts.water + 2 && counts.sun > counts.nutrients + 2) {
+    return ARCHETYPES.sun;
+  }
+  if (max === counts.water && counts.water > counts.sun + 2 && counts.water > counts.nutrients + 2) {
+    return ARCHETYPES.water;
+  }
+  if (max === counts.nutrients && counts.nutrients > counts.water + 2 && counts.nutrients > counts.sun + 2) {
+    return ARCHETYPES.nutrient;
+  }
+
+  return null;
+}
+
+function getFullPlantTitle() {
+  const species = gameState.seedType ? SEED_TYPES[gameState.seedType].name : 'Unknown';
+  const archetype = gameState.archetype;
+  if (!archetype) return species;
+  return `The ${archetype.prefix} ${species}`;
+}
+
+function applyPhenotype() {
+  const garden = document.getElementById('garden');
+  if (!garden || !gameState.archetype) {
+    if (garden) garden.className = 'garden';
+    return;
+  }
+  garden.className = 'garden ' + (gameState.archetype.filter || '');
+}
+
+function updateArchetypeUI() {
+  const badge = document.getElementById('archetypeBadge');
+  if (!badge) return;
+
+  const archetype = computeArchetype();
+  if (archetype) {
+    gameState.archetype = archetype;
+    badge.textContent = `✦ ${archetype.name}`;
+    badge.classList.remove('hidden');
+    applyPhenotype();
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
 // ===== GAME ACTIONS =====
 function selectSeed(type) {
   initAudio();
   gameState.seedType = type;
+  gameState.createdAt = Date.now();
   document.getElementById('seedSelect').classList.add('hidden');
   document.getElementById('gameContainer').style.display = 'flex';
   createFireflies();
@@ -1185,6 +1408,7 @@ function selectSeed(type) {
   renderPlant();
   updateUI();
   startLoops();
+  saveGame();
   showNotification(`${SEED_TYPES[type].name} planted`);
   playTone(440, 0.2, 'sine', 0.08);
   setTimeout(() => playTone(554, 0.2, 'sine', 0.08), 100);
@@ -1195,10 +1419,12 @@ function actionWater() {
   initAudio();
   gameState.water = Math.min(100, gameState.water + 15);
   gameState.growth = Math.min(100, gameState.growth + 5);
+  recordAction('water');
   addGrowth();
   createRain();
   playWaterSound();
   updateUI();
+  saveGame();
   showNotification('Watered');
 }
 
@@ -1206,11 +1432,12 @@ function actionSun() {
   initAudio();
   gameState.sun = Math.min(100, gameState.sun + 15);
   gameState.growth = Math.min(100, gameState.growth + 5);
+  recordAction('sun');
   addGrowth();
   createSunRays();
-  createParticle('☀️');
   playSunSound();
   updateUI();
+  saveGame();
   showNotification('Sunlight absorbed');
 }
 
@@ -1218,10 +1445,12 @@ function actionNutrient() {
   initAudio();
   gameState.nutrient = Math.min(100, gameState.nutrient + 15);
   gameState.growth = Math.min(100, gameState.growth + 8);
+  recordAction('nutrients');
   addGrowth();
   createNutrients();
   playNutrientSound();
   updateUI();
+  saveGame();
   showNotification('Fed nutrients');
 }
 
@@ -1250,7 +1479,6 @@ function createRain() {
   const plantTopY = (plantRect.top - gardenRect.top);
   const plantBaseY = (plantRect.bottom - gardenRect.top);
 
-  // Droplets trickling down onto the plant
   for (let i = 0; i < 14; i++) {
     setTimeout(() => {
       const drop = document.createElement('div');
@@ -1261,7 +1489,6 @@ function createRain() {
       drop.style.animationDuration = (0.7 + Math.random() * 0.5) + 's';
       garden.appendChild(drop);
 
-      // Splash at base when drop lands
       setTimeout(() => {
         const splash = document.createElement('div');
         splash.className = 'water-splash';
@@ -1279,12 +1506,9 @@ function createRain() {
 function createSunRays() {
   const garden = document.getElementById('garden');
   const flare = document.getElementById('sunFlare');
-
-  // Light up the entire stage with warm glow
   flare.classList.add('active');
   setTimeout(() => flare.classList.remove('active'), 2500);
 
-  // Beams shining down from top
   const beamCount = 5;
   for (let i = 0; i < beamCount; i++) {
     setTimeout(() => {
@@ -1309,7 +1533,6 @@ function createNutrients() {
   const plantCenterX = (plantRect.left - gardenRect.left) + plantRect.width / 2;
   const plantBaseY = (plantRect.bottom - gardenRect.top);
 
-  // Green glow orbs rising from soil into plant
   for (let i = 0; i < 10; i++) {
     setTimeout(() => {
       const orb = document.createElement('div');
@@ -1323,7 +1546,6 @@ function createNutrients() {
     }, i * 80);
   }
 
-  // Shine pulse around the plant
   const shine = document.createElement('div');
   shine.className = 'nutrient-shine';
   shine.style.left = (plantCenterX - 20) + 'px';
@@ -1372,13 +1594,20 @@ function evolve(newStage) {
 
   playEvolutionSound();
 
+  // Compute archetype at milestone
+  updateArchetypeUI();
+
   setTimeout(() => {
     const info = STAGE_INFO[newStage];
-    showModal(info.icon, `${STAGE_NAMES[newStage]}!`, info.desc);
+    const title = gameState.archetype
+      ? `${STAGE_NAMES[newStage]} — ${gameState.archetype.name}`
+      : `${STAGE_NAMES[newStage]}!`;
+    showModal(info.icon, title, info.desc);
   }, 600);
 
   renderPlant();
   updateUI();
+  saveGame();
 
   if (newStage === 'sapling') addVisitor();
   if (newStage === 'tree') { addVisitor(); setTimeout(addVisitor, 2000); }
@@ -1396,12 +1625,10 @@ function renderPlant() {
 function updateUI() {
   const info = STAGE_INFO[gameState.stage];
 
-  // Merged stage header
   document.getElementById('stageIcon').textContent = info.icon;
   document.getElementById('stageName').textContent = info.name;
   document.getElementById('stageDesc').textContent = info.desc;
 
-  // Stats
   document.getElementById('waterBar').style.width = gameState.water + '%';
   document.getElementById('waterValue').textContent = Math.round(gameState.water) + '%';
   document.getElementById('sunBar').style.width = gameState.sun + '%';
@@ -1409,7 +1636,16 @@ function updateUI() {
   document.getElementById('nutrientBar').style.width = gameState.nutrient + '%';
   document.getElementById('nutrientValue').textContent = Math.round(gameState.nutrient) + '%';
 
-  // Journey stepper
+  // Show/hide SOS button
+  const sosBtn = document.getElementById('sosBtn');
+  const lowest = Math.min(gameState.water, gameState.sun, gameState.nutrient);
+  if (lowest < 30 && gameState.seedType) {
+    sosBtn.classList.remove('hidden');
+  } else {
+    sosBtn.classList.add('hidden');
+  }
+
+  updateArchetypeUI();
   renderJourney();
 }
 
@@ -1436,7 +1672,6 @@ function renderJourney() {
     step.appendChild(name);
     track.appendChild(step);
 
-    // Add connector line between steps
     if (i < STAGES.length - 1) {
       const line = document.createElement('div');
       line.className = 'journey-line';
@@ -1453,6 +1688,7 @@ function startLoops() {
     gameState.sun = Math.max(0, gameState.sun - 1.5);
     gameState.nutrient = Math.max(0, gameState.nutrient - 1);
     updateUI();
+    saveGame();
 
     if (gameState.water < 15) showNotification('Your plant needs water');
     else if (gameState.sun < 15) showNotification('Your plant needs sunlight');
@@ -1487,7 +1723,281 @@ function closeModal() {
 
 function openSettings() {
   const info = STAGE_INFO[gameState.stage];
-  showModal('🌿', 'Forest Companion', `Plant: ${gameState.seedType ? SEED_TYPES[gameState.seedType].name : 'None'}\nStage: ${info.name}\nVisitors: ${gameState.visitors.length}\n\nKeep all three stats above 20% for healthy growth. Your journey ends at Ancient Guardian — then your tree lives on forever, attracting more wildlife.`);
+  const age = Math.floor((Date.now() - gameState.createdAt) / (1000 * 60 * 60 * 24));
+  const title = gameState.archetype ? gameState.archetype.name : info.name;
+  showModal('🌿', 'Forest Companion',
+    `Plant: ${getFullPlantTitle()}\n` +
+    `Stage: ${info.name}\n` +
+    `Age: ${age} day${age !== 1 ? 's' : ''}\n` +
+    `Visitors: ${gameState.visitors.length}\n` +
+    `Care: ${gameState.actionsCount.water + gameState.actionsCount.sun + gameState.actionsCount.nutrients} actions\n\n` +
+    `Keep all three stats above 20% for healthy growth.`
+  );
+}
+
+// ===== SHARE CARD SYSTEM =====
+function getDaysOld() {
+  return Math.max(0, Math.floor((Date.now() - gameState.createdAt) / (1000 * 60 * 60 * 24)));
+}
+
+function getCareLevel() {
+  const total = gameState.actionsCount.water + gameState.actionsCount.sun + gameState.actionsCount.nutrients;
+  if (total < 10) return 'Seedling';
+  if (total < 30) return 'Steward';
+  if (total < 60) return 'Caretaker';
+  if (total < 100) return 'Guardian';
+  return 'Ancient Keeper';
+}
+
+function getPrimaryElement() {
+  const counts = gameState.actionsCount;
+  const max = Math.max(counts.water, counts.sun, counts.nutrients);
+  if (max === 0) return 'Unknown';
+  if (max === counts.water) return 'Water';
+  if (max === counts.sun) return 'Sun';
+  return 'Earth';
+}
+
+async function generateShareCard() {
+  const W = 540;
+  const H = 960;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Wait for fonts
+  await document.fonts.ready;
+
+  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.oak;
+  const info = STAGE_INFO[gameState.stage];
+
+  // Background gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, seed.bgFrom || '#1a3015');
+  grad.addColorStop(1, seed.bgTo || '#0f1f0f');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Soft glow behind plant
+  const glow = ctx.createRadialGradient(W / 2, H * 0.38, 20, W / 2, H * 0.38, 160);
+  glow.addColorStop(0, 'rgba(124,111,255,0.12)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Decorative organic circles
+  ctx.fillStyle = 'rgba(255,255,255,0.03)';
+  ctx.beginPath();
+  ctx.arc(W * 0.2, H * 0.15, 80, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(W * 0.8, H * 0.75, 120, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Plant emoji (large, centered)
+  ctx.font = '140px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(info.icon, W / 2, H * 0.36);
+
+  // Stage label
+  ctx.font = '500 14px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(240,245,236,0.5)';
+  ctx.letterSpacing = '3px';
+  ctx.fillText(info.name.toUpperCase(), W / 2, H * 0.52);
+
+  // Plant title (Bellefair)
+  ctx.font = '400 32px Bellefair, Georgia, serif';
+  ctx.fillStyle = '#f0f5ec';
+  ctx.fillText(getFullPlantTitle(), W / 2, H * 0.58);
+
+  // Archetype badge
+  if (gameState.archetype) {
+    ctx.font = '600 13px Inter, sans-serif';
+    ctx.fillStyle = '#7C6FFF';
+    ctx.fillText(`✦ ${gameState.archetype.name.toUpperCase()}`, W / 2, H * 0.64);
+  }
+
+  // Divider
+  ctx.strokeStyle = 'rgba(240,245,236,0.15)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W * 0.2, H * 0.69);
+  ctx.lineTo(W * 0.8, H * 0.69);
+  ctx.stroke();
+
+  // Stats block
+  const statsY = H * 0.74;
+  const colW = W / 3;
+  const stats = [
+    { label: 'AGE', value: `${getDaysOld()}d` },
+    { label: 'ELEMENT', value: getPrimaryElement() },
+    { label: 'CARE', value: getCareLevel() }
+  ];
+
+  stats.forEach((s, i) => {
+    const x = colW * i + colW / 2;
+    ctx.font = '500 11px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(240,245,236,0.4)';
+    ctx.fillText(s.label, x, statsY);
+    ctx.font = '600 16px Inter, sans-serif';
+    ctx.fillStyle = '#f0f5ec';
+    ctx.fillText(s.value, x, statsY + 24);
+  });
+
+  // Footer
+  ctx.font = '400 13px Bellefair, Georgia, serif';
+  ctx.fillStyle = 'rgba(240,245,236,0.35)';
+  ctx.fillText('Forest Companion', W / 2, H * 0.93);
+  ctx.font = '400 11px Inter, sans-serif';
+  ctx.fillText('yaronbada.github.io/forest-companion', W / 2, H * 0.96);
+
+  return canvas;
+}
+
+async function openShareModal() {
+  if (!gameState.seedType) return;
+  const canvas = await generateShareCard();
+  const container = document.getElementById('sharePreview');
+  container.innerHTML = '';
+  canvas.style.width = '100%';
+  canvas.style.height = 'auto';
+  container.appendChild(canvas);
+  document.getElementById('shareModal').classList.add('active');
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('active');
+}
+
+async function shareCard() {
+  const canvas = document.querySelector('#sharePreview canvas');
+  if (!canvas) return;
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  const file = new File([blob], 'forest-companion.png', { type: 'image/png' });
+  const shareData = {
+    title: getFullPlantTitle(),
+    text: `My ${getFullPlantTitle()} in Forest Companion 🌿 Grow your own:`,
+    url: 'https://yaronbada.github.io/forest-companion/',
+    files: [file]
+  };
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share(shareData);
+      closeShareModal();
+      showNotification('Shared! 🎉');
+      return;
+    } catch (e) { /* fallback */ }
+  }
+
+  // Fallback: download + clipboard
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'forest-companion.png';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  const text = `My ${getFullPlantTitle()} 🌿\nGrow your own at https://yaronbada.github.io/forest-companion/`;
+  try {
+    await navigator.clipboard.writeText(text);
+    showNotification('Image saved & link copied! 📋');
+  } catch (e) {
+    showNotification('Image saved! 📸');
+  }
+  closeShareModal();
+}
+
+// ===== REFERRAL / SOS SYSTEM =====
+function generateSOSLink() {
+  if (!gameState.seedType) return;
+  const params = new URLSearchParams({
+    action: 'help',
+    owner: gameState.ownerName,
+    species: gameState.seedType,
+    stage: gameState.stage
+  });
+  const url = `${location.origin}${location.pathname}?${params.toString()}`;
+
+  const text = `My ${SEED_TYPES[gameState.seedType].name} is thirsty! 💧 Send a drop of care:\n${url}`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'Forest Companion', text }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification('SOS link copied! Send to a friend 📋');
+    }).catch(() => {
+      showNotification('Copy this link manually: ' + url);
+    });
+  }
+}
+
+function checkReferral() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('action') !== 'help') return false;
+
+  const owner = params.get('owner') || 'A friend';
+  const species = params.get('species');
+  const stage = params.get('stage');
+
+  if (!species || !SEED_TYPES[species]) return false;
+
+  const speciesName = SEED_TYPES[species].name;
+  const stageName = stage && STAGE_NAMES[stage] ? STAGE_NAMES[stage] : 'tree';
+
+  document.getElementById('helpIcon').textContent = STAGE_INFO[stage]?.icon || '🌿';
+  document.getElementById('helpTitle').textContent = `${owner}'s ${speciesName} needs you`;
+  document.getElementById('helpText').textContent = `A ${stageName.toLowerCase()} is thirsty in the forest. Tap to send a drop of care and help it thrive.`;
+
+  document.getElementById('helpModal').classList.add('active');
+  return true;
+}
+
+function sendHelpDrop() {
+  // Simulate sending care
+  showNotification('💧 Drop sent! Your friend\'s tree feels refreshed.');
+
+  // Change to planting CTA
+  document.getElementById('helpBtn').textContent = 'Drop Sent ✓';
+  document.getElementById('helpBtn').style.background = 'var(--nutrient)';
+
+  setTimeout(() => {
+    document.getElementById('helpSecondary').style.display = 'block';
+    document.getElementById('helpSecondary').style.opacity = '1';
+  }, 800);
+}
+
+function dismissHelpAndStart() {
+  document.getElementById('helpModal').classList.remove('active');
+  window.history.replaceState({}, '', location.pathname);
+  // Seed select will show naturally since no save exists
+}
+
+// ===== INIT =====
+function init() {
+  const hasSave = loadGame();
+
+  if (hasSave && gameState.seedType) {
+    // Resume saved game
+    document.getElementById('seedSelect').classList.add('hidden');
+    document.getElementById('gameContainer').style.display = 'flex';
+    createFireflies();
+    createGrass();
+    renderPlant();
+    updateUI();
+    applyPhenotype();
+    startLoops();
+    showNotification('Welcome back to your forest 🌿');
+  } else {
+    // Check for referral first
+    const isReferral = checkReferral();
+    if (!isReferral) {
+      // Fresh start — seed select is already visible
+    }
+  }
 }
 
 // ===== CLEANUP =====
@@ -1495,7 +2005,7 @@ window.addEventListener('beforeunload', () => {
   if (decayLoop) clearInterval(decayLoop);
 });
 
-// Register Service Worker (PWA)
+// Register Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
     .then(() => console.log('SW registered'))
@@ -1507,6 +2017,9 @@ document.querySelectorAll('button').forEach(btn => {
   btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.96)');
   btn.addEventListener('touchend', () => btn.style.transform = '');
 });
+
+// Start
+init();
 </script>
 </body>
 </html>
