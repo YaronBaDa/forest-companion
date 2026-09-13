@@ -1,7 +1,8 @@
 const CACHE_NAME = 'forest-companion-v1';
 const urlsToCache = [
   '/forest-companion/',
-  '/forest-companion/index.html'
+  '/forest-companion/index.html',
+  '/forest-companion/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
