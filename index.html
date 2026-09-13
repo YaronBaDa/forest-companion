@@ -63,29 +63,25 @@
 
   .brand {
     display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .brand-mark {
-    width: 32px;
-    height: 32px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
+    align-items: baseline;
+    gap: 0;
   }
 
   .brand-title {
     font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
     color: var(--text-primary);
     line-height: 1;
+  }
+
+  .stage-name {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
   }
 
   .settings-btn {
@@ -300,19 +296,107 @@
     to { transform: translateY(340px); opacity: 0; }
   }
 
-  .sun-ray {
+  .sun-flare {
     position: absolute;
-    width: 4px; height: 4px;
-    background: var(--sun);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--sun);
+    top: -20%; left: -20%; right: -20%; bottom: -20%;
+    background: radial-gradient(ellipse at 50% 20%, rgba(240,192,64,0.18) 0%, rgba(240,192,64,0.06) 30%, transparent 60%);
     pointer-events: none;
-    animation: sun-float 3s ease-out forwards;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 5;
+    border-radius: 24px;
   }
 
-  @keyframes sun-float {
+  .sun-flare.active {
+    opacity: 1;
+    animation: sun-pulse 2.5s ease-out forwards;
+  }
+
+  @keyframes sun-pulse {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 0.7; }
+    100% { opacity: 0; }
+  }
+
+  .sun-beam {
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(180deg, rgba(255,230,120,0.9), rgba(255,230,120,0));
+    border-radius: 3px;
+    pointer-events: none;
+    transform-origin: top center;
+    animation: beam-down 1.2s ease-out forwards;
+    z-index: 6;
+  }
+
+  @keyframes beam-down {
+    0% { height: 0; opacity: 1; }
+    40% { opacity: 0.9; }
+    100% { height: 260px; opacity: 0; }
+  }
+
+  .water-drop {
+    position: absolute;
+    width: 5px; height: 8px;
+    background: linear-gradient(180deg, rgba(91,192,222,0.9), rgba(91,192,222,0.3));
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    pointer-events: none;
+    animation: drop-trickle 1s ease-in forwards;
+    z-index: 15;
+  }
+
+  @keyframes drop-trickle {
     0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-200px) scale(0); opacity: 0; }
+    60% { opacity: 0.8; }
+    100% { transform: translateY(80px) scale(0.4); opacity: 0; }
+  }
+
+  .water-splash {
+    position: absolute;
+    width: 20px; height: 6px;
+    background: radial-gradient(ellipse, rgba(91,192,222,0.5), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: splash-ripple 0.6s ease-out forwards;
+    z-index: 14;
+  }
+
+  @keyframes splash-ripple {
+    0% { transform: scale(0.2); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  .nutrient-glow {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: radial-gradient(circle, #a5d6a7, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: nutrient-rise 1.4s ease-out forwards;
+    z-index: 15;
+  }
+
+  @keyframes nutrient-rise {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { opacity: 0.9; }
+    100% { transform: translateY(-90px) scale(0.2); opacity: 0; }
+  }
+
+  .nutrient-shine {
+    position: absolute;
+    width: 40px; height: 40px;
+    background: radial-gradient(circle, rgba(123,196,127,0.15), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: shine-pulse 1.5s ease-out forwards;
+    z-index: 5;
+  }
+
+  @keyframes shine-pulse {
+    0% { transform: scale(0.5); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
   }
 
   /* ===== STATS (minimal, distinct from actions) ===== */
@@ -772,7 +856,6 @@
 
   <div class="header">
     <div class="brand">
-      <div class="brand-mark">🌿</div>
       <div class="brand-title">Forest Companion</div>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
@@ -794,6 +877,7 @@
       <div class="garden-horizon"></div>
       <div class="soil-mound"></div>
       <div class="soil-texture"></div>
+      <div class="sun-flare" id="sunFlare"></div>
       <div id="fireflies"></div>
       <div id="grassTufts"></div>
       <div class="plant-wrapper stage-seed" id="plantWrapper">
@@ -1113,7 +1197,6 @@ function actionWater() {
   gameState.growth = Math.min(100, gameState.growth + 5);
   addGrowth();
   createRain();
-  createParticle('💧');
   playWaterSound();
   updateUI();
   showNotification('Watered');
@@ -1136,7 +1219,7 @@ function actionNutrient() {
   gameState.nutrient = Math.min(100, gameState.nutrient + 15);
   gameState.growth = Math.min(100, gameState.growth + 8);
   addGrowth();
-  createParticle('✨');
+  createNutrients();
   playNutrientSound();
   updateUI();
   showNotification('Fed nutrients');
@@ -1160,31 +1243,93 @@ function createParticle(emoji) {
 
 function createRain() {
   const garden = document.getElementById('garden');
-  for (let i = 0; i < 10; i++) {
+  const plant = document.getElementById('plantWrapper');
+  const plantRect = plant.getBoundingClientRect();
+  const gardenRect = garden.getBoundingClientRect();
+  const plantCenterX = (plantRect.left - gardenRect.left) + plantRect.width / 2;
+  const plantTopY = (plantRect.top - gardenRect.top);
+  const plantBaseY = (plantRect.bottom - gardenRect.top);
+
+  // Droplets trickling down onto the plant
+  for (let i = 0; i < 14; i++) {
     setTimeout(() => {
       const drop = document.createElement('div');
-      drop.className = 'rain-drop';
-      drop.style.left = (30 + Math.random() * 40) + '%';
-      drop.style.top = '10%';
-      drop.style.animationDuration = (0.5 + Math.random() * 0.3) + 's';
+      drop.className = 'water-drop';
+      const offsetX = (Math.random() - 0.5) * (plantRect.width * 0.8);
+      drop.style.left = (plantCenterX + offsetX) + 'px';
+      drop.style.top = (plantTopY - 20 + Math.random() * 30) + 'px';
+      drop.style.animationDuration = (0.7 + Math.random() * 0.5) + 's';
       garden.appendChild(drop);
-      setTimeout(() => drop.remove(), 1000);
-    }, i * 50);
+
+      // Splash at base when drop lands
+      setTimeout(() => {
+        const splash = document.createElement('div');
+        splash.className = 'water-splash';
+        splash.style.left = (plantCenterX + offsetX - 10) + 'px';
+        splash.style.top = (plantBaseY - 8) + 'px';
+        garden.appendChild(splash);
+        setTimeout(() => splash.remove(), 600);
+      }, 700);
+
+      setTimeout(() => drop.remove(), 1200);
+    }, i * 60);
   }
 }
 
 function createSunRays() {
   const garden = document.getElementById('garden');
-  for (let i = 0; i < 6; i++) {
+  const flare = document.getElementById('sunFlare');
+
+  // Light up the entire stage with warm glow
+  flare.classList.add('active');
+  setTimeout(() => flare.classList.remove('active'), 2500);
+
+  // Beams shining down from top
+  const beamCount = 5;
+  for (let i = 0; i < beamCount; i++) {
     setTimeout(() => {
-      const ray = document.createElement('div');
-      ray.className = 'sun-ray';
-      ray.style.left = (40 + Math.random() * 20) + '%';
-      ray.style.bottom = (20 + Math.random() * 30) + '%';
-      garden.appendChild(ray);
-      setTimeout(() => ray.remove(), 3000);
-    }, i * 100);
+      const beam = document.createElement('div');
+      beam.className = 'sun-beam';
+      const x = 25 + (i / (beamCount - 1)) * 50 + (Math.random() - 0.5) * 8;
+      beam.style.left = x + '%';
+      beam.style.top = '8%';
+      beam.style.transform = `rotate(${(Math.random() - 0.5) * 10}deg)`;
+      beam.style.animationDuration = (1 + Math.random() * 0.4) + 's';
+      garden.appendChild(beam);
+      setTimeout(() => beam.remove(), 1500);
+    }, i * 120);
   }
+}
+
+function createNutrients() {
+  const garden = document.getElementById('garden');
+  const plant = document.getElementById('plantWrapper');
+  const plantRect = plant.getBoundingClientRect();
+  const gardenRect = garden.getBoundingClientRect();
+  const plantCenterX = (plantRect.left - gardenRect.left) + plantRect.width / 2;
+  const plantBaseY = (plantRect.bottom - gardenRect.top);
+
+  // Green glow orbs rising from soil into plant
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      const orb = document.createElement('div');
+      orb.className = 'nutrient-glow';
+      const offsetX = (Math.random() - 0.5) * 50;
+      orb.style.left = (plantCenterX + offsetX) + 'px';
+      orb.style.top = (plantBaseY - 10 + Math.random() * 15) + 'px';
+      orb.style.animationDuration = (1 + Math.random() * 0.6) + 's';
+      garden.appendChild(orb);
+      setTimeout(() => orb.remove(), 1600);
+    }, i * 80);
+  }
+
+  // Shine pulse around the plant
+  const shine = document.createElement('div');
+  shine.className = 'nutrient-shine';
+  shine.style.left = (plantCenterX - 20) + 'px';
+  shine.style.top = (plantBaseY - 80) + 'px';
+  garden.appendChild(shine);
+  setTimeout(() => shine.remove(), 1500);
 }
 
 function addVisitor() {
