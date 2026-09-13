@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Forest Companion</title>
+<style>
+  :root {
+    --bg-deep: #0a0f0a;
+    --bg-panel: #121a12;
+    --bg-card: #1a241a;
+    --border: #2a3a2a;
+    --text: #e8f5e8;
+    --text-dim: #8a9a8a;
+    --accent: #7C6FFF;
+    --accent-glow: rgba(124,111,255,0.3);
+    --water: #4fc3f7;
+    --sun: #ffd54f;
+    --nutrient: #81c784;
+    --health: #ff8a65;
+    --seed: #8d6e63;
+    --sprout: #a5d6a7;
+    --tree: #4caf50;
+    --ancient: #ffd700;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    width: 100%;
+    max-width: 420px;
+    padding: 16px 20px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo::before {
+    content: "🌿";
+    font-size: 22px;
+  }
+
+  .settings-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .settings-btn:hover { background: var(--border); }
+
+  /* ===== STAGE BADGE ===== */
+  .stage-badge {
+    background: linear-gradient(135deg, var(--accent), #9b8fff);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px var(--accent-glow);
+    animation: pulse-badge 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+
+  /* ===== MAIN DISPLAY ===== */
+  .garden-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 16px;
+    position: relative;
+  }
+
+  .garden {
+    background: linear-gradient(180deg, #0d1a0d 0%, #1a2e1a 50%, #0f1f0f 100%);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    height: 360px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* Stars in background */
+  .stars {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Ground */
+  .ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, transparent, #1a3015);
+    border-radius: 0 0 24px 24px;
+  }
+
+  /* Plant Container */
+  .plant-wrapper {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 40px;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* ===== PLANT SVG STYLES ===== */
+  .plant-svg {
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    transition: all 0.6s ease;
+  }
+
+  /* Seed */
+  .stage-seed .plant-svg { width: 40px; height: 40px; }
+  /* Sprout */
+  .stage-sprout .plant-svg { width: 60px; height: 80px; }
+  /* Sapling */
+  .stage-sapling .plant-svg { width: 100px; height: 140px; }
+  /* Tree */
+  .stage-tree .plant-svg { width: 160px; height: 200px; }
+  /* Ancient */
+  .stage-ancient .plant-svg { width: 200px; height: 260px; }
+
+  /* Sway animation */
+  .plant-sway {
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+  }
+
+  /* Particles */
+  .particle {
+    position: absolute;
+    pointer-events: none;
+    animation: float-up 2s ease-out forwards;
+    font-size: 20px;
+    z-index: 100;
+  }
+
+  @keyframes float-up {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+  }
+
+  /* Wildlife visitors */
+  .visitor {
+    position: absolute;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 20;
+    animation: visitor-appear 0.5s ease-out;
+  }
+
+  @keyframes visitor-appear {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Weather effects */
+  .rain-drop {
+    position: absolute;
+    width: 2px;
+    height: 12px;
+    background: linear-gradient(transparent, var(--water));
+    border-radius: 2px;
+    pointer-events: none;
+    animation: rain-fall 0.8s linear forwards;
+  }
+
+  @keyframes rain-fall {
+    to { transform: translateY(360px); opacity: 0; }
+  }
+
+  .sun-ray {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--sun);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--sun);
+    pointer-events: none;
+    animation: sun-float 3s ease-out forwards;
+  }
+
+  @keyframes sun-float {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-200px) scale(0); opacity: 0; }
+  }
+
+  /* ===== STATS BARS ===== */
+  .stats-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .stat-bar-bg {
+    background: var(--bg-deep);
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .stat-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.5s ease, background 0.5s ease;
+  }
+
+  .stat-bar-fill.water { background: linear-gradient(90deg, #29b6f6, var(--water)); }
+  .stat-bar-fill.sun { background: linear-gradient(90deg, #ffb300, var(--sun)); }
+  .stat-bar-fill.nutrient { background: linear-gradient(90deg, #66bb6a, var(--nutrient)); }
+
+  .stat-value {
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .stat-value.water { color: var(--water); }
+  .stat-value.sun { color: var(--sun); }
+  .stat-value.nutrient { color: var(--nutrient); }
+
+  /* ===== ACTION BUTTONS ===== */
+  .actions-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 16px 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .action-btn {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    font-family: inherit;
+  }
+
+  .action-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .action-btn:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  .action-btn.water:hover { border-color: var(--water); background: rgba(79,195,247,0.1); }
+  .action-btn.sun:hover { border-color: var(--sun); background: rgba(255,213,79,0.1); }
+  .action-btn.nutrient:hover { border-color: var(--nutrient); background: rgba(129,199,132,0.1); }
+
+  .action-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .action-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .action-btn.water .action-label { color: var(--water); }
+  .action-btn.sun .action-label { color: var(--sun); }
+  .action-btn.nutrient .action-label { color: var(--nutrient); }
+
+  /* ===== INFO PANEL ===== */
+  .info-panel {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 16px 16px;
+  }
+
+  .info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .info-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .info-text {
+    flex: 1;
+  }
+
+  .info-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .info-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* ===== PROGRESS ===== */
+  .progress-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 16px 20px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .progress-bar-bg {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    height: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #a594ff);
+    border-radius: 12px;
+    transition: width 0.6s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+  }
+
+  .progress-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  /* ===== MODALS ===== */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 20px;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    transform: scale(0.9);
+    transition: transform 0.3s;
+  }
+
+  .modal-overlay.active .modal {
+    transform: scale(1);
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .modal-text {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+  }
+
+  .modal-btn:hover { background: #8b7cff; transform: translateY(-1px); }
+
+  /* ===== EVOLUTION FLASH ===== */
+  .evolution-flash {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--accent);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+
+  .evolution-flash.active {
+    opacity: 0.3;
+    animation: flash-pulse 0.5s ease-out;
+  }
+
+  @keyframes flash-pulse {
+    0% { opacity: 0.6; }
+    100% { opacity: 0; }
+  }
+
+  /* ===== SELECTION SCREEN ===== */
+  .seed-select {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg-deep);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .seed-select.hidden { display: none; }
+
+  .seed-select-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .seed-select-subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .seed-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .seed-option {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .seed-option:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .seed-option-emoji {
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+
+  .seed-option-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .seed-option-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ===== NOTIFICATION ===== */
+  .notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--bg-panel);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 2000;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    white-space: nowrap;
+  }
+
+  .notification.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 380px) {
+    .garden { height: 300px; }
+    .stage-ancient .plant-svg { width: 170px; height: 220px; }
+    .stage-tree .plant-svg { width: 140px; height: 170px; }
+  }
+
+  @media (min-width: 768px) {
+    .garden { height: 420px; }
+    .stage-ancient .plant-svg { width: 240px; height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Seed Selection Screen -->
+<div class="seed-select" id="seedSelect">
+  <div class="seed-select-title">Choose Your Seed</div>
+  <div class="seed-select-subtitle">Each plant has a unique journey</div>
+  <div class="seed-options">
+    <div class="seed-option" onclick="selectSeed('oak')">
+      <div class="seed-option-emoji">🌰</div>
+      <div class="seed-option-name">Mighty Oak</div>
+      <div class="seed-option-desc">Strong and enduring</div>
+    </div>
+    <div class="seed-option" onclick="selectSeed('willow')">
+      <div class="seed-option-emoji">🌱</div>
+      <div class="seed-option-name">Whispering Willow</div>
+      <div class="seed-option-desc">Graceful and wise</div>
+    </div>
+    <div class="seed-option" onclick="selectSeed('cherry')">
+      <div class="seed-option-emoji">🌸</div>
+      <div class="seed-option-name">Cherry Blossom</div>
+      <div class="seed-option-desc">Beautiful and fleeting</div>
+    </div>
+    <div class="seed-option" onclick="selectSeed('pine')">
+      <div class="seed-option-emoji">🌲</div>
+      <div class="seed-option-name">Eternal Pine</div>
+      <div class="seed-option-desc">Resilient through seasons</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Game (hidden until seed selected) -->
+<div id="gameContainer" style="display:none; width:100%; flex-direction:column; align-items:center;">
+
+  <div class="header">
+    <div class="logo">Forest Companion</div>
+    <div class="settings-btn" onclick="openSettings()">⚙️</div>
+  </div>
+
+  <div class="stage-badge" id="stageBadge">Seed</div>
+
+  <!-- Garden Display -->
+  <div class="garden-container">
+    <div class="garden" id="garden">
+      <div class="stars" id="stars"></div>
+      <div class="ground"></div>
+      <div class="plant-wrapper stage-seed" id="plantWrapper">
+        <svg class="plant-svg plant-sway" id="plantSvg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+          <!-- Dynamic SVG content set by JS -->
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon">💧</div>
+      <div class="stat-label">Water</div>
+      <div class="stat-bar-bg">
+        <div class="stat-bar-fill water" id="waterBar" style="width:50%"></div>
+      </div>
+      <div class="stat-value water" id="waterValue">50%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">☀️</div>
+      <div class="stat-label">Sunlight</div>
+      <div class="stat-bar-bg">
+        <div class="stat-bar-fill sun" id="sunBar" style="width:50%"></div>
+      </div>
+      <div class="stat-value sun" id="sunValue">50%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🌱</div>
+      <div class="stat-label">Nutrients</div>
+      <div class="stat-bar-bg">
+        <div class="stat-bar-fill nutrient" id="nutrientBar" style="width:50%"></div>
+      </div>
+      <div class="stat-value nutrient" id="nutrientValue">50%</div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions-container">
+    <button class="action-btn water" onclick="actionWater()">
+      <span class="action-icon">💧</span>
+      <span class="action-label">Water</span>
+    </button>
+    <button class="action-btn sun" onclick="actionSun()">
+      <span class="action-icon">☀️</span>
+      <span class="action-label">Sun</span>
+    </button>
+    <button class="action-btn nutrient" onclick="actionNutrient()">
+      <span class="action-icon">🧪</span>
+      <span class="action-label">Feed</span>
+    </button>
+  </div>
+
+  <!-- Info Panel -->
+  <div class="info-panel">
+    <div class="info-card">
+      <div class="info-icon" id="infoIcon">🌰</div>
+      <div class="info-text">
+        <div class="info-title" id="infoTitle">A sleeping seed</div>
+        <div class="info-desc" id="infoDesc">Your journey begins. Keep water, sun, and nutrients balanced to help it grow.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Growth Progress -->
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>Growth Progress</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%">
+        <span class="progress-text" id="progressText">Seed</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Evolution Flash -->
+<div class="evolution-flash" id="evolutionFlash"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Title</div>
+    <div class="modal-text" id="modalText">Text</div>
+    <button class="modal-btn" onclick="closeModal()">Continue</button>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification"></div>
+
+<script>
+// ===== GAME STATE =====
+const STAGES = ['seed', 'sprout', 'sapling', 'tree', 'ancient'];
+const STAGE_NAMES = {
+  seed: 'Seed',
+  sprout: 'Sprout',
+  sapling: 'Sapling',
+  tree: 'Tree',
+  ancient: 'Ancient Tree'
+};
+
+const STAGE_INFO = {
+  seed: { icon: '🌰', title: 'A sleeping seed', desc: 'Your journey begins. Keep water, sun, and nutrients balanced to help it grow.' },
+  sprout: { icon: '🌱', title: 'First leaves unfurl', desc: 'The sprout reaches for the light. It needs consistent care to strengthen its roots.' },
+  sapling: { icon: '🌿', title: 'Growing stronger', desc: 'Your sapling stands tall! Wildlife may start visiting your little forest friend.' },
+  tree: { icon: '🌳', title: 'A thriving tree', desc: 'Majestic and full of life. Your tree provides shelter and attracts forest creatures.' },
+  ancient: { icon: '🌲', title: 'An ancient guardian', desc: 'A wise and beautiful presence. Your tree has become a legend of the forest.' }
+};
+
+const SEED_TYPES = {
+  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63' },
+  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65' },
+  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0' },
+  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50' }
+};
+
+let gameState = {
+  seedType: null,
+  stage: 'seed',
+  stageIndex: 0,
+  water: 50,
+  sun: 50,
+  nutrient: 50,
+  growth: 0,
+  totalGrowth: 0,
+  visitors: [],
+  days: 0,
+  lastTick: Date.now()
+};
+
+let audioCtx = null;
+let gameLoop = null;
+let decayLoop = null;
+
+// ===== AUDIO =====
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function playTone(freq, duration, type = 'sine', volume = 0.1) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function playWaterSound() {
+  playTone(600, 0.1, 'sine', 0.08);
+  setTimeout(() => playTone(800, 0.15, 'sine', 0.06), 100);
+  setTimeout(() => playTone(1000, 0.2, 'sine', 0.04), 200);
+}
+
+function playSunSound() {
+  playTone(523, 0.2, 'triangle', 0.08);
+  setTimeout(() => playTone(659, 0.2, 'triangle', 0.08), 150);
+  setTimeout(() => playTone(784, 0.3, 'triangle', 0.08), 300);
+}
+
+function playNutrientSound() {
+  playTone(440, 0.1, 'sine', 0.08);
+  setTimeout(() => playTone(554, 0.1, 'sine', 0.08), 100);
+  setTimeout(() => playTone(659, 0.1, 'sine', 0.08), 200);
+  setTimeout(() => playTone(880, 0.3, 'sine', 0.08), 300);
+}
+
+function playEvolutionSound() {
+  const notes = [523, 659, 784, 1047, 1319];
+  notes.forEach((note, i) => {
+    setTimeout(() => playTone(note, 0.4, 'sine', 0.1), i * 150);
+  });
+}
+
+// ===== SVG PLANT RENDERER =====
+function getPlantSVG(stage, seedType) {
+  const colors = SEED_TYPES[seedType] || SEED_TYPES.oak;
+  const leaf = colors.leafColor;
+  const trunk = colors.color;
+
+  switch(stage) {
+    case 'seed':
+      return `<ellipse cx="100" cy="240" rx="12" ry="8" fill="${trunk}"/><ellipse cx="100" cy="238" rx="8" ry="5" fill="#6d4c41"/>`;
+
+    case 'sprout':
+      return `
+        <path d="M100 240 Q100 200 85 170" stroke="${leaf}" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M100 240 Q100 200 115 165" stroke="${leaf}" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="85" cy="170" rx="10" ry="6" fill="${leaf}" transform="rotate(-30 85 170)"/>
+        <ellipse cx="115" cy="165" rx="10" ry="6" fill="${leaf}" transform="rotate(30 115 165)"/>
+        <ellipse cx="100" cy="242" rx="14" ry="5" fill="#5d4037" opacity="0.5"/>
+      `;
+
+    case 'sapling':
+      return `
+        <path d="M100 250 Q100 180 100 120" stroke="${trunk}" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M100 200 Q70 170 60 140" stroke="${leaf}" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M100 180 Q130 150 140 120" stroke="${leaf}" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M100 150 Q80 120 75 90" stroke="${leaf}" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <ellipse cx="60" cy="140" rx="14" ry="8" fill="${leaf}" transform="rotate(-40 60 140)"/>
+        <ellipse cx="140" cy="120" rx="14" ry="8" fill="${leaf}" transform="rotate(40 140 120)"/>
+        <ellipse cx="75" cy="90" rx="12" ry="7" fill="${leaf}" transform="rotate(-20 75 90)"/>
+        <circle cx="100" cy="115" r="16" fill="${leaf}" opacity="0.9"/>
+        <ellipse cx="100" cy="252" rx="20" ry="6" fill="#3e2723" opacity="0.4"/>
+      `;
+
+    case 'tree':
+      return `
+        <path d="M100 260 Q95 200 100 140 Q105 200 100 260" stroke="${trunk}" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M100 220 Q60 190 50 150" stroke="${trunk}" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M100 200 Q140 170 150 130" stroke="${trunk}" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="100" cy="120" r="45" fill="${leaf}" opacity="0.9"/>
+        <circle cx="70" cy="100" r="35" fill="${leaf}" opacity="0.85"/>
+        <circle cx="130" cy="100" r="35" fill="${leaf}" opacity="0.85"/>
+        <circle cx="100" cy="80" r="40" fill="${leaf}" opacity="0.9"/>
+        <circle cx="85" cy="65" r="25" fill="${leaf}" opacity="0.8"/>
+        <circle cx="115" cy="65" r="25" fill="${leaf}" opacity="0.8"/>
+        <ellipse cx="100" cy="262" rx="35" ry="8" fill="#3e2723" opacity="0.4"/>
+        ${seedType === 'cherry' ? `
+          <circle cx="85" cy="100" r="4" fill="#f8bbd0"/>
+          <circle cx="115" cy="90" r="4" fill="#f8bbd0"/>
+          <circle cx="100" cy="75" r="4" fill="#f8bbd0"/>
+          <circle cx="70" cy="110" r="4" fill="#f8bbd0"/>
+          <circle cx="130" cy="110" r="4" fill="#f8bbd0"/>
+        ` : ''}
+      `;
+
+    case 'ancient':
+      return `
+        <path d="M100 260 Q90 200 95 130 Q100 200 105 260" stroke="${trunk}" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <path d="M100 240 Q50 210 40 170" stroke="${trunk}" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M100 220 Q150 190 160 150" stroke="${trunk}" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <path d="M100 200 Q70 160 65 120" stroke="${trunk}" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M100 180 Q130 140 135 100" stroke="${trunk}" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="100" cy="110" r="55" fill="${leaf}" opacity="0.9"/>
+        <circle cx="60" cy="90" r="45" fill="${leaf}" opacity="0.85"/>
+        <circle cx="140" cy="90" r="45" fill="${leaf}" opacity="0.85"/>
+        <circle cx="100" cy="65" r="50" fill="${leaf}" opacity="0.9"/>
+        <circle cx="80" cy="50" r="35" fill="${leaf}" opacity="0.8"/>
+        <circle cx="120" cy="50" r="35" fill="${leaf}" opacity="0.8"/>
+        <circle cx="100" cy="40" r="30" fill="${leaf}" opacity="0.85"/>
+        <ellipse cx="100" cy="262" rx="45" ry="10" fill="#3e2723" opacity="0.4"/>
+        ${seedType === 'cherry' ? `
+          <circle cx="80" cy="90" r="5" fill="#f8bbd0"/>
+          <circle cx="120" cy="80" r="5" fill="#f8bbd0"/>
+          <circle cx="100" cy="60" r="5" fill="#f8bbd0"/>
+          <circle cx="60" cy="100" r="5" fill="#f8bbd0"/>
+          <circle cx="140" cy="100" r="5" fill="#f8bbd0"/>
+          <circle cx="90" cy="45" r="5" fill="#f8bbd0"/>
+          <circle cx="110" cy="45" r="5" fill="#f8bbd0"/>
+        ` : ''}
+        ${seedType === 'willow' ? `
+          <path d="M60 90 Q55 130 50 150" stroke="${leaf}" stroke-width="2" fill="none" opacity="0.6"/>
+          <path d="M70 80 Q65 120 60 140" stroke="${leaf}" stroke-width="2" fill="none" opacity="0.6"/>
+          <path d="M140 90 Q145 130 150 150" stroke="${leaf}" stroke-width="2" fill="none" opacity="0.6"/>
+          <path d="M130 80 Q135 120 140 140" stroke="${leaf}" stroke-width="2" fill="none" opacity="0.6"/>
+        ` : ''}
+      `;
+
+    default:
+      return '';
+  }
+}
+
+// ===== STARS =====
+function createStars() {
+  const container = document.getElementById('stars');
+  container.innerHTML = '';
+  for (let i = 0; i < 30; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 60 + '%';
+    star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
+    star.style.animationDelay = Math.random() * 2 + 's';
+    container.appendChild(star);
+  }
+}
+
+// ===== GAME ACTIONS =====
+function selectSeed(type) {
+  initAudio();
+  gameState.seedType = type;
+  document.getElementById('seedSelect').classList.add('hidden');
+  document.getElementById('gameContainer').style.display = 'flex';
+  createStars();
+  renderPlant();
+  updateUI();
+  startLoops();
+  showNotification(`${SEED_TYPES[type].name} planted! 🌱`);
+  playTone(440, 0.2, 'sine', 0.1);
+  setTimeout(() => playTone(554, 0.2, 'sine', 0.1), 100);
+  setTimeout(() => playTone(659, 0.3, 'sine', 0.1), 200);
+}
+
+function actionWater() {
+  initAudio();
+  gameState.water = Math.min(100, gameState.water + 15);
+  gameState.growth = Math.min(100, gameState.growth + 5);
+  addGrowth();
+  createRain();
+  createParticle('💧');
+  playWaterSound();
+  updateUI();
+  showNotification('Watered! 💧');
+}
+
+function actionSun() {
+  initAudio();
+  gameState.sun = Math.min(100, gameState.sun + 15);
+  gameState.growth = Math.min(100, gameState.growth + 5);
+  addGrowth();
+  createSunRays();
+  createParticle('☀️');
+  playSunSound();
+  updateUI();
+  showNotification('Sunlight absorbed! ☀️');
+}
+
+function actionNutrient() {
+  initAudio();
+  gameState.nutrient = Math.min(100, gameState.nutrient + 15);
+  gameState.growth = Math.min(100, gameState.growth + 8);
+  addGrowth();
+  createParticle('✨');
+  playNutrientSound();
+  updateUI();
+  showNotification('Fed nutrients! 🌱');
+}
+
+function addGrowth() {
+  gameState.totalGrowth += 1;
+  checkEvolution();
+}
+
+function createParticle(emoji) {
+  const garden = document.getElementById('garden');
+  const particle = document.createElement('div');
+  particle.className = 'particle';
+  particle.textContent = emoji;
+  particle.style.left = (45 + Math.random() * 10) + '%';
+  particle.style.bottom = (30 + Math.random() * 20) + '%';
+  garden.appendChild(particle);
+  setTimeout(() => particle.remove(), 2000);
+}
+
+function createRain() {
+  const garden = document.getElementById('garden');
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+      const drop = document.createElement('div');
+      drop.className = 'rain-drop';
+      drop.style.left = (30 + Math.random() * 40) + '%';
+      drop.style.top = '10%';
+      drop.style.animationDuration = (0.5 + Math.random() * 0.3) + 's';
+      garden.appendChild(drop);
+      setTimeout(() => drop.remove(), 1000);
+    }, i * 50);
+  }
+}
+
+function createSunRays() {
+  const garden = document.getElementById('garden');
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => {
+      const ray = document.createElement('div');
+      ray.className = 'sun-ray';
+      ray.style.left = (40 + Math.random() * 20) + '%';
+      ray.style.bottom = (20 + Math.random() * 30) + '%';
+      garden.appendChild(ray);
+      setTimeout(() => ray.remove(), 3000);
+    }, i * 100);
+  }
+}
+
+function addVisitor() {
+  const visitors = ['🦋', '🐦', '🐝', '🦌', '🦉', '🐿️', '🦊', '🐞'];
+  const visitor = visitors[Math.floor(Math.random() * visitors.length)];
+  const garden = document.getElementById('garden');
+  const el = document.createElement('div');
+  el.className = 'visitor';
+  el.textContent = visitor;
+  el.style.left = (10 + Math.random() * 80) + '%';
+  el.style.bottom = (15 + Math.random() * 25) + '%';
+  garden.appendChild(el);
+  gameState.visitors.push(visitor);
+  showNotification(`A ${getVisitorName(visitor)} visited! ${visitor}`);
+  setTimeout(() => el.remove(), 5000);
+}
+
+function getVisitorName(emoji) {
+  const names = { '🦋': 'butterfly', '🐦': 'bird', '🐝': 'bee', '🦌': 'deer', '🦉': 'owl', '🐿️': 'squirrel', '🦊': 'fox', '🐞': 'ladybug' };
+  return names[emoji] || 'creature';
+}
+
+// ===== EVOLUTION =====
+function checkEvolution() {
+  const thresholds = { sprout: 20, sapling: 45, tree: 75, ancient: 100 };
+  const nextStage = STAGES[gameState.stageIndex + 1];
+
+  if (nextStage && gameState.totalGrowth >= thresholds[nextStage] && gameState.growth >= 90) {
+    evolve(nextStage);
+  }
+}
+
+function evolve(newStage) {
+  gameState.stage = newStage;
+  gameState.stageIndex = STAGES.indexOf(newStage);
+  gameState.growth = 0;
+
+  // Flash effect
+  const flash = document.getElementById('evolutionFlash');
+  flash.classList.add('active');
+  setTimeout(() => flash.classList.remove('active'), 500);
+
+  playEvolutionSound();
+
+  // Show modal
+  setTimeout(() => {
+    const info = STAGE_INFO[newStage];
+    showModal(
+      `${info.icon} ${STAGE_NAMES[newStage]}!`,
+      `Your ${SEED_TYPES[gameState.seedType].name} has evolved into a beautiful ${STAGE_NAMES[newStage]}! ${info.desc}`
+    );
+  }, 600);
+
+  renderPlant();
+  updateUI();
+
+  // Add visitors at higher stages
+  if (newStage === 'sapling') addVisitor();
+  if (newStage === 'tree') { addVisitor(); setTimeout(addVisitor, 2000); }
+  if (newStage === 'ancient') { addVisitor(); setTimeout(addVisitor, 1500); setTimeout(addVisitor, 3000); }
+}
+
+// ===== RENDERING =====
+function renderPlant() {
+  const svg = document.getElementById('plantSvg');
+  const wrapper = document.getElementById('plantWrapper');
+  svg.innerHTML = getPlantSVG(gameState.stage, gameState.seedType);
+
+  // Update wrapper class for sizing
+  wrapper.className = `plant-wrapper stage-${gameState.stage}`;
+}
+
+function updateUI() {
+  // Stage badge
+  document.getElementById('stageBadge').textContent = STAGE_NAMES[gameState.stage];
+
+  // Stats
+  document.getElementById('waterBar').style.width = gameState.water + '%';
+  document.getElementById('waterValue').textContent = Math.round(gameState.water) + '%';
+  document.getElementById('sunBar').style.width = gameState.sun + '%';
+  document.getElementById('sunValue').textContent = Math.round(gameState.sun) + '%';
+  document.getElementById('nutrientBar').style.width = gameState.nutrient + '%';
+  document.getElementById('nutrientValue').textContent = Math.round(gameState.nutrient) + '%';
+
+  // Info panel
+  const info = STAGE_INFO[gameState.stage];
+  document.getElementById('infoIcon').textContent = info.icon;
+  document.getElementById('infoTitle').textContent = info.title;
+  document.getElementById('infoDesc').textContent = info.desc;
+
+  // Progress
+  const progressMap = { seed: 0, sprout: 25, sapling: 50, tree: 75, ancient: 100 };
+  const baseProgress = progressMap[gameState.stage];
+  const stageProgress = gameState.stage === 'ancient' ? 100 : (gameState.growth / 100) * 25;
+  const totalProgress = Math.min(100, baseProgress + stageProgress);
+
+  document.getElementById('progressBar').style.width = totalProgress + '%';
+  document.getElementById('progressPercent').textContent = Math.round(totalProgress) + '%';
+  document.getElementById('progressText').textContent = STAGE_NAMES[gameState.stage];
+}
+
+// ===== GAME LOOPS =====
+function startLoops() {
+  // Decay loop - stats decrease over time
+  decayLoop = setInterval(() => {
+    gameState.water = Math.max(0, gameState.water - 2);
+    gameState.sun = Math.max(0, gameState.sun - 1.5);
+    gameState.nutrient = Math.max(0, gameState.nutrient - 1);
+    updateUI();
+
+    // Warning if stats low
+    if (gameState.water < 15) showNotification('Your plant needs water! 💧');
+    else if (gameState.sun < 15) showNotification('Your plant needs sunlight! ☀️');
+    else if (gameState.nutrient < 15) showNotification('Your plant needs nutrients! 🌱');
+  }, 5000);
+
+  // Visitor loop
+  setInterval(() => {
+    if (gameState.stageIndex >= 2 && Math.random() < 0.3) {
+      addVisitor();
+    }
+  }, 15000);
+}
+
+// ===== UI HELPERS =====
+function showNotification(text) {
+  const notif = document.getElementById('notification');
+  notif.textContent = text;
+  notif.classList.add('show');
+  setTimeout(() => notif.classList.remove('show'), 2500);
+}
+
+function showModal(title, text) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalText').textContent = text;
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+function openSettings() {
+  showModal(
+    '⚙️ Settings',
+    `Forest Companion v1.0\n\nPlant: ${gameState.seedType ? SEED_TYPES[gameState.seedType].name : 'None'}\nStage: ${STAGE_NAMES[gameState.stage]}\nVisitors: ${gameState.visitors.length}\n\nTip: Keep all three stats above 20% for healthy growth!`
+  );
+}
+
+// ===== INIT =====
+window.addEventListener('beforeunload', () => {
+  if (decayLoop) clearInterval(decayLoop);
+  if (gameLoop) clearInterval(gameLoop);
+});
+
+// Touch feedback for buttons
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.95)');
+  btn.addEventListener('touchend', () => btn.style.transform = '');
+});
+</script>
+</body>
+</html>
