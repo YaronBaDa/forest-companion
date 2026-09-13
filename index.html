@@ -96,7 +96,7 @@
 
   .settings-btn:hover { color: var(--text-primary); }
 
-  /* ===== STAGE HEADER (merged badge + info) ===== */
+  /* ===== STAGE HEADER ===== */
   .stage-header {
     width: 100%;
     max-width: 420px;
@@ -141,7 +141,6 @@
     font-weight: 400;
   }
 
-  /* Archetype badge */
   .archetype-badge {
     display: inline-flex;
     align-items: center;
@@ -161,7 +160,7 @@
 
   .archetype-badge.hidden { display: none; }
 
-  /* ===== GARDEN ===== */
+  /* ===== GARDEN (Dynamic Environment) ===== */
   .garden-wrap {
     width: 100%;
     max-width: 420px;
@@ -173,39 +172,102 @@
     height: 340px;
     border-radius: 24px;
     overflow: hidden;
-    background: linear-gradient(180deg, #162016 0%, #1a2e18 40%, #243a1f 70%, #3d2b1f 100%);
     border: 1px solid var(--border);
     transition: filter 1.2s ease;
   }
 
-  /* Phenotype filters */
-  .garden.phenotype-sun { filter: sepia(0.15) saturate(1.25) hue-rotate(-8deg) brightness(1.05); }
-  .garden.phenotype-water { filter: hue-rotate(12deg) saturate(1.15) brightness(1.02); }
-  .garden.phenotype-nutrient { filter: hue-rotate(-18deg) saturate(1.1) contrast(1.05); }
-  .garden.phenotype-night { filter: brightness(0.88) contrast(1.08) saturate(0.95); }
+  /* Dynamic sky layer */
+  .sky-gradient {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: background 3s ease;
+    z-index: 1;
+  }
 
-  .garden-sky {
+  /* Seasonal color tint overlay */
+  .season-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+    transition: background 3s ease;
+    mix-blend-mode: overlay;
+    opacity: 0.25;
+  }
+
+  /* Time-of-day darkness overlay */
+  .time-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(2,6,18,0);
+    pointer-events: none;
+    z-index: 3;
+    transition: background 3s ease;
+  }
+
+  /* Stars (night only) */
+  .stars-layer {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 55%;
-    background: linear-gradient(180deg, rgba(22,40,30,0.6) 0%, transparent 100%);
+    height: 60%;
     pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 3s ease;
   }
 
-  .garden-horizon {
+  .star {
     position: absolute;
-    top: 50%; left: 0; right: 0;
-    height: 30px;
-    background: linear-gradient(180deg, transparent, rgba(58,90,42,0.3));
-    pointer-events: none;
+    background: #fff;
+    border-radius: 50%;
+    animation: star-twinkle 3s ease-in-out infinite;
   }
 
+  @keyframes star-twinkle {
+    0%, 100% { opacity: 0.15; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Celestial body (sun/moon) */
+  .celestial-body {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    z-index: 3;
+    pointer-events: none;
+    transition: all 3s ease;
+    box-shadow: 0 0 40px 8px rgba(255,255,255,0.15);
+  }
+
+  .celestial-body.sun {
+    background: radial-gradient(circle at 35% 35%, #fff8e0, #f0c040);
+    box-shadow: 0 0 50px 15px rgba(240,192,64,0.35), 0 0 100px 30px rgba(240,192,64,0.1);
+  }
+
+  .celestial-body.moon {
+    background: radial-gradient(circle at 35% 35%, #f0f0f5, #c0c8d0);
+    box-shadow: 0 0 40px 10px rgba(200,210,230,0.2);
+  }
+
+  /* Horizon glow */
+  .horizon-glow {
+    position: absolute;
+    top: 45%; left: 0; right: 0;
+    height: 40px;
+    pointer-events: none;
+    z-index: 2;
+    transition: background 3s ease;
+  }
+
+  /* Soil mound */
   .soil-mound {
     position: absolute;
     bottom: 0; left: -10%; right: -10%;
     height: 110px;
     background: radial-gradient(ellipse 80% 60% at 50% 100%, var(--soil-mid) 0%, var(--soil-dark) 60%, transparent 100%);
     pointer-events: none;
+    z-index: 4;
   }
 
   .soil-texture {
@@ -220,6 +282,7 @@
       radial-gradient(circle at 65% 75%, var(--soil-light) 0%, transparent 6%);
     opacity: 0.4;
     pointer-events: none;
+    z-index: 4;
   }
 
   .grass-tuft {
@@ -230,6 +293,8 @@
     background: var(--grass-light);
     pointer-events: none;
     transform-origin: bottom center;
+    z-index: 5;
+    transition: background 3s ease;
   }
 
   .firefly {
@@ -239,6 +304,7 @@
     border-radius: 50%;
     box-shadow: 0 0 8px 2px rgba(200,230,201,0.3);
     pointer-events: none;
+    z-index: 6;
     animation: firefly-float 6s ease-in-out infinite;
   }
 
@@ -249,6 +315,52 @@
     75% { transform: translate(15px,-10px); opacity: 0.9; }
   }
 
+  /* Seasonal particles */
+  .season-particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0.7;
+  }
+
+  .petal {
+    width: 6px; height: 6px;
+    border-radius: 50% 0 50% 0;
+    background: #f8bbd0;
+    animation: petal-fall 4s linear forwards;
+  }
+
+  @keyframes petal-fall {
+    0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+    100% { transform: translateY(200px) rotate(360deg) translateX(30px); opacity: 0; }
+  }
+
+  .leaf-fall {
+    width: 8px; height: 5px;
+    border-radius: 0 50% 0 50%;
+    background: #d4a040;
+    animation: leaf-fall-anim 3.5s linear forwards;
+  }
+
+  @keyframes leaf-fall-anim {
+    0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.8; }
+    100% { transform: translateY(220px) rotate(270deg) translateX(-40px); opacity: 0; }
+  }
+
+  .snowflake {
+    width: 5px; height: 5px;
+    background: #e0e8f0;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255,255,255,0.5);
+    animation: snow-fall 5s linear forwards;
+  }
+
+  @keyframes snow-fall {
+    0% { transform: translateY(0) translateX(0); opacity: 0.9; }
+    100% { transform: translateY(250px) translateX(20px); opacity: 0; }
+  }
+
+  /* Plant */
   .plant-wrapper {
     position: absolute;
     bottom: 50px;
@@ -279,6 +391,33 @@
     50% { transform: rotate(1.5deg); }
   }
 
+  /* Time/Season badge */
+  .env-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 20;
+    background: rgba(12,18,10,0.65);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(240,245,236,0.7);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    transition: all 0.5s ease;
+  }
+
+  .env-badge .env-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ===== EFFECTS ===== */
   .particle {
     position: absolute;
     pointer-events: none;
@@ -303,19 +442,6 @@
   @keyframes visitor-appear {
     from { transform: scale(0); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
-  }
-
-  .rain-drop {
-    position: absolute;
-    width: 2px; height: 12px;
-    background: linear-gradient(transparent, var(--water));
-    border-radius: 2px;
-    pointer-events: none;
-    animation: rain-fall 0.8s linear forwards;
-  }
-
-  @keyframes rain-fall {
-    to { transform: translateY(340px); opacity: 0; }
   }
 
   .sun-flare {
@@ -535,7 +661,7 @@
   .action-btn.sun .action-name { color: var(--sun); }
   .action-btn.nutrient .action-name { color: var(--nutrient); }
 
-  /* ===== GROWTH ROW (share + help) ===== */
+  /* ===== GROWTH ROW ===== */
   .growth-row {
     width: 100%;
     max-width: 420px;
@@ -578,9 +704,7 @@
     background: var(--water-soft);
   }
 
-  .growth-btn.share:hover {
-    background: var(--accent-soft);
-  }
+  .growth-btn.share:hover { background: var(--accent-soft); }
 
   .growth-btn.hidden { display: none; }
 
@@ -779,7 +903,7 @@
     100% { opacity: 0; }
   }
 
-  /* ===== SHARE MODAL / CANVAS ===== */
+  /* ===== SHARE MODAL ===== */
   .share-preview {
     width: 100%;
     border-radius: 16px;
@@ -948,15 +1072,31 @@
   <!-- Garden -->
   <div class="garden-wrap">
     <div class="garden" id="garden">
-      <div class="garden-sky"></div>
-      <div class="garden-horizon"></div>
+      <!-- Dynamic environment layers -->
+      <div class="sky-gradient" id="skyGradient"></div>
+      <div class="season-overlay" id="seasonOverlay"></div>
+      <div class="time-overlay" id="timeOverlay"></div>
+      <div class="stars-layer" id="starsLayer"></div>
+      <div class="horizon-glow" id="horizonGlow"></div>
+      <div class="celestial-body" id="celestialBody"></div>
+
+      <!-- Ground -->
       <div class="soil-mound"></div>
       <div class="soil-texture"></div>
       <div class="sun-flare" id="sunFlare"></div>
       <div id="fireflies"></div>
       <div id="grassTufts"></div>
+      <div class="season-particles" id="seasonParticles"></div>
+
+      <!-- Plant -->
       <div class="plant-wrapper stage-seed" id="plantWrapper">
         <svg class="plant-svg plant-sway" id="plantSvg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+
+      <!-- Environment badge -->
+      <div class="env-badge" id="envBadge">
+        <span class="env-icon" id="envIcon">🌸</span>
+        <span id="envText">Spring Morning</span>
       </div>
     </div>
   </div>
@@ -1011,7 +1151,7 @@
     </button>
   </div>
 
-  <!-- Growth row: Share + SOS -->
+  <!-- Growth row -->
   <div class="growth-row">
     <button class="growth-btn share" id="shareBtn" onclick="openShareModal()">
       <span>📸</span> Share Journey
@@ -1056,7 +1196,7 @@
   </div>
 </div>
 
-<!-- Help Modal (referral landing) -->
+<!-- Help Modal -->
 <div class="modal-overlay" id="helpModal">
   <div class="modal">
     <div class="modal-icon" id="helpIcon">💧</div>
@@ -1084,10 +1224,10 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63', bgFrom: '#1a3015', bgTo: '#0f1f0f' },
-  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65', bgFrom: '#1a2e15', bgTo: '#0f1a0f' },
-  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0', bgFrom: '#2e151a', bgTo: '#1a0f12' },
-  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50', bgFrom: '#0f2615', bgTo: '#0a1a0f' }
+  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63' },
+  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65' },
+  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0' },
+  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50' }
 };
 
 const ARCHETYPES = {
@@ -1097,6 +1237,93 @@ const ARCHETYPES = {
   night: { name: 'Night Owl', prefix: 'Nocturnal', filter: 'phenotype-night' },
   balanced: { name: 'Equilibrium Seeker', prefix: 'Harmonious', filter: '' }
 };
+
+// ===== SEASON & TIME SYSTEM =====
+const SEASONS = {
+  spring: {
+    name: 'Spring',
+    icon: '🌸',
+    sky: { dawn: '#5a6a5a', day: '#6a8a6a', dusk: '#5a6a5a', night: '#1a2a1a' },
+    horizon: { dawn: '#4a5a3a', day: '#5a7a4a', dusk: '#4a5a3a', night: '#1a2a1a' },
+    soil: '#5a4a35',
+    grass: '#5a9a3a',
+    overlay: 'rgba(232,196,212,0.15)',
+    starsOpacity: 0.6
+  },
+  summer: {
+    name: 'Summer',
+    icon: '☀️',
+    sky: { dawn: '#4a6a5a', day: '#3a7a6a', dusk: '#4a6a5a', night: '#0a1a2a' },
+    horizon: { dawn: '#5a7a3a', day: '#6a9a4a', dusk: '#5a7a3a', night: '#0a1a2a' },
+    soil: '#6a5a3a',
+    grass: '#4a9a2a',
+    overlay: 'rgba(240,208,96,0.1)',
+    starsOpacity: 0.4
+  },
+  autumn: {
+    name: 'Autumn',
+    icon: '🍂',
+    sky: { dawn: '#6a5a3a', day: '#7a6a4a', dusk: '#6a4a2a', night: '#1a1510' },
+    horizon: { dawn: '#6a5a2a', day: '#7a6a3a', dusk: '#6a4a2a', night: '#1a1510' },
+    soil: '#5a4a2a',
+    grass: '#8a6a2a',
+    overlay: 'rgba(212,160,64,0.2)',
+    starsOpacity: 0.7
+  },
+  winter: {
+    name: 'Winter',
+    icon: '❄️',
+    sky: { dawn: '#3a4a5a', day: '#4a5a6a', dusk: '#3a4a5a', night: '#0a0a15' },
+    horizon: { dawn: '#4a5a4a', day: '#5a6a5a', dusk: '#4a5a4a', night: '#0a0a15' },
+    soil: '#4a4a4a',
+    grass: '#3a5a4a',
+    overlay: 'rgba(160,192,208,0.15)',
+    starsOpacity: 0.9
+  }
+};
+
+const TIME_LABELS = {
+  night: 'Night',
+  dawn: 'Dawn',
+  day: 'Day',
+  dusk: 'Dusk'
+};
+
+function getSeason(month) {
+  if (month >= 2 && month <= 4) return 'spring';
+  if (month >= 5 && month <= 7) return 'summer';
+  if (month >= 8 && month <= 10) return 'autumn';
+  return 'winter';
+}
+
+function getTimeOfDay(hour, minute) {
+  const total = hour * 60 + minute;
+  if (total < 300) return 'night';      // before 5 AM
+  if (total < 420) return 'dawn';       // 5-7 AM
+  if (total < 1020) return 'day';       // 7 AM - 5 PM
+  if (total < 1140) return 'dusk';      // 5-7 PM
+  return 'night';                       // after 7 PM
+}
+
+function getDayNightFactor(hour, minute) {
+  const total = hour * 60 + minute;
+  const dawnStart = 300, dawnEnd = 420;
+  const duskStart = 1020, duskEnd = 1140;
+  if (total < dawnStart || total > duskEnd) return 0;
+  if (total >= dawnEnd && total <= duskStart) return 1;
+  if (total >= dawnStart && total < dawnEnd) return (total - dawnStart) / (dawnEnd - dawnStart);
+  return 1 - (total - duskStart) / (duskEnd - duskStart);
+}
+
+function interpolateColor(c1, c2, factor) {
+  const hex = (x) => parseInt(x.slice(1), 16);
+  const r1 = (hex(c1) >> 16) & 255, g1 = (hex(c1) >> 8) & 255, b1 = hex(c1) & 255;
+  const r2 = (hex(c2) >> 16) & 255, g2 = (hex(c2) >> 8) & 255, b2 = hex(c2) & 255;
+  const r = Math.round(r1 + (r2 - r1) * factor);
+  const g = Math.round(g1 + (g2 - g1) * factor);
+  const b = Math.round(b1 + (b2 - b1) * factor);
+  return `rgb(${r},${g},${b})`;
+}
 
 // ===== GAME STATE =====
 let gameState = {
@@ -1111,7 +1338,6 @@ let gameState = {
   visitors: [],
   lastTick: Date.now(),
   createdAt: Date.now(),
-  // Personality tracking
   actionsCount: { water: 0, sun: 0, nutrients: 0 },
   actionTimestamps: [],
   archetype: null,
@@ -1120,14 +1346,14 @@ let gameState = {
 
 let audioCtx = null;
 let decayLoop = null;
+let envLoop = null;
+let seasonLoop = null;
 
 // ===== LOCAL STORAGE =====
-const SAVE_KEY = 'forest_companion_v2';
+const SAVE_KEY = 'forest_companion_v3';
 
 function saveGame() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
-  } catch (e) { /* ignore quota errors */ }
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(gameState)); } catch (e) {}
 }
 
 function loadGame() {
@@ -1135,24 +1361,18 @@ function loadGame() {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return false;
     const saved = JSON.parse(raw);
-    // Migrate safely
     gameState = { ...gameState, ...saved };
-    // Ensure new fields exist
     if (!gameState.actionsCount) gameState.actionsCount = { water: 0, sun: 0, nutrients: 0 };
     if (!gameState.actionTimestamps) gameState.actionTimestamps = [];
     if (!gameState.createdAt) gameState.createdAt = Date.now();
     if (!gameState.ownerName) gameState.ownerName = 'Gardener';
     return true;
-  } catch (e) {
-    return false;
-  }
+  } catch (e) { return false; }
 }
 
 // ===== AUDIO =====
 function initAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
 function playTone(freq, duration, type, volume) {
@@ -1283,12 +1503,148 @@ function getPlantSVG(stage, seedType) {
   }
 }
 
+// ===== ENVIRONMENT SYSTEM =====
+let currentSeason = 'spring';
+let currentTimeOfDay = 'day';
+
+function createStars() {
+  const container = document.getElementById('starsLayer');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < 24; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = (5 + Math.random() * 90) + '%';
+    s.style.top = (5 + Math.random() * 50) + '%';
+    const size = 1 + Math.random() * 2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    container.appendChild(s);
+  }
+}
+
+function updateEnvironment() {
+  const now = new Date();
+  const month = now.getMonth();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+
+  const season = getSeason(month);
+  const tod = getTimeOfDay(hour, minute);
+  const dayFactor = getDayNightFactor(hour, minute);
+
+  currentSeason = season;
+  currentTimeOfDay = tod;
+
+  const s = SEASONS[season];
+
+  // Sky gradient based on time of day
+  const skyTop = interpolateColor(s.sky.night, s.sky[tod], dayFactor < 0.3 ? dayFactor / 0.3 : 1);
+  const skyBot = interpolateColor('#0a0f0a', s.horizon[tod], dayFactor < 0.3 ? dayFactor / 0.3 : 1);
+
+  const skyGradient = document.getElementById('skyGradient');
+  if (skyGradient) {
+    skyGradient.style.background = `linear-gradient(180deg, ${skyTop} 0%, ${skyBot} 55%, var(--soil-dark) 100%)`;
+  }
+
+  // Season overlay
+  const overlay = document.getElementById('seasonOverlay');
+  if (overlay) {
+    overlay.style.background = s.overlay;
+  }
+
+  // Time darkness overlay
+  const timeOverlay = document.getElementById('timeOverlay');
+  if (timeOverlay) {
+    const darkness = 1 - dayFactor;
+    timeOverlay.style.background = `rgba(2,6,18,${darkness * 0.55})`;
+  }
+
+  // Stars
+  const stars = document.getElementById('starsLayer');
+  if (stars) {
+    stars.style.opacity = (1 - dayFactor) * s.starsOpacity;
+  }
+
+  // Celestial body (sun/moon)
+  const celestial = document.getElementById('celestialBody');
+  if (celestial) {
+    const totalMinutes = hour * 60 + minute;
+    // Sun arc: 6 AM (360) to 6 PM (1080)
+    let x, y;
+    if (dayFactor > 0) {
+      celestial.className = 'celestial-body sun';
+      const dayProgress = (totalMinutes - 360) / 720; // 0 to 1 during day
+      x = 10 + Math.max(0, Math.min(1, dayProgress)) * 80;
+      y = 60 - Math.sin(Math.max(0, Math.min(1, dayProgress)) * Math.PI) * 45;
+    } else {
+      celestial.className = 'celestial-body moon';
+      const nightProgress = totalMinutes < 360
+        ? (totalMinutes + 180) / 720 // late night to early morning
+        : (totalMinutes - 1080) / 720; // evening to night
+      const np = ((nightProgress % 1) + 1) % 1;
+      x = 10 + np * 80;
+      y = 15 + Math.sin(np * Math.PI) * 25;
+    }
+    celestial.style.left = x + '%';
+    celestial.style.top = y + '%';
+  }
+
+  // Horizon glow
+  const horizon = document.getElementById('horizonGlow');
+  if (horizon) {
+    const glowColor = s.horizon[tod];
+    horizon.style.background = `linear-gradient(180deg, transparent, ${glowColor}40, transparent)`;
+  }
+
+  // Grass color
+  const grassTufts = document.querySelectorAll('.grass-tuft');
+  grassTufts.forEach(g => { g.style.background = s.grass; });
+
+  // Env badge
+  const badge = document.getElementById('envBadge');
+  const icon = document.getElementById('envIcon');
+  const text = document.getElementById('envText');
+  if (badge && icon && text) {
+    icon.textContent = s.icon;
+    text.textContent = `${s.name} ${TIME_LABELS[tod]}`;
+  }
+}
+
+function spawnSeasonalParticle() {
+  const container = document.getElementById('seasonParticles');
+  if (!container) return;
+
+  const p = document.createElement('div');
+  p.className = 'season-particle';
+  p.style.left = (10 + Math.random() * 80) + '%';
+  p.style.top = '-10px';
+
+  if (currentSeason === 'spring') {
+    p.classList.add('petal');
+    p.style.background = ['#f8bbd0', '#e8c4d4', '#f0d0e0'][Math.floor(Math.random() * 3)];
+  } else if (currentSeason === 'autumn') {
+    p.classList.add('leaf-fall');
+    p.style.background = ['#d4a040', '#c49030', '#b07820', '#8a6a2a'][Math.floor(Math.random() * 4)];
+  } else if (currentSeason === 'winter') {
+    p.classList.add('snowflake');
+  } else {
+    // Summer: occasional firefly (add to fireflies container instead)
+    return;
+  }
+
+  container.appendChild(p);
+  setTimeout(() => p.remove(), 5000);
+}
+
 // ===== GARDEN ATMOSPHERE =====
 function createFireflies() {
   const container = document.getElementById('fireflies');
   if (!container) return;
   container.innerHTML = '';
-  for (let i = 0; i < 6; i++) {
+  const count = currentSeason === 'summer' ? 10 : 6;
+  for (let i = 0; i < count; i++) {
     const f = document.createElement('div');
     f.className = 'firefly';
     f.style.left = (15 + Math.random() * 70) + '%';
@@ -1315,11 +1671,10 @@ function createGrass() {
   });
 }
 
-// ===== PERSONALITY / ARCHETYPE ENGINE =====
+// ===== PERSONALITY ENGINE =====
 function recordAction(type) {
   gameState.actionsCount[type] = (gameState.actionsCount[type] || 0) + 1;
   gameState.actionTimestamps.push(Date.now());
-  // Keep last 200 timestamps to avoid bloat
   if (gameState.actionTimestamps.length > 200) {
     gameState.actionTimestamps = gameState.actionTimestamps.slice(-200);
   }
@@ -1328,39 +1683,26 @@ function recordAction(type) {
 function computeArchetype() {
   const counts = gameState.actionsCount;
   const total = counts.water + counts.sun + counts.nutrients;
-  if (total < 5) return null; // Not enough data
+  if (total < 5) return null;
 
-  // Check night owl behavior (>50% actions after 9 PM)
   const nightCount = gameState.actionTimestamps.filter(ts => {
     const hour = new Date(ts).getHours();
     return hour >= 21 || hour < 5;
   }).length;
   const nightRatio = gameState.actionTimestamps.length > 0 ? nightCount / gameState.actionTimestamps.length : 0;
 
-  // Check balance (all within 20% of average)
   const avg = total / 3;
   const balanced = Math.abs(counts.water - avg) < avg * 0.25 &&
                    Math.abs(counts.sun - avg) < avg * 0.25 &&
                    Math.abs(counts.nutrients - avg) < avg * 0.25;
 
-  if (nightRatio > 0.5 && total >= 8) {
-    return ARCHETYPES.night;
-  }
-
-  if (balanced && total >= 10) {
-    return ARCHETYPES.balanced;
-  }
+  if (nightRatio > 0.5 && total >= 8) return ARCHETYPES.night;
+  if (balanced && total >= 10) return ARCHETYPES.balanced;
 
   const max = Math.max(counts.water, counts.sun, counts.nutrients);
-  if (max === counts.sun && counts.sun > counts.water + 2 && counts.sun > counts.nutrients + 2) {
-    return ARCHETYPES.sun;
-  }
-  if (max === counts.water && counts.water > counts.sun + 2 && counts.water > counts.nutrients + 2) {
-    return ARCHETYPES.water;
-  }
-  if (max === counts.nutrients && counts.nutrients > counts.water + 2 && counts.nutrients > counts.sun + 2) {
-    return ARCHETYPES.nutrient;
-  }
+  if (max === counts.sun && counts.sun > counts.water + 2 && counts.sun > counts.nutrients + 2) return ARCHETYPES.sun;
+  if (max === counts.water && counts.water > counts.sun + 2 && counts.water > counts.nutrients + 2) return ARCHETYPES.water;
+  if (max === counts.nutrients && counts.nutrients > counts.water + 2 && counts.nutrients > counts.sun + 2) return ARCHETYPES.nutrient;
 
   return null;
 }
@@ -1384,7 +1726,6 @@ function applyPhenotype() {
 function updateArchetypeUI() {
   const badge = document.getElementById('archetypeBadge');
   if (!badge) return;
-
   const archetype = computeArchetype();
   if (archetype) {
     gameState.archetype = archetype;
@@ -1403,8 +1744,10 @@ function selectSeed(type) {
   gameState.createdAt = Date.now();
   document.getElementById('seedSelect').classList.add('hidden');
   document.getElementById('gameContainer').style.display = 'flex';
+  createStars();
   createFireflies();
   createGrass();
+  updateEnvironment();
   renderPlant();
   updateUI();
   startLoops();
@@ -1457,17 +1800,6 @@ function actionNutrient() {
 function addGrowth() {
   gameState.totalGrowth += 1;
   checkEvolution();
-}
-
-function createParticle(emoji) {
-  const garden = document.getElementById('garden');
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.textContent = emoji;
-  p.style.left = (45 + Math.random() * 10) + '%';
-  p.style.bottom = (25 + Math.random() * 20) + '%';
-  garden.appendChild(p);
-  setTimeout(() => p.remove(), 2000);
 }
 
 function createRain() {
@@ -1593,8 +1925,6 @@ function evolve(newStage) {
   setTimeout(() => flash.classList.remove('active'), 600);
 
   playEvolutionSound();
-
-  // Compute archetype at milestone
   updateArchetypeUI();
 
   setTimeout(() => {
@@ -1636,7 +1966,6 @@ function updateUI() {
   document.getElementById('nutrientBar').style.width = gameState.nutrient + '%';
   document.getElementById('nutrientValue').textContent = Math.round(gameState.nutrient) + '%';
 
-  // Show/hide SOS button
   const sosBtn = document.getElementById('sosBtn');
   const lowest = Math.min(gameState.water, gameState.sun, gameState.nutrient);
   if (lowest < 30 && gameState.seedType) {
@@ -1700,6 +2029,18 @@ function startLoops() {
       addVisitor();
     }
   }, 15000);
+
+  // Environment update every minute
+  envLoop = setInterval(() => {
+    updateEnvironment();
+  }, 60000);
+
+  // Seasonal particles
+  seasonLoop = setInterval(() => {
+    if (currentSeason !== 'summer' && Math.random() < 0.4) {
+      spawnSeasonalParticle();
+    }
+  }, 3000);
 }
 
 // ===== UI HELPERS =====
@@ -1729,6 +2070,7 @@ function openSettings() {
     `Plant: ${getFullPlantTitle()}\n` +
     `Stage: ${info.name}\n` +
     `Age: ${age} day${age !== 1 ? 's' : ''}\n` +
+    `Season: ${SEASONS[currentSeason].name}\n` +
     `Visitors: ${gameState.visitors.length}\n` +
     `Care: ${gameState.actionsCount.water + gameState.actionsCount.sun + gameState.actionsCount.nutrients} actions\n\n` +
     `Keep all three stats above 20% for healthy growth.`
@@ -1766,27 +2108,27 @@ async function generateShareCard() {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // Wait for fonts
   await document.fonts.ready;
 
   const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.oak;
   const info = STAGE_INFO[gameState.stage];
+  const season = SEASONS[currentSeason];
 
-  // Background gradient
+  // Background gradient based on season
   const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0, seed.bgFrom || '#1a3015');
-  grad.addColorStop(1, seed.bgTo || '#0f1f0f');
+  grad.addColorStop(0, season.sky.day || '#1a3015');
+  grad.addColorStop(1, '#0c120a');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
-  // Soft glow behind plant
+  // Seasonal accent glow
   const glow = ctx.createRadialGradient(W / 2, H * 0.38, 20, W / 2, H * 0.38, 160);
-  glow.addColorStop(0, 'rgba(124,111,255,0.12)');
+  glow.addColorStop(0, season.overlay.replace('0.15)', '0.08)'));
   glow.addColorStop(1, 'transparent');
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, H);
 
-  // Decorative organic circles
+  // Decorative circles
   ctx.fillStyle = 'rgba(255,255,255,0.03)';
   ctx.beginPath();
   ctx.arc(W * 0.2, H * 0.15, 80, 0, Math.PI * 2);
@@ -1795,7 +2137,7 @@ async function generateShareCard() {
   ctx.arc(W * 0.8, H * 0.75, 120, 0, Math.PI * 2);
   ctx.fill();
 
-  // Plant emoji (large, centered)
+  // Plant emoji
   ctx.font = '140px serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -1804,15 +2146,14 @@ async function generateShareCard() {
   // Stage label
   ctx.font = '500 14px Inter, sans-serif';
   ctx.fillStyle = 'rgba(240,245,236,0.5)';
-  ctx.letterSpacing = '3px';
-  ctx.fillText(info.name.toUpperCase(), W / 2, H * 0.52);
+  ctx.fillText(`${season.icon} ${info.name.toUpperCase()}`, W / 2, H * 0.52);
 
-  // Plant title (Bellefair)
+  // Plant title
   ctx.font = '400 32px Bellefair, Georgia, serif';
   ctx.fillStyle = '#f0f5ec';
   ctx.fillText(getFullPlantTitle(), W / 2, H * 0.58);
 
-  // Archetype badge
+  // Archetype
   if (gameState.archetype) {
     ctx.font = '600 13px Inter, sans-serif';
     ctx.fillStyle = '#7C6FFF';
@@ -1827,7 +2168,7 @@ async function generateShareCard() {
   ctx.lineTo(W * 0.8, H * 0.69);
   ctx.stroke();
 
-  // Stats block
+  // Stats
   const statsY = H * 0.74;
   const colW = W / 3;
   const stats = [
@@ -1890,10 +2231,9 @@ async function shareCard() {
       closeShareModal();
       showNotification('Shared! 🎉');
       return;
-    } catch (e) { /* fallback */ }
+    } catch (e) {}
   }
 
-  // Fallback: download + clipboard
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -1930,7 +2270,7 @@ function generateSOSLink() {
     navigator.clipboard.writeText(text).then(() => {
       showNotification('SOS link copied! Send to a friend 📋');
     }).catch(() => {
-      showNotification('Copy this link manually: ' + url);
+      showNotification('Copy this link: ' + url);
     });
   }
 }
@@ -1957,10 +2297,7 @@ function checkReferral() {
 }
 
 function sendHelpDrop() {
-  // Simulate sending care
   showNotification('💧 Drop sent! Your friend\'s tree feels refreshed.');
-
-  // Change to planting CTA
   document.getElementById('helpBtn').textContent = 'Drop Sent ✓';
   document.getElementById('helpBtn').style.background = 'var(--nutrient)';
 
@@ -1973,7 +2310,6 @@ function sendHelpDrop() {
 function dismissHelpAndStart() {
   document.getElementById('helpModal').classList.remove('active');
   window.history.replaceState({}, '', location.pathname);
-  // Seed select will show naturally since no save exists
 }
 
 // ===== INIT =====
@@ -1981,21 +2317,21 @@ function init() {
   const hasSave = loadGame();
 
   if (hasSave && gameState.seedType) {
-    // Resume saved game
     document.getElementById('seedSelect').classList.add('hidden');
     document.getElementById('gameContainer').style.display = 'flex';
+    createStars();
     createFireflies();
     createGrass();
+    updateEnvironment();
     renderPlant();
     updateUI();
     applyPhenotype();
     startLoops();
     showNotification('Welcome back to your forest 🌿');
   } else {
-    // Check for referral first
     const isReferral = checkReferral();
     if (!isReferral) {
-      // Fresh start — seed select is already visible
+      // Fresh start — seed select visible
     }
   }
 }
@@ -2003,6 +2339,8 @@ function init() {
 // ===== CLEANUP =====
 window.addEventListener('beforeunload', () => {
   if (decayLoop) clearInterval(decayLoop);
+  if (envLoop) clearInterval(envLoop);
+  if (seasonLoop) clearInterval(seasonLoop);
 });
 
 // Register Service Worker
