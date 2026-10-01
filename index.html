@@ -661,6 +661,226 @@
   .action-btn.sun .action-name { color: var(--sun); }
   .action-btn.nutrient .action-name { color: var(--nutrient); }
 
+  /* ===== FRUIT SYSTEM ===== */
+  .fruit-bar-wrap {
+    width: 100%;
+    max-width: 420px;
+    padding: 0 20px 12px;
+    display: none;
+  }
+
+  .fruit-bar-wrap.visible { display: block; }
+
+  .fruit-bar-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .fruit-bar-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fruit-bar-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .fruit-bar-track {
+    height: 12px;
+    background: var(--bg-elevated);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .fruit-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f0a040, #f0c040, #ffd54f);
+    border-radius: 20px;
+    transition: width 0.6s ease;
+    position: relative;
+  }
+
+  .fruit-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: fruit-shimmer 2s infinite;
+  }
+
+  @keyframes fruit-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .fruit-icon {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .fruit-icon.ripe {
+    font-size: 22px;
+    filter: drop-shadow(0 0 8px rgba(240,160,64,0.6));
+  }
+
+  .harvest-btn {
+    position: absolute;
+    top: -42px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    background: linear-gradient(180deg, #81c784, #4caf50);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(76,175,80,0.4);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    font-family: var(--font-sans);
+  }
+
+  .harvest-btn.show {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .harvest-btn:hover { transform: translateX(-50%) scale(1.05); }
+
+  /* Floating fruit on tree */
+  .tree-fruit {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 11;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: all 0.5s ease;
+    animation: fruit-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes fruit-glow {
+    0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) brightness(1); }
+    50% { filter: drop-shadow(0 2px 8px rgba(240,160,64,0.5)) brightness(1.15); }
+  }
+
+  .tree-fruit.hidden { opacity: 0; transform: scale(0); }
+
+  .essence-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 20;
+    background: rgba(12,18,10,0.65);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--sun);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .essence-badge:hover {
+    background: rgba(12,18,10,0.85);
+    transform: scale(1.02);
+  }
+
+  .essence-badge .essence-icon {
+    font-size: 14px;
+  }
+
+  /* Harvest celebration */
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 3000;
+    animation: confetti-fall 2s ease-out forwards;
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+  }
+
+  .fruit-reward-modal .reward-fruit {
+    font-size: 80px;
+    text-align: center;
+    animation: reward-bounce 0.8s ease-out;
+  }
+
+  @keyframes reward-bounce {
+    0% { transform: scale(0) rotate(-20deg); }
+    50% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* Grove Shop */
+  .shop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .shop-item {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .shop-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .shop-item-emoji {
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .shop-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .shop-item-price {
+    font-size: 11px;
+    color: var(--sun);
+    font-weight: 600;
+  }
+
+  .shop-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   /* ===== GROWTH ROW ===== */
   .growth-row {
     width: 100%;
@@ -1094,10 +1314,30 @@
       </div>
 
       <!-- Environment badge -->
+      <!-- Essence currency badge -->
+      <div class="essence-badge" id="essenceBadge" onclick="openGroveShop()">
+        <span class="essence-icon">✨</span>
+        <span id="essenceValue">0</span>
+      </div>
+
       <div class="env-badge" id="envBadge">
         <span class="env-icon" id="envIcon">🌸</span>
         <span id="envText">Spring Morning</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Fruit Growth Bar -->
+  <div class="fruit-bar-wrap" id="fruitBarWrap">
+    <div class="fruit-bar-label">
+      <span class="fruit-bar-title"><span>🍑</span> Fruit Grove</span>
+      <span class="fruit-bar-hint" id="fruitHint">Water to grow fruit</span>
+    </div>
+    <div class="fruit-bar-track" id="fruitBarTrack">
+      <div class="fruit-bar-fill" id="fruitBarFill" style="width:0%">
+        <span class="fruit-icon" id="fruitIcon">🌸</span>
+      </div>
+      <button class="harvest-btn" id="harvestBtn" onclick="harvestFruit()">Harvest Fruit</button>
     </div>
   </div>
 
@@ -1196,6 +1436,30 @@
   </div>
 </div>
 
+<!-- Grove Shop Modal -->
+<div class="modal-overlay" id="shopModal">
+  <div class="modal" style="max-width: 360px;">
+    <div class="modal-icon">🧺</div>
+    <div class="modal-title" style="font-size:22px;">Grove Shop</div>
+    <div class="modal-text">Spend fruit essence to unlock rewards for your forest friend.</div>
+    <div class="shop-grid" id="shopGrid"></div>
+    <div class="modal-text" style="margin-bottom:0; font-size:12px;">
+      <span id="shopBalance">✨ 0 essence</span>
+    </div>
+    <button class="modal-btn secondary" style="margin-top:16px;" onclick="closeShopModal()">Close</button>
+  </div>
+</div>
+
+<!-- Fruit Harvest Reward Modal -->
+<div class="modal-overlay" id="harvestModal">
+  <div class="modal fruit-reward-modal">
+    <div class="modal-icon reward-fruit" id="harvestFruitIcon">🍑</div>
+    <div class="modal-title" id="harvestTitle">Fruit Harvested!</div>
+    <div class="modal-text" id="harvestText">You collected a juicy peach and earned 5 essence.</div>
+    <button class="modal-btn" onclick="closeHarvestModal()">Claim</button>
+  </div>
+</div>
+
 <!-- Help Modal -->
 <div class="modal-overlay" id="helpModal">
   <div class="modal">
@@ -1224,11 +1488,25 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63' },
-  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65' },
-  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0' },
-  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50' }
+  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63', fruit: '🌰', fruitName: 'Acorn' },
+  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65', fruit: '🪵', fruitName: 'Catkin' },
+  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0', fruit: '🍒', fruitName: 'Cherry' },
+  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50', fruit: '🥜', fruitName: 'Pinecone' }
 };
+
+// ===== FRUIT SYSTEM CONFIG =====
+const FRUIT_CONFIG = {
+  stagesWithFruit: ['tree', 'ancient'],
+  waterToGrow: 8,
+  harvestEssence: 5
+};
+
+const SHOP_ITEMS = [
+  { id: 'fairy_lantern', emoji: '🎃', name: 'Fairy Lantern', price: 15, desc: 'Adds a magical glow to your garden' },
+  { id: 'mushroom_ring', emoji: '🍄', name: 'Mushroom Ring', price: 25, desc: 'A cozy ring of forest mushrooms' },
+  { id: 'birdhouse', emoji: '🛡️', name: 'Birdhouse', price: 40, desc: 'Attracts rare bird visitors' },
+  { id: 'gold_pot', emoji: '🎩', name: 'Golden Pot', price: 75, desc: 'A shiny new home for your plant' }
+];
 
 const ARCHETYPES = {
   sun: { name: 'Solar-Chaser', prefix: 'Sun-Drenched', filter: 'phenotype-sun' },
@@ -1341,7 +1619,12 @@ let gameState = {
   actionsCount: { water: 0, sun: 0, nutrients: 0 },
   actionTimestamps: [],
   archetype: null,
-  ownerName: 'Gardener'
+  ownerName: 'Gardener',
+  // Fruit system
+  fruitProgress: 0,
+  essence: 0,
+  unlockedItems: [],
+  equippedItems: []
 };
 
 let audioCtx = null;
@@ -1366,6 +1649,10 @@ function loadGame() {
     if (!gameState.actionTimestamps) gameState.actionTimestamps = [];
     if (!gameState.createdAt) gameState.createdAt = Date.now();
     if (!gameState.ownerName) gameState.ownerName = 'Gardener';
+    if (typeof gameState.fruitProgress !== 'number') gameState.fruitProgress = 0;
+    if (typeof gameState.essence !== 'number') gameState.essence = 0;
+    if (!gameState.unlockedItems) gameState.unlockedItems = [];
+    if (!gameState.equippedItems) gameState.equippedItems = [];
     return true;
   } catch (e) { return false; }
 }
@@ -1742,6 +2029,7 @@ function selectSeed(type) {
   initAudio();
   gameState.seedType = type;
   gameState.createdAt = Date.now();
+  gameState.fruitProgress = 0;
   document.getElementById('seedSelect').classList.add('hidden');
   document.getElementById('gameContainer').style.display = 'flex';
   createStars();
@@ -1764,6 +2052,7 @@ function actionWater() {
   gameState.growth = Math.min(100, gameState.growth + 5);
   recordAction('water');
   addGrowth();
+  advanceFruitProgress(1);
   createRain();
   playWaterSound();
   updateUI();
@@ -1937,6 +2226,14 @@ function evolve(newStage) {
 
   renderPlant();
   updateUI();
+
+  // Fruit bar becomes available at tree stage
+  if (newStage === 'tree') {
+    setTimeout(() => {
+      showNotification(`Fruit Grove unlocked! 🍑`);
+    }, 1500);
+  }
+
   saveGame();
 
   if (newStage === 'sapling') addVisitor();
@@ -1975,6 +2272,8 @@ function updateUI() {
   }
 
   updateArchetypeUI();
+  updateFruitUI();
+  updateEssenceUI();
   renderJourney();
 }
 
@@ -2066,15 +2365,229 @@ function openSettings() {
   const info = STAGE_INFO[gameState.stage];
   const age = Math.floor((Date.now() - gameState.createdAt) / (1000 * 60 * 60 * 24));
   const title = gameState.archetype ? gameState.archetype.name : info.name;
+  const fruitInfo = canGrowFruit() ? `\nFruit: ${gameState.fruitProgress}/${FRUIT_CONFIG.waterToGrow} grown\nEssence: ${gameState.essence}` : '';
   showModal('🌿', 'Forest Companion',
     `Plant: ${getFullPlantTitle()}\n` +
     `Stage: ${info.name}\n` +
     `Age: ${age} day${age !== 1 ? 's' : ''}\n` +
     `Season: ${SEASONS[currentSeason].name}\n` +
     `Visitors: ${gameState.visitors.length}\n` +
-    `Care: ${gameState.actionsCount.water + gameState.actionsCount.sun + gameState.actionsCount.nutrients} actions\n\n` +
+    `Care: ${gameState.actionsCount.water + gameState.actionsCount.sun + gameState.actionsCount.nutrients} actions` +
+    fruitInfo + `\n\n` +
     `Keep all three stats above 20% for healthy growth.`
   );
+}
+
+// ===== FRUIT GROVE SYSTEM =====
+function canGrowFruit() {
+  return gameState.seedType && FRUIT_CONFIG.stagesWithFruit.includes(gameState.stage);
+}
+
+function getFruitEmoji() {
+  if (!gameState.seedType) return '🍑';
+  return SEED_TYPES[gameState.seedType].fruit || '🍑';
+}
+
+function getFruitName() {
+  if (!gameState.seedType) return 'Fruit';
+  return SEED_TYPES[gameState.seedType].fruitName || 'Fruit';
+}
+
+function advanceFruitProgress(amount) {
+  if (!canGrowFruit()) return;
+  const wasRipe = gameState.fruitProgress >= FRUIT_CONFIG.waterToGrow;
+  gameState.fruitProgress = Math.min(FRUIT_CONFIG.waterToGrow, gameState.fruitProgress + amount);
+
+  if (!wasRipe && gameState.fruitProgress >= FRUIT_CONFIG.waterToGrow) {
+    showNotification(`${getFruitName()} is ready to harvest! 🎉`);
+    playTone(523, 0.15, 'sine', 0.08);
+    setTimeout(() => playTone(659, 0.15, 'sine', 0.08), 100);
+    setTimeout(() => playTone(784, 0.2, 'sine', 0.08), 200);
+  }
+
+  updateFruitUI();
+}
+
+function updateEssenceUI() {
+  const badge = document.getElementById('essenceBadge');
+  const value = document.getElementById('essenceValue');
+  if (badge && value) {
+    value.textContent = gameState.essence;
+  }
+}
+
+function updateFruitUI() {
+  const wrap = document.getElementById('fruitBarWrap');
+  if (!wrap) return;
+
+  if (!canGrowFruit()) {
+    wrap.classList.remove('visible');
+    renderTreeFruits();
+    return;
+  }
+
+  wrap.classList.add('visible');
+
+  const percent = (gameState.fruitProgress / FRUIT_CONFIG.waterToGrow) * 100;
+  const fill = document.getElementById('fruitBarFill');
+  const icon = document.getElementById('fruitIcon');
+  const hint = document.getElementById('fruitHint');
+  const btn = document.getElementById('harvestBtn');
+
+  fill.style.width = percent + '%';
+  icon.textContent = getFruitEmoji();
+
+  const isRipe = gameState.fruitProgress >= FRUIT_CONFIG.waterToGrow;
+  if (isRipe) {
+    icon.classList.add('ripe');
+    hint.textContent = 'Ready to harvest!';
+    btn.classList.add('show');
+  } else {
+    icon.classList.remove('ripe');
+    hint.textContent = `Water ${FRUIT_CONFIG.waterToGrow - gameState.fruitProgress} more times to grow`;
+    btn.classList.remove('show');
+  }
+
+  renderTreeFruits();
+}
+
+function renderTreeFruits() {
+  // Remove old fruits
+  document.querySelectorAll('.tree-fruit').forEach(el => el.remove());
+
+  if (!canGrowFruit()) return;
+
+  const garden = document.getElementById('garden');
+  const plant = document.getElementById('plantWrapper');
+  if (!garden || !plant) return;
+
+  const plantRect = plant.getBoundingClientRect();
+  const gardenRect = garden.getBoundingClientRect();
+  const centerX = (plantRect.left - gardenRect.left) + plantRect.width / 2;
+  const centerY = (plantRect.top - gardenRect.top) + plantRect.height * 0.35;
+
+  const percent = gameState.fruitProgress / FRUIT_CONFIG.waterToGrow;
+  const fruitCount = Math.max(1, Math.round(percent * 5));
+  const isRipe = percent >= 1;
+
+  const positions = [
+    { x: -0.35, y: -0.25, s: 0.9 },
+    { x: 0.35, y: -0.3, s: 1 },
+    { x: -0.2, y: 0.05, s: 0.85 },
+    { x: 0.25, y: -0.05, s: 0.95 },
+    { x: 0, y: -0.4, s: 1.05 }
+  ];
+
+  for (let i = 0; i < fruitCount; i++) {
+    const pos = positions[i % positions.length];
+    const f = document.createElement('div');
+    f.className = 'tree-fruit';
+    if (!isRipe) f.classList.add('hidden');
+    f.textContent = getFruitEmoji();
+    f.style.left = (centerX + pos.x * plantRect.width * 0.5) + 'px';
+    f.style.top = (centerY + pos.y * plantRect.height * 0.35) + 'px';
+    f.style.fontSize = (18 * pos.s) + 'px';
+    f.style.animationDelay = (i * 0.2) + 's';
+    garden.appendChild(f);
+
+    // Reveal animation when becoming ripe
+    if (isRipe) {
+      setTimeout(() => f.classList.remove('hidden'), 100 + i * 80);
+    }
+  }
+}
+
+function harvestFruit() {
+  if (gameState.fruitProgress < FRUIT_CONFIG.waterToGrow) return;
+
+  const fruitName = getFruitName();
+  const essence = FRUIT_CONFIG.harvestEssence;
+  gameState.essence += essence;
+  gameState.fruitProgress = 0;
+
+  showNotification(`Harvested ${fruitName}! +${essence} essence`);
+  createConfetti();
+
+  // Show reward modal
+  document.getElementById('harvestFruitIcon').textContent = getFruitEmoji();
+  document.getElementById('harvestTitle').textContent = `${fruitName} Harvested!`;
+  document.getElementById('harvestText').textContent = `You collected a ${fruitName.toLowerCase()} and earned ${essence} ✨ essence. Visit the Grove Shop to unlock rewards.`;
+  document.getElementById('harvestModal').classList.add('active');
+
+  updateFruitUI();
+  updateEssenceUI();
+  saveGame();
+}
+
+function closeHarvestModal() {
+  document.getElementById('harvestModal').classList.remove('active');
+}
+
+function createConfetti() {
+  const colors = ['#f0c040', '#f0a040', '#81c784', '#5bc0de', '#7C6FFF', '#f8bbd0'];
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = (30 + Math.random() * 40) + '%';
+      c.style.top = (30 + Math.random() * 20) + '%';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      c.style.transform = `rotate(${Math.random() * 360}deg)`;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2200);
+    }, i * 30);
+  }
+}
+
+// ===== GROVE SHOP =====
+function openGroveShop() {
+  const grid = document.getElementById('shopGrid');
+  grid.innerHTML = '';
+
+  SHOP_ITEMS.forEach(item => {
+    const owned = gameState.unlockedItems.includes(item.id);
+    const canAfford = gameState.essence >= item.price;
+
+    const el = document.createElement('div');
+    el.className = 'shop-item' + (!canAfford || owned ? ' locked' : '');
+    el.innerHTML = `
+      <div class="shop-item-emoji">${item.emoji}</div>
+      <div class="shop-item-name">${item.name}</div>
+      <div class="shop-item-price">${owned ? 'Owned ✓' : `✨ ${item.price}`}</div>
+    `;
+
+    if (!owned && canAfford) {
+      el.onclick = () => purchaseItem(item.id);
+    }
+
+    grid.appendChild(el);
+  });
+
+  document.getElementById('shopBalance').textContent = `✨ ${gameState.essence} essence`;
+  document.getElementById('shopModal').classList.add('active');
+}
+
+function closeShopModal() {
+  document.getElementById('shopModal').classList.remove('active');
+}
+
+function purchaseItem(itemId) {
+  const item = SHOP_ITEMS.find(i => i.id === itemId);
+  if (!item || gameState.unlockedItems.includes(itemId)) return;
+  if (gameState.essence < item.price) {
+    showNotification('Not enough essence ✨');
+    return;
+  }
+
+  gameState.essence -= item.price;
+  gameState.unlockedItems.push(itemId);
+  gameState.equippedItems.push(itemId);
+  saveGame();
+
+  showNotification(`Unlocked ${item.name}! 🎉`);
+  openGroveShop();
+  updateEssenceUI();
 }
 
 // ===== SHARE CARD SYSTEM =====
@@ -2326,6 +2839,8 @@ function init() {
     renderPlant();
     updateUI();
     applyPhenotype();
+    // Delay fruit render until layout settles
+    setTimeout(renderTreeFruits, 300);
     startLoops();
     showNotification('Welcome back to your forest 🌿');
   } else {
