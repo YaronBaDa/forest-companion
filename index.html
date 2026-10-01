@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Forest Companion</title>
+<title>Pipling</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c120a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1274,7 +1274,7 @@
 
   <div class="header">
     <div class="brand">
-      <div class="brand-title">Forest Companion</div>
+      <div class="brand-title">Pipling</div>
     </div>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
@@ -2366,7 +2366,7 @@ function openSettings() {
   const age = Math.floor((Date.now() - gameState.createdAt) / (1000 * 60 * 60 * 24));
   const title = gameState.archetype ? gameState.archetype.name : info.name;
   const fruitInfo = canGrowFruit() ? `\nFruit: ${gameState.fruitProgress}/${FRUIT_CONFIG.waterToGrow} grown\nEssence: ${gameState.essence}` : '';
-  showModal('🌿', 'Forest Companion',
+  showModal('🌿', 'Pipling',
     `Plant: ${getFullPlantTitle()}\n` +
     `Stage: ${info.name}\n` +
     `Age: ${age} day${age !== 1 ? 's' : ''}\n` +
@@ -2703,7 +2703,7 @@ async function generateShareCard() {
   // Footer
   ctx.font = '400 13px Bellefair, Georgia, serif';
   ctx.fillStyle = 'rgba(240,245,236,0.35)';
-  ctx.fillText('Forest Companion', W / 2, H * 0.93);
+  ctx.fillText('Pipling', W / 2, H * 0.93);
   ctx.font = '400 11px Inter, sans-serif';
   ctx.fillText('yaronbada.github.io/forest-companion', W / 2, H * 0.96);
 
@@ -2733,7 +2733,7 @@ async function shareCard() {
   const file = new File([blob], 'forest-companion.png', { type: 'image/png' });
   const shareData = {
     title: getFullPlantTitle(),
-    text: `My ${getFullPlantTitle()} in Forest Companion 🌿 Grow your own:`,
+    text: `My ${getFullPlantTitle()} in Pipling 🌿 Grow your own:`,
     url: 'https://yaronbada.github.io/forest-companion/',
     files: [file]
   };
@@ -2778,7 +2778,7 @@ function generateSOSLink() {
   const text = `My ${SEED_TYPES[gameState.seedType].name} is thirsty! 💧 Send a drop of care:\n${url}`;
 
   if (navigator.share) {
-    navigator.share({ title: 'Forest Companion', text }).catch(() => {});
+    navigator.share({ title: 'Pipling', text }).catch(() => {});
   } else {
     navigator.clipboard.writeText(text).then(() => {
       showNotification('SOS link copied! Send to a friend 📋');
