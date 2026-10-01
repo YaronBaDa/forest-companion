@@ -445,6 +445,78 @@
     line-height: 1;
   }
 
+  /* ===== MASCOT & SPEECH BUBBLES ===== */
+  .mascot {
+    position: absolute;
+    bottom: 45px;
+    right: 12px;
+    z-index: 25;
+    font-size: 42px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: mascot-idle 3s ease-in-out infinite;
+    pointer-events: auto;
+  }
+
+  .mascot:hover {
+    transform: scale(1.15) rotate(-5deg);
+  }
+
+  .mascot.excited {
+    animation: mascot-excited 0.6s ease-in-out;
+  }
+
+  @keyframes mascot-idle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(2deg); }
+  }
+
+  @keyframes mascot-excited {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.25) rotate(-10deg); }
+    50% { transform: scale(1.15) rotate(8deg); }
+    75% { transform: scale(1.2) rotate(-5deg); }
+  }
+
+  .speech-bubble {
+    position: absolute;
+    bottom: 92px;
+    right: 8px;
+    z-index: 26;
+    background: #fff;
+    color: #2a2a2a;
+    padding: 8px 14px;
+    border-radius: 18px;
+    border-bottom-right-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    max-width: 160px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    line-height: 1.3;
+  }
+
+  .speech-bubble.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 16px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #fff;
+  }
+
   /* ===== EFFECTS ===== */
   .particle {
     position: absolute;
@@ -495,31 +567,35 @@
     100% { opacity: 0; }
   }
 
-  .sun-beam {
+  .sun-orb {
     position: absolute;
-    width: 3px;
-    background: linear-gradient(180deg, rgba(255,230,120,0.9), rgba(255,230,120,0));
-    border-radius: 3px;
+    font-size: 24px;
     pointer-events: none;
-    transform-origin: top center;
-    animation: beam-down 1.2s ease-out forwards;
+    animation: sun-orb-float 2.5s ease-out forwards;
     z-index: 6;
+    filter: drop-shadow(0 0 12px rgba(240,192,64,0.8));
   }
 
-  @keyframes beam-down {
-    0% { height: 0; opacity: 1; }
-    40% { opacity: 0.9; }
-    100% { height: 260px; opacity: 0; }
+  @keyframes sun-orb-float {
+    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
+    30% { transform: translateY(-80px) scale(1.2) rotate(180deg); opacity: 1; }
+    100% { transform: translateY(-220px) scale(0.3) rotate(360deg); opacity: 0; }
   }
 
   .water-drop {
     position: absolute;
-    width: 5px; height: 8px;
-    background: linear-gradient(180deg, rgba(91,192,222,0.9), rgba(91,192,222,0.3));
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    width: 14px; height: 18px;
     pointer-events: none;
     animation: drop-trickle 1s ease-in forwards;
     z-index: 15;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .water-drop::before {
+    content: '💧';
   }
 
   @keyframes drop-trickle {
@@ -530,39 +606,45 @@
 
   .water-splash {
     position: absolute;
-    width: 20px; height: 6px;
-    background: radial-gradient(ellipse, rgba(91,192,222,0.5), transparent);
-    border-radius: 50%;
+    width: 24px; height: 24px;
     pointer-events: none;
-    animation: splash-ripple 0.6s ease-out forwards;
+    animation: splash-pop 0.7s ease-out forwards;
     z-index: 14;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  @keyframes splash-ripple {
-    0% { transform: scale(0.2); opacity: 1; }
-    100% { transform: scale(2.5); opacity: 0; }
+  .water-splash::before {
+    content: '🧤';
   }
 
-  .nutrient-glow {
+  @keyframes splash-pop {
+    0% { transform: scale(0.2) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.3) rotate(20deg); opacity: 0.9; }
+    100% { transform: scale(2.2) rotate(45deg); opacity: 0; }
+  }
+
+  .nutrient-sparkle {
     position: absolute;
-    width: 6px; height: 6px;
-    background: radial-gradient(circle, #a5d6a7, transparent);
-    border-radius: 50%;
+    font-size: 18px;
     pointer-events: none;
-    animation: nutrient-rise 1.4s ease-out forwards;
+    animation: sparkle-rise 1.6s ease-out forwards;
     z-index: 15;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
   }
 
-  @keyframes nutrient-rise {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    50% { opacity: 0.9; }
-    100% { transform: translateY(-90px) scale(0.2); opacity: 0; }
+  @keyframes sparkle-rise {
+    0% { transform: translateY(0) scale(0.4) rotate(0deg); opacity: 1; }
+    40% { opacity: 1; }
+    100% { transform: translateY(-100px) scale(1.1) rotate(180deg); opacity: 0; }
   }
 
   .nutrient-shine {
     position: absolute;
-    width: 40px; height: 40px;
-    background: radial-gradient(circle, rgba(123,196,127,0.15), transparent 70%);
+    width: 50px; height: 50px;
+    background: radial-gradient(circle, rgba(255,255,255,0.25), transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     animation: shine-pulse 1.5s ease-out forwards;
@@ -572,7 +654,7 @@
   @keyframes shine-pulse {
     0% { transform: scale(0.5); opacity: 0; }
     30% { opacity: 1; }
-    100% { transform: scale(3); opacity: 0; }
+    100% { transform: scale(3.5); opacity: 0; }
   }
 
   /* ===== STATS ===== */
@@ -1366,6 +1448,10 @@
         <span class="env-icon" id="envIcon">🌸</span>
         <span id="envText">Spring Morning</span>
       </div>
+
+      <!-- Mascot -->
+      <div class="speech-bubble" id="mascotBubble">Water me and I'll grow something yummy!</div>
+      <div class="mascot" id="mascot" onclick="pokeMascot()">🐿️</div>
     </div>
   </div>
 
@@ -2084,6 +2170,7 @@ function selectSeed(type) {
   updateUI();
   startLoops();
   saveGame();
+  showMascotMessage(`I can't wait to grow ${SEED_TYPES[type].fruitName.toLowerCase()}s with you! 🌱`, 3000);
   showNotification(`${SEED_TYPES[type].name} planted`);
   playTone(440, 0.2, 'sine', 0.08);
   setTimeout(() => playTone(554, 0.2, 'sine', 0.08), 100);
@@ -2101,6 +2188,9 @@ function actionWater() {
   playWaterSound();
   updateUI();
   saveGame();
+
+  const msgs = ['Ahh, refreshing! 💧', 'Thank you for the drink! 🌱', 'Yummy water! 🐿️'];
+  if (Math.random() < 0.4) showMascotMessage(msgs[Math.floor(Math.random() * msgs.length)]);
   showNotification('Watered');
 }
 
@@ -2114,6 +2204,9 @@ function actionSun() {
   playSunSound();
   updateUI();
   saveGame();
+
+  const msgs = ['So warm and cozy! ☀️', 'I love sunny days! 😊', 'Sun kissed! ✨'];
+  if (Math.random() < 0.4) showMascotMessage(msgs[Math.floor(Math.random() * msgs.length)]);
   showNotification('Sunlight absorbed');
 }
 
@@ -2127,6 +2220,9 @@ function actionNutrient() {
   playNutrientSound();
   updateUI();
   saveGame();
+
+  const msgs = ['Growing strong! 💪', 'That was delicious! 🌱', 'Power up! ⚡'];
+  if (Math.random() < 0.4) showMascotMessage(msgs[Math.floor(Math.random() * msgs.length)]);
   showNotification('Fed nutrients');
 }
 
@@ -2149,7 +2245,7 @@ function createRain() {
       const drop = document.createElement('div');
       drop.className = 'water-drop';
       const offsetX = (Math.random() - 0.5) * (plantRect.width * 0.8);
-      drop.style.left = (plantCenterX + offsetX) + 'px';
+      drop.style.left = (plantCenterX + offsetX - 6) + 'px';
       drop.style.top = (plantTopY - 20 + Math.random() * 30) + 'px';
       drop.style.animationDuration = (0.7 + Math.random() * 0.5) + 's';
       garden.appendChild(drop);
@@ -2158,9 +2254,9 @@ function createRain() {
         const splash = document.createElement('div');
         splash.className = 'water-splash';
         splash.style.left = (plantCenterX + offsetX - 10) + 'px';
-        splash.style.top = (plantBaseY - 8) + 'px';
+        splash.style.top = (plantBaseY - 14) + 'px';
         garden.appendChild(splash);
-        setTimeout(() => splash.remove(), 600);
+        setTimeout(() => splash.remove(), 700);
       }, 700);
 
       setTimeout(() => drop.remove(), 1200);
@@ -2174,19 +2270,18 @@ function createSunRays() {
   flare.classList.add('active');
   setTimeout(() => flare.classList.remove('active'), 2500);
 
-  const beamCount = 5;
-  for (let i = 0; i < beamCount; i++) {
+  // Floating sun orbs
+  for (let i = 0; i < 6; i++) {
     setTimeout(() => {
-      const beam = document.createElement('div');
-      beam.className = 'sun-beam';
-      const x = 25 + (i / (beamCount - 1)) * 50 + (Math.random() - 0.5) * 8;
-      beam.style.left = x + '%';
-      beam.style.top = '8%';
-      beam.style.transform = `rotate(${(Math.random() - 0.5) * 10}deg)`;
-      beam.style.animationDuration = (1 + Math.random() * 0.4) + 's';
-      garden.appendChild(beam);
-      setTimeout(() => beam.remove(), 1500);
-    }, i * 120);
+      const orb = document.createElement('div');
+      orb.className = 'sun-orb';
+      orb.textContent = ['☀️', '✨', '🔴', '🟡'][Math.floor(Math.random() * 4)];
+      orb.style.left = (25 + Math.random() * 50) + '%';
+      orb.style.top = (55 + Math.random() * 25) + '%';
+      orb.style.animationDuration = (1.5 + Math.random() * 0.8) + 's';
+      garden.appendChild(orb);
+      setTimeout(() => orb.remove(), 2600);
+    }, i * 100);
   }
 }
 
@@ -2197,24 +2292,26 @@ function createNutrients() {
   const gardenRect = garden.getBoundingClientRect();
   const plantCenterX = (plantRect.left - gardenRect.left) + plantRect.width / 2;
   const plantBaseY = (plantRect.bottom - gardenRect.top);
+  const sparkles = ['✨', '⭐', '💫', '💛', '💚'];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 12; i++) {
     setTimeout(() => {
       const orb = document.createElement('div');
-      orb.className = 'nutrient-glow';
-      const offsetX = (Math.random() - 0.5) * 50;
+      orb.className = 'nutrient-sparkle';
+      orb.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+      const offsetX = (Math.random() - 0.5) * 60;
       orb.style.left = (plantCenterX + offsetX) + 'px';
-      orb.style.top = (plantBaseY - 10 + Math.random() * 15) + 'px';
-      orb.style.animationDuration = (1 + Math.random() * 0.6) + 's';
+      orb.style.top = (plantBaseY - 15 + Math.random() * 20) + 'px';
+      orb.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
       garden.appendChild(orb);
-      setTimeout(() => orb.remove(), 1600);
-    }, i * 80);
+      setTimeout(() => orb.remove(), 1800);
+    }, i * 60);
   }
 
   const shine = document.createElement('div');
   shine.className = 'nutrient-shine';
-  shine.style.left = (plantCenterX - 20) + 'px';
-  shine.style.top = (plantBaseY - 80) + 'px';
+  shine.style.left = (plantCenterX - 25) + 'px';
+  shine.style.top = (plantBaseY - 90) + 'px';
   garden.appendChild(shine);
   setTimeout(() => shine.remove(), 1500);
 }
@@ -2270,6 +2367,17 @@ function evolve(newStage) {
 
   renderPlant();
   updateUI();
+
+  // Mascot celebrates evolution
+  const mascotMsgs = {
+    sprout: 'Look! I\'m sprouting! 🌱',
+    sapling: 'I\'m getting taller! 🌿',
+    tree: `Wheee! I can grow ${getFruitName().toLowerCase()}s now! 🍑`,
+    ancient: 'We did it! I\'m an ancient tree! 🌲'
+  };
+  if (mascotMsgs[newStage]) {
+    setTimeout(() => showMascotMessage(mascotMsgs[newStage], 3500), 1200);
+  }
 
   // Fruit bar becomes available at tree stage
   if (newStage === 'tree') {
@@ -2420,6 +2528,37 @@ function openSettings() {
     fruitInfo + `\n\n` +
     `Keep all three stats above 20% for healthy growth.`
   );
+}
+
+// ===== MASCOT MESSAGES =====
+function showMascotMessage(text, duration) {
+  const bubble = document.getElementById('mascotBubble');
+  if (!bubble) return;
+  bubble.textContent = text;
+  bubble.classList.add('show');
+
+  if (window.mascotTimeout) clearTimeout(window.mascotTimeout);
+  window.mascotTimeout = setTimeout(() => {
+    bubble.classList.remove('show');
+  }, duration || 2500);
+}
+
+function pokeMascot() {
+  const mascot = document.getElementById('mascot');
+  mascot.classList.remove('excited');
+  void mascot.offsetWidth; // reflow
+  mascot.classList.add('excited');
+
+  const msgs = [
+    'Hi friend! 🐿️',
+    'Keep caring for me! 🌱',
+    `I want to be a big ${getFruitName()} tree!`,
+    'You\'re the best gardener! ✨',
+    'Is it snack time yet? 🍑'
+  ];
+  showMascotMessage(msgs[Math.floor(Math.random() * msgs.length)]);
+
+  setTimeout(() => mascot.classList.remove('excited'), 600);
 }
 
 // ===== FRUIT GROVE SYSTEM =====
@@ -2694,11 +2833,22 @@ async function generateShareCard() {
   ctx.arc(W * 0.8, H * 0.75, 120, 0, Math.PI * 2);
   ctx.fill();
 
-  // Plant emoji
-  ctx.font = '140px serif';
+  // Plant emoji with soft shadow glow
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,255,255,0.15)';
+  ctx.shadowBlur = 40;
+  ctx.shadowOffsetY = 0;
+  ctx.font = '150px serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(info.icon, W / 2, H * 0.36);
+  ctx.restore();
+
+  // Floating fruit icon nearby
+  if (canGrowFruit()) {
+    ctx.font = '50px serif';
+    ctx.fillText(getFruitEmoji(), W * 0.68, H * 0.32);
+  }
 
   // Stage label
   ctx.font = '500 14px Inter, sans-serif';
@@ -2749,7 +2899,7 @@ async function generateShareCard() {
   ctx.fillStyle = 'rgba(240,245,236,0.35)';
   ctx.fillText('Pipling', W / 2, H * 0.93);
   ctx.font = '400 11px Inter, sans-serif';
-  ctx.fillText('yaronbada.github.io/forest-companion', W / 2, H * 0.96);
+  ctx.fillText('pipling.app', W / 2, H * 0.96);
 
   return canvas;
 }
