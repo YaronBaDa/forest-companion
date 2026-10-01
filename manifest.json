@@ -1,7 +1,7 @@
 {
-  "name": "Forest Companion",
-  "short_name": "Forest",
-  "description": "Grow a seed into an ancient tree. A botanical Tamagotchi experience.",
+  "name": "Pipling",
+  "short_name": "Pipling",
+  "description": "Grow a seed into an ancient tree. A cozy botanical Tamagotchi experience.",
   "start_url": "/forest-companion/",
   "display": "standalone",
   "background_color": "#0c120a",
