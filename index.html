@@ -76,6 +76,34 @@
     line-height: 1;
   }
 
+  .landing-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .landing-logo-mark {
+    width: 72px;
+    height: 72px;
+    background: var(--bg-elevated);
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .landing-logo-text {
+    font-family: var(--font-serif);
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+  }
+
   .stage-name {
     font-family: var(--font-serif);
     font-size: 18px;
@@ -1243,28 +1271,42 @@
 
 <!-- Seed Selection -->
 <div class="seed-select" id="seedSelect">
-  <div class="seed-select-title">Choose Your Seed</div>
-  <div class="seed-select-subtitle">Each plant has a unique journey through the seasons</div>
+  <div class="landing-logo">
+    <div class="landing-logo-mark">🌱</div>
+    <div class="landing-logo-text">Pipling</div>
+  </div>
+  <div class="seed-select-title">Choose Your Tree</div>
+  <div class="seed-select-subtitle">Nurture a fruit tree through the seasons</div>
   <div class="seed-options">
-    <div class="seed-option" onclick="selectSeed('oak')">
-      <div class="seed-option-emoji">🌰</div>
-      <div class="seed-option-name">Mighty Oak</div>
-      <div class="seed-option-desc">Strong and enduring</div>
+    <div class="seed-option" onclick="selectSeed('apple')">
+      <div class="seed-option-emoji">🍎</div>
+      <div class="seed-option-name">Apple Tree</div>
+      <div class="seed-option-desc">Classic and generous</div>
     </div>
-    <div class="seed-option" onclick="selectSeed('willow')">
-      <div class="seed-option-emoji">🌱</div>
-      <div class="seed-option-name">Whispering Willow</div>
-      <div class="seed-option-desc">Graceful and wise</div>
+    <div class="seed-option" onclick="selectSeed('orange')">
+      <div class="seed-option-emoji">🍊</div>
+      <div class="seed-option-name">Orange Tree</div>
+      <div class="seed-option-desc">Bright and sunny</div>
     </div>
-    <div class="seed-option" onclick="selectSeed('cherry')">
-      <div class="seed-option-emoji">🌸</div>
-      <div class="seed-option-name">Cherry Blossom</div>
-      <div class="seed-option-desc">Beautiful and fleeting</div>
+    <div class="seed-option" onclick="selectSeed('fig')">
+      <div class="seed-option-emoji">🫖</div>
+      <div class="seed-option-name">Fig Tree</div>
+      <div class="seed-option-desc">Sweet and ancient</div>
     </div>
-    <div class="seed-option" onclick="selectSeed('pine')">
-      <div class="seed-option-emoji">🌲</div>
-      <div class="seed-option-name">Eternal Pine</div>
-      <div class="seed-option-desc">Resilient through seasons</div>
+    <div class="seed-option" onclick="selectSeed('peach')">
+      <div class="seed-option-emoji">🍑</div>
+      <div class="seed-option-name">Peach Tree</div>
+      <div class="seed-option-desc">Soft and delicate</div>
+    </div>
+    <div class="seed-option" onclick="selectSeed('lemon')">
+      <div class="seed-option-emoji">🍋</div>
+      <div class="seed-option-name">Lemon Tree</div>
+      <div class="seed-option-desc">Zesty and fresh</div>
+    </div>
+    <div class="seed-option" onclick="selectSeed('plum')">
+      <div class="seed-option-emoji">🌙</div>
+      <div class="seed-option-name">Plum Tree</div>
+      <div class="seed-option-desc">Deep and rich</div>
     </div>
   </div>
 </div>
@@ -1488,10 +1530,12 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  oak: { name: 'Mighty Oak', color: '#5d4037', leafColor: '#4caf50', accentColor: '#8d6e63', fruit: '🌰', fruitName: 'Acorn' },
-  willow: { name: 'Whispering Willow', color: '#558b2f', leafColor: '#7cb342', accentColor: '#9ccc65', fruit: '🪵', fruitName: 'Catkin' },
-  cherry: { name: 'Cherry Blossom', color: '#c2185b', leafColor: '#f48fb1', accentColor: '#f8bbd0', fruit: '🍒', fruitName: 'Cherry' },
-  pine: { name: 'Eternal Pine', color: '#1b5e20', leafColor: '#2e7d32', accentColor: '#4caf50', fruit: '🥜', fruitName: 'Pinecone' }
+  apple: { name: 'Apple Tree', color: '#5d4037', leafColor: '#66bb6a', accentColor: '#ef5350', fruit: '🍎', fruitName: 'Apple' },
+  orange: { name: 'Orange Tree', color: '#6d4c41', leafColor: '#43a047', accentColor: '#ff9800', fruit: '🍊', fruitName: 'Orange' },
+  fig: { name: 'Fig Tree', color: '#4e342e', leafColor: '#7cb342', accentColor: '#8d6e63', fruit: '🫐', fruitName: 'Fig' },
+  peach: { name: 'Peach Tree', color: '#5d4037', leafColor: '#81c784', accentColor: '#f48fb1', fruit: '🍑', fruitName: 'Peach' },
+  lemon: { name: 'Lemon Tree', color: '#6d4c41', leafColor: '#66bb6a', accentColor: '#fdd835', fruit: '🍋', fruitName: 'Lemon' },
+  plum: { name: 'Plum Tree', color: '#4a3b4a', leafColor: '#7cb342', accentColor: '#ab47bc', fruit: '🍇', fruitName: 'Plum' }
 };
 
 // ===== FRUIT SYSTEM CONFIG =====
