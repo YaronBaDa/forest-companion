@@ -13,26 +13,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-deep: #0c120a;
-    --bg-surface: #141c11;
-    --bg-elevated: #1e291a;
-    --border: #2a3a24;
-    --text-primary: #f0f5ec;
-    --text-secondary: #8fa888;
-    --text-muted: #5a7a52;
-    --accent: #7C6FFF;
-    --accent-soft: rgba(124,111,255,0.12);
-    --water: #5bc0de;
-    --water-soft: rgba(91,192,222,0.12);
-    --sun: #f0c040;
-    --sun-soft: rgba(240,192,64,0.12);
-    --nutrient: #7bc47f;
-    --nutrient-soft: rgba(123,196,127,0.12);
-    --soil-dark: #3d2b1f;
-    --soil-mid: #5a3d2b;
-    --soil-light: #7a5a3d;
-    --grass: #3a5a2a;
-    --grass-light: #4a7a35;
+    --bg-deep: #19221b;
+    --bg-surface: #243029;
+    --bg-elevated: #2f3f34;
+    --border: #4a5e4c;
+    --text-primary: #f8faf6;
+    --text-secondary: #b8cbb5;
+    --text-muted: #7a9a74;
+    --accent: #8FD69B;
+    --accent-soft: rgba(143,214,155,0.16);
+    --water: #64d4f0;
+    --water-soft: rgba(100,212,240,0.18);
+    --sun: #ffd54f;
+    --sun-soft: rgba(255,213,79,0.18);
+    --nutrient: #a5d6a7;
+    --nutrient-soft: rgba(165,214,167,0.18);
+    --soil-dark: #4e342e;
+    --soil-mid: #6d4c41;
+    --soil-light: #8d6e63;
+    --grass: #558b2f;
+    --grass-light: #7cb342;
     --font-serif: 'Bellefair', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
@@ -135,54 +135,55 @@
   }
 
   .stage-icon {
-    width: 44px;
-    height: 44px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    border: 2px solid rgba(255,255,255,0.16);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 26px;
     flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .stage-text {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
     flex: 1;
   }
 
   .stage-name-display {
     font-family: var(--font-serif);
-    font-size: 20px;
-    font-weight: 400;
+    font-size: 22px;
+    font-weight: 700;
     color: var(--text-primary);
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
   }
 
   .stage-desc {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-secondary);
     line-height: 1.4;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .archetype-badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    margin-top: 3px;
+    margin-top: 4px;
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
     text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-soft);
-    padding: 3px 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(124,111,255,0.2);
+    color: #8FD69B;
+    background: rgba(143,214,155,0.14);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(143,214,155,0.25);
     width: fit-content;
   }
 
@@ -197,11 +198,12 @@
 
   .garden {
     position: relative;
-    height: 340px;
-    border-radius: 24px;
+    height: 380px;
+    border-radius: 32px;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: 4px solid rgba(255,255,255,0.18);
     transition: filter 1.2s ease;
+    box-shadow: var(--card-shadow), inset 0 0 60px rgba(255,255,255,0.04);
   }
 
   /* Dynamic sky layer */
@@ -210,6 +212,154 @@
     top: 0; left: 0; right: 0; bottom: 0;
     transition: background 3s ease;
     z-index: 1;
+  }
+
+  /* Puffy cartoon clouds */
+  .cloud {
+    position: absolute;
+    background: #fff;
+    border-radius: 999px;
+    opacity: 0.92;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.06));
+    z-index: 2;
+    animation: cloud-drift 45s linear infinite;
+  }
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    border-radius: 999px;
+  }
+  .cloud-1 { width: 70px; height: 32px; top: 18%; left: -80px; }
+  .cloud-1::before { width: 34px; height: 34px; top: -16px; left: 10px; }
+  .cloud-1::after { width: 26px; height: 26px; top: -10px; left: 38px; }
+  .cloud-2 { width: 52px; height: 24px; top: 12%; left: -60px; animation-duration: 60s; animation-delay: -18s; opacity: 0.8; }
+  .cloud-2::before { width: 28px; height: 28px; top: -13px; left: 8px; }
+  .cloud-2::after { width: 20px; height: 20px; top: -8px; left: 30px; }
+  .cloud-3 { width: 86px; height: 36px; top: 28%; left: -100px; animation-duration: 52s; animation-delay: -32s; }
+  .cloud-3::before { width: 42px; height: 42px; top: -20px; left: 14px; }
+  .cloud-3::after { width: 30px; height: 30px; top: -12px; left: 48px; }
+
+  @keyframes cloud-drift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(100vw + 160px)); }
+  }
+
+  /* Rolling cartoon hills */
+  .hill {
+    position: absolute;
+    border-radius: 50% 50% 0 0;
+    z-index: 3;
+  }
+  .hill-back {
+    width: 160%;
+    height: 110px;
+    left: -30%;
+    bottom: 74px;
+    background: linear-gradient(180deg, #7cb342 0%, #558b2f 100%);
+  }
+  .hill-front {
+    width: 180%;
+    height: 90px;
+    left: -40%;
+    bottom: 54px;
+    background: linear-gradient(180deg, #8bc34a 0%, #689f38 100%);
+  }
+
+  /* Cozy cottage */
+  .cottage {
+    position: absolute;
+    bottom: 88px;
+    left: 28px;
+    z-index: 4;
+    width: 64px;
+    height: 56px;
+  }
+  .cottage-roof {
+    width: 0;
+    height: 0;
+    border-left: 34px solid transparent;
+    border-right: 34px solid transparent;
+    border-bottom: 30px solid #ff7043;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: -2px;
+  }
+  .cottage-body {
+    position: absolute;
+    bottom: 0;
+    left: 6px;
+    width: 52px;
+    height: 32px;
+    background: #fff3e0;
+    border-radius: 4px 4px 8px 8px;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
+  }
+  .cottage-door {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 14px;
+    height: 20px;
+    background: #8d6e63;
+    border-radius: 8px 8px 0 0;
+  }
+  .cottage-window {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    background: #ffe0b2;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,204,128,0.6);
+  }
+
+  /* Grass tufts */
+  .grass-tuft {
+    position: absolute;
+    bottom: 62px;
+    z-index: 5;
+    width: 14px;
+    height: 10px;
+    background: #7cb342;
+    border-radius: 50% 50% 0 0;
+    opacity: 0.85;
+  }
+  .grass-tuft::before, .grass-tuft::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    background: #7cb342;
+    border-radius: 50% 50% 0 0;
+  }
+  .grass-tuft::before { width: 10px; height: 14px; left: -6px; }
+  .grass-tuft::after { width: 10px; height: 12px; right: -6px; }
+
+  /* Soil mound */
+  .soil-mound {
+    position: absolute;
+    bottom: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 44px;
+    background: radial-gradient(ellipse at center, #6d4c41 0%, #4e342e 70%);
+    border-radius: 50%;
+    z-index: 6;
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .soil-mound::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 20px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.08), transparent);
+    border-radius: 50%;
   }
 
   /* Seasonal color tint overlay */
@@ -269,13 +419,39 @@
   }
 
   .celestial-body.sun {
-    background: radial-gradient(circle at 35% 35%, #fff8e0, #f0c040);
-    box-shadow: 0 0 50px 15px rgba(240,192,64,0.35), 0 0 100px 30px rgba(240,192,64,0.1);
+    width: 48px;
+    height: 48px;
+    background: radial-gradient(circle at 35% 35%, #fff9c4, #ffeb3b);
+    box-shadow: 0 0 30px 8px rgba(255,235,59,0.45), 0 0 70px 20px rgba(255,213,79,0.18);
+  }
+  .celestial-body.sun::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.3) 0deg 10deg, transparent 10deg 20deg);
+    animation: sun-spin 18s linear infinite;
+  }
+  @keyframes sun-spin {
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
   }
 
   .celestial-body.moon {
-    background: radial-gradient(circle at 35% 35%, #f0f0f5, #c0c8d0);
-    box-shadow: 0 0 40px 10px rgba(200,210,230,0.2);
+    width: 42px;
+    height: 42px;
+    background: radial-gradient(circle at 35% 35%, #ffffff, #e8eaf6 60%, #c5cae9 100%);
+    box-shadow: 0 0 24px 6px rgba(255,255,255,0.32), 0 0 48px 12px rgba(197,202,233,0.12);
+  }
+  .celestial-body.moon::after {
+    content: '';
+    position: absolute;
+    top: 8px; left: 10px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+    box-shadow: 10px 4px 0 -1px rgba(0,0,0,0.05), -3px 12px 0 -2px rgba(0,0,0,0.04);
   }
 
   /* Horizon glow */
@@ -391,7 +567,7 @@
   /* Plant */
   .plant-wrapper {
     position: absolute;
-    bottom: 50px;
+    bottom: 58px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -399,15 +575,33 @@
   }
 
   .plant-svg {
-    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.35)) saturate(1.15);
     transition: all 0.6s ease;
   }
 
-  .stage-seed .plant-svg { width: 40px; height: 40px; }
-  .stage-sprout .plant-svg { width: 60px; height: 80px; }
-  .stage-sapling .plant-svg { width: 100px; height: 140px; }
-  .stage-tree .plant-svg { width: 160px; height: 200px; }
-  .stage-ancient .plant-svg { width: 200px; height: 260px; }
+  .stage-seed .plant-svg { width: 46px; height: 46px; }
+  .stage-sprout .plant-svg { width: 70px; height: 90px; }
+  .stage-sapling .plant-svg { width: 120px; height: 160px; }
+  .stage-tree .plant-svg { width: 180px; height: 220px; }
+  .stage-ancient .plant-svg { width: 220px; height: 280px; }
+
+  .plant-shadow {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 18px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.2), transparent 70%);
+    border-radius: 50%;
+    z-index: 9;
+    transition: all 0.6s ease;
+  }
+  .stage-seed ~ .plant-shadow { width: 40px; }
+  .stage-sprout ~ .plant-shadow { width: 55px; }
+  .stage-sapling ~ .plant-shadow { width: 80px; }
+  .stage-tree ~ .plant-shadow { width: 130px; }
+  .stage-ancient ~ .plant-shadow { width: 170px; }
 
   .plant-sway {
     animation: sway 5s ease-in-out infinite;
@@ -690,28 +884,38 @@
   }
 
   .stat-track {
-    height: 4px;
+    height: 8px;
     background: var(--bg-elevated);
-    border-radius: 4px;
+    border-radius: 999px;
     overflow: hidden;
     position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   .stat-fill {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 999px;
     transition: width 0.5s ease;
+    position: relative;
+  }
+  .stat-fill::after {
+    content: '';
+    position: absolute;
+    top: 1px; left: 4px; right: 4px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0));
   }
 
-  .stat-fill.water { background: var(--water); }
-  .stat-fill.sun { background: var(--sun); }
-  .stat-fill.nutrient { background: var(--nutrient); }
+  .stat-fill.water { background: linear-gradient(90deg, #4fc3f7, #29b6f6); box-shadow: 0 0 10px rgba(79,195,247,0.35); }
+  .stat-fill.sun { background: linear-gradient(90deg, #ffd54f, #ffca28); box-shadow: 0 0 10px rgba(255,213,79,0.35); }
+  .stat-fill.nutrient { background: linear-gradient(90deg, #aed581, #9ccc65); box-shadow: 0 0 10px rgba(174,213,129,0.35); }
 
   .stat-value {
     font-size: 11px;
     font-weight: 600;
     color: var(--text-secondary);
-    margin-top: 2px;
+    margin-top: 3px;
   }
 
   /* ===== ACTIONS ===== */
@@ -726,9 +930,9 @@
 
   .action-btn {
     position: relative;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
     padding: 18px 8px 14px;
     display: flex;
     flex-direction: column;
@@ -739,6 +943,7 @@
     color: var(--text-primary);
     font-family: inherit;
     overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
   }
 
   .action-btn::before {
@@ -747,29 +952,32 @@
     top: 0; left: 0; right: 0; bottom: 0;
     opacity: 0;
     transition: opacity 0.25s;
-    border-radius: 20px;
+    border-radius: 24px;
   }
 
   .action-btn.water::before { background: var(--water-soft); }
   .action-btn.sun::before { background: var(--sun-soft); }
   .action-btn.nutrient::before { background: var(--nutrient-soft); }
 
-  .action-btn:hover { border-color: var(--text-secondary); transform: translateY(-2px); }
+  .action-btn:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-3px) scale(1.02); }
   .action-btn:hover::before { opacity: 1; }
   .action-btn:active { transform: translateY(0) scale(0.97); }
 
-  .action-icon { font-size: 28px; line-height: 1; z-index: 1; }
+  .action-icon { font-size: 32px; line-height: 1; z-index: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
   .action-name {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
     z-index: 1;
   }
 
-  .action-btn.water .action-name { color: var(--water); }
-  .action-btn.sun .action-name { color: var(--sun); }
-  .action-btn.nutrient .action-name { color: var(--nutrient); }
+  .action-btn.water .action-name { color: #81d4fa; }
+  .action-btn.sun .action-name { color: #ffe082; }
+  .action-btn.nutrient .action-name { color: #c5e1a5; }
+  .action-btn.water { border-color: rgba(129,212,250,0.35); }
+  .action-btn.sun { border-color: rgba(255,224,130,0.35); }
+  .action-btn.nutrient { border-color: rgba(197,225,165,0.35); }
 
   /* ===== FRUIT SYSTEM ===== */
   .fruit-bar-wrap {
@@ -1418,11 +1626,23 @@
     <div class="garden" id="garden">
       <!-- Dynamic environment layers -->
       <div class="sky-gradient" id="skyGradient"></div>
+      <div class="clouds-layer" id="cloudsLayer"></div>
       <div class="season-overlay" id="seasonOverlay"></div>
       <div class="time-overlay" id="timeOverlay"></div>
       <div class="stars-layer" id="starsLayer"></div>
       <div class="horizon-glow" id="horizonGlow"></div>
       <div class="celestial-body" id="celestialBody"></div>
+
+      <!-- Landscape -->
+      <div class="hill hill-back"></div>
+      <div class="hill hill-front"></div>
+      <div class="cottage" id="cottage">
+        <div class="cottage-roof"></div>
+        <div class="cottage-body">
+          <div class="cottage-window"></div>
+          <div class="cottage-door"></div>
+        </div>
+      </div>
 
       <!-- Ground -->
       <div class="soil-mound"></div>
@@ -1436,6 +1656,7 @@
       <div class="plant-wrapper stage-seed" id="plantWrapper">
         <svg class="plant-svg plant-sway" id="plantSvg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
+      <div class="plant-shadow" id="plantShadow"></div>
 
       <!-- Environment badge -->
       <!-- Essence currency badge -->
@@ -1651,41 +1872,41 @@ const SEASONS = {
   spring: {
     name: 'Spring',
     icon: '🌸',
-    sky: { dawn: '#5a6a5a', day: '#6a8a6a', dusk: '#5a6a5a', night: '#1a2a1a' },
-    horizon: { dawn: '#4a5a3a', day: '#5a7a4a', dusk: '#4a5a3a', night: '#1a2a1a' },
-    soil: '#5a4a35',
-    grass: '#5a9a3a',
-    overlay: 'rgba(232,196,212,0.15)',
+    sky: { dawn: '#ffd6e5', day: '#a7d8f0', dusk: '#f0c4d4', night: '#1a1a2e' },
+    horizon: { dawn: '#e8b4c8', day: '#b8e08a', dusk: '#e8a878', night: '#0f0f1a' },
+    soil: '#6d4c41',
+    grass: '#7cb342',
+    overlay: 'rgba(232,196,212,0.08)',
     starsOpacity: 0.6
   },
   summer: {
     name: 'Summer',
     icon: '☀️',
-    sky: { dawn: '#4a6a5a', day: '#3a7a6a', dusk: '#4a6a5a', night: '#0a1a2a' },
-    horizon: { dawn: '#5a7a3a', day: '#6a9a4a', dusk: '#5a7a3a', night: '#0a1a2a' },
-    soil: '#6a5a3a',
-    grass: '#4a9a2a',
-    overlay: 'rgba(240,208,96,0.1)',
+    sky: { dawn: '#ffe0b2', day: '#87ceeb', dusk: '#ffcc80', night: '#0a1a2a' },
+    horizon: { dawn: '#ffe082', day: '#9ccc65', dusk: '#ffb74d', night: '#0a1518' },
+    soil: '#795548',
+    grass: '#8bc34a',
+    overlay: 'rgba(255,235,59,0.06)',
     starsOpacity: 0.4
   },
   autumn: {
     name: 'Autumn',
     icon: '🍂',
-    sky: { dawn: '#6a5a3a', day: '#7a6a4a', dusk: '#6a4a2a', night: '#1a1510' },
-    horizon: { dawn: '#6a5a2a', day: '#7a6a3a', dusk: '#6a4a2a', night: '#1a1510' },
-    soil: '#5a4a2a',
-    grass: '#8a6a2a',
-    overlay: 'rgba(212,160,64,0.2)',
+    sky: { dawn: '#ffccbc', day: '#ffe0b2', dusk: '#ffab91', night: '#1a1510' },
+    horizon: { dawn: '#d7ccc8', day: '#c5e1a5', dusk: '#ff7043', night: '#15100a' },
+    soil: '#5d4037',
+    grass: '#afb42b',
+    overlay: 'rgba(255,152,0,0.1)',
     starsOpacity: 0.7
   },
   winter: {
     name: 'Winter',
     icon: '❄️',
-    sky: { dawn: '#3a4a5a', day: '#4a5a6a', dusk: '#3a4a5a', night: '#0a0a15' },
-    horizon: { dawn: '#4a5a4a', day: '#5a6a5a', dusk: '#4a5a4a', night: '#0a0a15' },
-    soil: '#4a4a4a',
-    grass: '#3a5a4a',
-    overlay: 'rgba(160,192,208,0.15)',
+    sky: { dawn: '#e1f5fe', day: '#b3e5fc', dusk: '#b0bec5', night: '#0a0a15' },
+    horizon: { dawn: '#cfd8dc', day: '#a5d6a7', dusk: '#90a4ae', night: '#050510' },
+    soil: '#4e342e',
+    grass: '#607d8b',
+    overlay: 'rgba(179,229,252,0.1)',
     starsOpacity: 0.9
   }
 };
@@ -1833,91 +2054,121 @@ function playEvolutionSound() {
 
 // ===== SVG PLANTS =====
 function getPlantSVG(stage, seedType) {
-  const c = SEED_TYPES[seedType] || SEED_TYPES.oak;
+  const c = SEED_TYPES[seedType] || SEED_TYPES.apple;
   const leaf = c.leafColor;
   const trunk = c.color;
+  const fruit = c.accentColor;
+
+  const canopy = (blobs) => blobs.map((b, i) => {
+    const fill = i % 2 === 0 ? leaf : darker(leaf, 10);
+    return `<circle cx="${b.x}" cy="${b.y}" r="${b.r}" fill="${fill}" opacity="${b.o || 0.95}"/>`;
+  }).join('');
+
+  const fruitSVG = (x, y, r = 5.5) => `
+    <circle cx="${x}" cy="${y}" r="${r}" fill="${fruit}"/>
+    <circle cx="${x - r*0.3}" cy="${y - r*0.3}" r="${r*0.25}" fill="rgba(255,255,255,0.55)"/>
+    <path d="M${x} ${y - r} q1.5 -3 3 -2" stroke="${darker(fruit, 25)}" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  `;
 
   switch(stage) {
     case 'seed':
-      return `<ellipse cx="100" cy="245" rx="11" ry="7" fill="${trunk}"/><ellipse cx="100" cy="243" rx="7" ry="4" fill="#6d4c41"/>`;
+      return `
+        <defs><radialGradient id="seedGrad" cx="35%" cy="35%"><stop offset="0%" stop-color="#8d6e63"/><stop offset="100%" stop-color="${trunk}"/></radialGradient></defs>
+        <ellipse cx="100" cy="246" rx="13" ry="8" fill="url(#seedGrad)"/>
+        <ellipse cx="100" cy="244" rx="8" ry="4.5" fill="#a1887f" opacity="0.6"/>
+        <ellipse cx="100" cy="249" rx="14" ry="4" fill="#3e2723" opacity="0.25"/>
+      `;
 
     case 'sprout':
       return `
-        <path d="M100 245 Q100 205 85 175" stroke="${leaf}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 245 Q100 205 115 170" stroke="${leaf}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        <ellipse cx="85" cy="175" rx="9" ry="5.5" fill="${leaf}" transform="rotate(-30 85 175)"/>
-        <ellipse cx="115" cy="170" rx="9" ry="5.5" fill="${leaf}" transform="rotate(30 115 170)"/>
-        <ellipse cx="100" cy="247" rx="12" ry="4" fill="#5d4037" opacity="0.4"/>
+        <defs>
+          <linearGradient id="sproutLeaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${lighter(leaf, 15)}"/><stop offset="100%" stop-color="${leaf}"/></linearGradient>
+          <linearGradient id="sproutStem" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${lighter(trunk, 12)}"/><stop offset="100%" stop-color="${trunk}"/></linearGradient>
+        </defs>
+        <path d="M100 248 Q98 210 88 182" stroke="url(#sproutStem)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M100 248 Q102 210 112 178" stroke="url(#sproutStem)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="88" cy="182" rx="11" ry="7" fill="url(#sproutLeaf)" transform="rotate(-32 88 182)"/>
+        <ellipse cx="112" cy="178" rx="11" ry="7" fill="url(#sproutLeaf)" transform="rotate(32 112 178)"/>
+        <ellipse cx="100" cy="250" rx="15" ry="5" fill="#3e2723" opacity="0.25"/>
       `;
 
     case 'sapling':
       return `
-        <path d="M100 255 Q100 185 100 125" stroke="${trunk}" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 205 Q70 175 60 145" stroke="${leaf}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 185 Q130 155 140 125" stroke="${leaf}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 155 Q80 125 75 95" stroke="${leaf}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <ellipse cx="60" cy="145" rx="12" ry="7" fill="${leaf}" transform="rotate(-40 60 145)"/>
-        <ellipse cx="140" cy="125" rx="12" ry="7" fill="${leaf}" transform="rotate(40 140 125)"/>
-        <ellipse cx="75" cy="95" rx="10" ry="6" fill="${leaf}" transform="rotate(-20 75 95)"/>
-        <circle cx="100" cy="120" r="14" fill="${leaf}" opacity="0.9"/>
-        <ellipse cx="100" cy="257" rx="18" ry="5" fill="#3e2723" opacity="0.35"/>
+        <defs>
+          <linearGradient id="saplingTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${lighter(trunk, 10)}"/><stop offset="50%" stop-color="${trunk}"/><stop offset="100%" stop-color="${darker(trunk, 12)}"/></linearGradient>
+          <radialGradient id="saplingLeaf" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter(leaf, 18)}"/><stop offset="100%" stop-color="${leaf}"/></radialGradient>
+        </defs>
+        <path d="M100 258 Q98 190 100 130" stroke="url(#saplingTrunk)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M100 210 Q72 178 62 148" stroke="url(#saplingTrunk)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M100 188 Q128 156 142 128" stroke="url(#saplingTrunk)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M100 160 Q82 128 76 98" stroke="url(#saplingTrunk)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        ${canopy([
+          {x:62,y:148,r:15},{x:142,y:128,r:15},{x:76,y:98,r:13},{x:100,y:128,r:18},{x:100,y:108,r:14}
+        ])}
+        <ellipse cx="100" cy="260" rx="22" ry="6" fill="#3e2723" opacity="0.25"/>
       `;
 
-    case 'tree':
+    case 'tree': {
+      const treeFruits = [
+        {x:72,y:110},{x:128,y:98},{x:100,y:78},{x:60,y:132},{x:140,y:128},{x:88,y:62},{x:115,y:68}
+      ];
       return `
-        <path d="M100 265 Q95 205 100 145 Q105 205 100 265" stroke="${trunk}" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <path d="M100 225 Q60 195 50 155" stroke="${trunk}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 205 Q140 175 150 135" stroke="${trunk}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <circle cx="100" cy="125" r="42" fill="${leaf}" opacity="0.9"/>
-        <circle cx="70" cy="105" r="32" fill="${leaf}" opacity="0.85"/>
-        <circle cx="130" cy="105" r="32" fill="${leaf}" opacity="0.85"/>
-        <circle cx="100" cy="85" r="37" fill="${leaf}" opacity="0.9"/>
-        <circle cx="85" cy="70" r="22" fill="${leaf}" opacity="0.8"/>
-        <circle cx="115" cy="70" r="22" fill="${leaf}" opacity="0.8"/>
-        <ellipse cx="100" cy="267" rx="32" ry="7" fill="#3e2723" opacity="0.35"/>
-        ${seedType === 'cherry' ? `
-          <circle cx="85" cy="105" r="3.5" fill="#f8bbd0"/>
-          <circle cx="115" cy="95" r="3.5" fill="#f8bbd0"/>
-          <circle cx="100" cy="80" r="3.5" fill="#f8bbd0"/>
-          <circle cx="70" cy="115" r="3.5" fill="#f8bbd0"/>
-          <circle cx="130" cy="115" r="3.5" fill="#f8bbd0"/>
-        ` : ''}
+        <defs>
+          <linearGradient id="treeTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${lighter(trunk, 10)}"/><stop offset="50%" stop-color="${trunk}"/><stop offset="100%" stop-color="${darker(trunk, 14)}"/></linearGradient>
+          <radialGradient id="treeLeaf" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter(leaf, 16)}"/><stop offset="100%" stop-color="${leaf}"/></radialGradient>
+        </defs>
+        <path d="M100 268 Q96 205 100 142 Q104 205 100 268" stroke="url(#treeTrunk)" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M100 228 Q62 196 52 156" stroke="url(#treeTrunk)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M100 206 Q138 174 150 134" stroke="url(#treeTrunk)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M100 178 Q74 138 68 100" stroke="url(#treeTrunk)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        ${canopy([
+          {x:100,y:122,r:46,o:0.95},{x:66,y:102,r:36,o:0.9},{x:134,y:102,r:36,o:0.9},
+          {x:100,y:80,r:40,o:0.95},{x:82,y:62,r:26,o:0.88},{x:118,y:62,r:26,o:0.88},
+          {x:54,y:130,r:22,o:0.85},{x:146,y:128,r:22,o:0.85}
+        ])}
+        ${treeFruits.map(f => fruitSVG(f.x, f.y, 6)).join('')}
+        <ellipse cx="100" cy="270" rx="38" ry="8" fill="#3e2723" opacity="0.25"/>
       `;
+    }
 
-    case 'ancient':
+    case 'ancient': {
+      const ancientFruits = [
+        {x:70,y:92},{x:130,y:82},{x:100,y:62},{x:55,y:118},{x:145,y:112},{x:85,y:48},{x:115,y:48},{x:100,y:112},{x:100,y:38}
+      ];
       return `
-        <path d="M100 265 Q90 205 95 135 Q100 205 105 265" stroke="${trunk}" stroke-width="12" fill="none" stroke-linecap="round"/>
-        <path d="M100 245 Q50 215 40 175" stroke="${trunk}" stroke-width="6" fill="none" stroke-linecap="round"/>
-        <path d="M100 225 Q150 195 160 155" stroke="${trunk}" stroke-width="6" fill="none" stroke-linecap="round"/>
-        <path d="M100 205 Q70 165 65 125" stroke="${trunk}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <path d="M100 185 Q130 145 135 105" stroke="${trunk}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-        <circle cx="100" cy="115" r="52" fill="${leaf}" opacity="0.9"/>
-        <circle cx="60" cy="95" r="42" fill="${leaf}" opacity="0.85"/>
-        <circle cx="140" cy="95" r="42" fill="${leaf}" opacity="0.85"/>
-        <circle cx="100" cy="70" r="47" fill="${leaf}" opacity="0.9"/>
-        <circle cx="80" cy="55" r="32" fill="${leaf}" opacity="0.8"/>
-        <circle cx="120" cy="55" r="32" fill="${leaf}" opacity="0.8"/>
-        <circle cx="100" cy="45" r="27" fill="${leaf}" opacity="0.85"/>
-        <ellipse cx="100" cy="267" rx="42" ry="9" fill="#3e2723" opacity="0.35"/>
-        ${seedType === 'cherry' ? `
-          <circle cx="80" cy="95" r="4.5" fill="#f8bbd0"/>
-          <circle cx="120" cy="85" r="4.5" fill="#f8bbd0"/>
-          <circle cx="100" cy="65" r="4.5" fill="#f8bbd0"/>
-          <circle cx="60" cy="105" r="4.5" fill="#f8bbd0"/>
-          <circle cx="140" cy="105" r="4.5" fill="#f8bbd0"/>
-          <circle cx="90" cy="50" r="4.5" fill="#f8bbd0"/>
-          <circle cx="110" cy="50" r="4.5" fill="#f8bbd0"/>
-        ` : ''}
-        ${seedType === 'willow' ? `
-          <path d="M60 95 Q55 135 50 155" stroke="${leaf}" stroke-width="1.5" fill="none" opacity="0.5"/>
-          <path d="M70 85 Q65 125 60 145" stroke="${leaf}" stroke-width="1.5" fill="none" opacity="0.5"/>
-          <path d="M140 95 Q145 135 150 155" stroke="${leaf}" stroke-width="1.5" fill="none" opacity="0.5"/>
-          <path d="M130 85 Q135 125 140 145" stroke="${leaf}" stroke-width="1.5" fill="none" opacity="0.5"/>
-        ` : ''}
+        <defs>
+          <linearGradient id="ancientTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${lighter(trunk, 10)}"/><stop offset="50%" stop-color="${trunk}"/><stop offset="100%" stop-color="${darker(trunk, 18)}"/></linearGradient>
+          <radialGradient id="ancientLeaf" cx="35%" cy="35%"><stop offset="0%" stop-color="${lighter(leaf, 14)}"/><stop offset="100%" stop-color="${leaf}"/></radialGradient>
+        </defs>
+        <path d="M100 268 Q88 205 94 132 Q100 205 112 268" stroke="url(#ancientTrunk)" stroke-width="13" fill="none" stroke-linecap="round"/>
+        <path d="M100 248 Q48 216 38 174" stroke="url(#ancientTrunk)" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+        <path d="M100 226 Q152 194 162 152" stroke="url(#ancientTrunk)" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+        <path d="M100 206 Q68 164 62 122" stroke="url(#ancientTrunk)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M100 184 Q132 142 138 100" stroke="url(#ancientTrunk)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        ${canopy([
+          {x:100,y:110,r:56,o:0.95},{x:58,y:90,r:46,o:0.9},{x:142,y:90,r:46,o:0.9},
+          {x:100,y:65,r:50,o:0.95},{x:78,y:50,r:34,o:0.88},{x:122,y:50,r:34,o:0.88},
+          {x:100,y:38,r:30,o:0.9},{x:48,y:120,r:26,o:0.85},{x:152,y:116,r:26,o:0.85}
+        ])}
+        ${ancientFruits.map(f => fruitSVG(f.x, f.y, 6.5)).join('')}
+        <ellipse cx="100" cy="270" rx="50" ry="10" fill="#3e2723" opacity="0.25"/>
       `;
+    }
 
     default: return '';
   }
+}
+
+function lighter(hex, percent) { return shadeColor(hex, percent / 100); }
+function darker(hex, percent) { return shadeColor(hex, -percent / 100); }
+function shadeColor(hex, percent) {
+  const f = parseInt(hex.slice(1), 16);
+  const t = percent < 0 ? 0 : 255;
+  const p = Math.abs(percent);
+  const R = f >> 16, G = (f >> 8) & 0x00FF, B = f & 0x0000FF;
+  return '#' + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 +
+    (Math.round((t - G) * p) + G) * 0x100 +
+    (Math.round((t - B) * p) + B)).toString(16).slice(1);
 }
 
 // ===== ENVIRONMENT SYSTEM =====
@@ -2072,20 +2323,32 @@ function createFireflies() {
   }
 }
 
+function createClouds() {
+  const container = document.getElementById('cloudsLayer');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 1; i <= 3; i++) {
+    const cloud = document.createElement('div');
+    cloud.className = `cloud cloud-${i}`;
+    container.appendChild(cloud);
+  }
+}
+
 function createGrass() {
   const container = document.getElementById('grassTufts');
   if (!container) return;
   container.innerHTML = '';
-  const positions = [15, 25, 35, 60, 72, 82];
-  positions.forEach(x => {
-    const g = document.createElement('div');
-    g.className = 'grass-tuft';
-    g.style.left = x + '%';
-    g.style.height = (8 + Math.random() * 10) + 'px';
-    g.style.opacity = 0.3 + Math.random() * 0.3;
-    g.style.transform = `rotate(${(Math.random() - 0.5) * 20}deg)`;
-    container.appendChild(g);
-  });
+  const count = 26;
+  for (let i = 0; i < count; i++) {
+    const tuft = document.createElement('div');
+    tuft.className = 'grass-tuft';
+    tuft.style.left = (6 + Math.random() * 88) + '%';
+    tuft.style.bottom = (48 + Math.random() * 38) + 'px';
+    tuft.style.transform = `scale(${0.7 + Math.random() * 0.9}) rotate(${Math.random() * 24 - 12}deg)`;
+    tuft.style.opacity = 0.5 + Math.random() * 0.45;
+    tuft.style.zIndex = Math.random() > 0.5 ? 5 : 7;
+    container.appendChild(tuft);
+  }
 }
 
 // ===== PERSONALITY ENGINE =====
@@ -2163,6 +2426,7 @@ function selectSeed(type) {
   document.getElementById('seedSelect').classList.add('hidden');
   document.getElementById('gameContainer').style.display = 'flex';
   createStars();
+  createClouds();
   createFireflies();
   createGrass();
   updateEnvironment();
@@ -2397,8 +2661,10 @@ function evolve(newStage) {
 function renderPlant() {
   const svg = document.getElementById('plantSvg');
   const wrapper = document.getElementById('plantWrapper');
+  const shadow = document.getElementById('plantShadow');
   svg.innerHTML = getPlantSVG(gameState.stage, gameState.seedType);
   wrapper.className = `plant-wrapper stage-${gameState.stage}`;
+  if (shadow) shadow.className = `plant-shadow stage-${gameState.stage}`;
 }
 
 function updateUI() {
@@ -3027,6 +3293,7 @@ function init() {
     document.getElementById('seedSelect').classList.add('hidden');
     document.getElementById('gameContainer').style.display = 'flex';
     createStars();
+    createClouds();
     createFireflies();
     createGrass();
     updateEnvironment();
