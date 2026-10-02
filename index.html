@@ -1130,6 +1130,317 @@
     font-size: 14px;
   }
 
+  /* ===== MODULE 1: VISITOR VIEW ===== */
+  .visitor-view {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: linear-gradient(180deg, #1b3a5c 0%, #2e6b4f 60%, #3d2b1f 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .visitor-tree {
+    font-size: 120px;
+    line-height: 1;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
+    animation: sway 4s ease-in-out infinite;
+    transform-origin: bottom center;
+    margin-bottom: 12px;
+  }
+  .visitor-banner {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 700;
+    color: #f8faf6;
+    margin-bottom: 6px;
+    max-width: 320px;
+  }
+  .visitor-sub {
+    font-size: 14px;
+    color: rgba(248,250,246,0.75);
+    margin-bottom: 28px;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+  .drop-btn {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: none;
+    background: radial-gradient(circle at 35% 30%, #aee9f7, #29b6f6 70%);
+    font-size: 42px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(41,182,246,0.45), inset 0 2px 6px rgba(255,255,255,0.4);
+    transition: transform 0.15s ease;
+    position: relative;
+  }
+  .drop-btn:active { transform: scale(0.92); }
+  .drop-btn::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid rgba(174,233,247,0.5);
+    animation: drop-pulse 1.8s ease-out infinite;
+  }
+  @keyframes drop-pulse {
+    0% { transform: scale(0.9); opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+  .drop-label {
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(248,250,246,0.8);
+  }
+  .visitor-splash {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 3px solid rgba(174,233,247,0.9);
+    pointer-events: none;
+    animation: ripple-expand 0.9s ease-out forwards;
+  }
+  @keyframes ripple-expand {
+    0% { transform: scale(0.2); opacity: 1; }
+    100% { transform: scale(5); opacity: 0; }
+  }
+  .visitor-invite {
+    margin-top: 40px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 18px 22px;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  .visitor-invite.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .visitor-invite-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f8faf6;
+    margin-bottom: 12px;
+  }
+  .visitor-invite-btn {
+    background: linear-gradient(180deg, #8fd69b, #5daf6d);
+    color: #122a18;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(93,175,109,0.4);
+    transition: transform 0.15s;
+  }
+  .visitor-invite-btn:active { transform: scale(0.96); }
+
+  /* ===== MODULE 2: PASSPORT SHARE ===== */
+  .passport-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .passport-tab {
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .passport-tab.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .passport-preview {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    max-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0f0a;
+  }
+  .passport-preview canvas { max-width: 100%; max-height: 280px; }
+
+  /* ===== MODULE 3: TWIN GROVE ===== */
+  .grove-slot {
+    position: absolute;
+    bottom: 60px;
+    left: 12px;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .grove-slot:hover { transform: scale(1.08); }
+  .grove-slot-tree {
+    font-size: 52px;
+    line-height: 1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3)) saturate(0.9);
+    animation: sway 5.5s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+  .grove-slot-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(248,250,246,0.8);
+    background: rgba(0,0,0,0.35);
+    padding: 2px 8px;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .golden-fruit {
+    position: absolute;
+    font-size: 34px;
+    pointer-events: none;
+    z-index: 90;
+    animation: golden-fall 1.6s ease-in forwards;
+    filter: drop-shadow(0 0 14px rgba(255,215,0,0.8));
+  }
+  @keyframes golden-fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(220px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ===== MODULE 4: FOCUS MODE ===== */
+  #gameContainer { transition: opacity 0.6s ease; }
+  body.focus-mode .header,
+  body.focus-mode .stage-header,
+  body.focus-mode .fruit-bar-wrap,
+  body.focus-mode .stats-row,
+  body.focus-mode .actions-row,
+  body.focus-mode .growth-row,
+  body.focus-mode .journey-wrap,
+  body.focus-mode .essence-badge,
+  body.focus-mode .env-badge,
+  body.focus-mode .mascot,
+  body.focus-mode .speech-bubble,
+  body.focus-mode .grove-slot,
+  body.focus-mode .focus-corner {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.6s ease;
+  }
+  body.focus-mode .garden {
+    height: 70vh;
+    max-width: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+  body.focus-mode .garden-wrap { max-width: none; padding: 0; }
+  .focus-toggle {
+    position: fixed;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    color: #f8faf6;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    opacity: 0.75;
+  }
+  .focus-toggle:hover { opacity: 1; transform: translateX(-50%) scale(1.08); }
+  .focus-toggle:active { transform: translateX(-50%) scale(0.94); }
+  .focus-corner {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 150;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(248,250,246,0.6);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  body.focus-mode .focus-corner { opacity: 1 !important; pointer-events: auto !important; }
+  .focus-exit-btn {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 150;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    color: #f8faf6;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    font-family: inherit;
+  }
+  body.focus-mode .focus-exit-btn { opacity: 1; pointer-events: auto; }
+  .audio-toggle {
+    position: fixed;
+    top: 66px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    color: #f8faf6;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    opacity: 0.75;
+  }
+  .audio-toggle:hover { opacity: 1; transform: translateX(-50%) scale(1.08); }
+  .audio-toggle:active { transform: translateX(-50%) scale(0.94); }
+  .audio-toggle.muted { opacity: 0.35; }
+
   /* Harvest celebration */
   .confetti {
     position: fixed;
@@ -1662,8 +1973,11 @@
       </div>
       <div class="plant-shadow" id="plantShadow"></div>
 
-      <!-- Environment badge -->
-      <!-- Essence currency badge -->
+      <!-- Twin Grove companion slot -->
+      <div class="grove-slot" id="groveSlot" style="display:none;" onclick="showGroveInfo()">
+        <div class="grove-slot-tree" id="groveSlotTree">🌳</div>
+        <div class="grove-slot-label" id="groveSlotLabel">Friend's tree</div>
+      </div>
       <div class="essence-badge" id="essenceBadge" onclick="openGroveShop()">
         <span class="essence-icon">✨</span>
         <span id="essenceValue">0</span>
@@ -1746,8 +2060,8 @@
 
   <!-- Growth row -->
   <div class="growth-row">
-    <button class="growth-btn share" id="shareBtn" onclick="openShareModal()">
-      <span>📸</span> Share Journey
+    <button class="growth-btn share" id="shareBtn" onclick="openPassportModal()">
+      <span>🪪</span> Passport
     </button>
     <button class="growth-btn sos hidden" id="sosBtn" onclick="generateSOSLink()">
       <span>💧</span> Call Rain
@@ -1823,6 +2137,41 @@
     <button class="modal-btn secondary" id="helpSecondary" onclick="dismissHelpAndStart()">Plant Your Own Seed</button>
   </div>
 </div>
+
+<!-- Module 1: Visitor View -->
+<div class="visitor-view" id="visitorView" style="display:none;">
+  <div class="visitor-tree" id="visitorTreeIcon">🌳</div>
+  <div class="visitor-banner" id="visitorBanner">A friend needs you!</div>
+  <div class="visitor-sub" id="visitorSub">Their tree is thirsty. Send a drop of care.</div>
+  <button class="drop-btn" id="dropBtn" onclick="visitorWater()" aria-label="Water the tree">💧</button>
+  <div class="drop-label">Tap to water</div>
+  <div class="visitor-invite" id="visitorInvite">
+    <div class="visitor-invite-text" id="visitorInviteText">Plant your own seed!</div>
+    <button class="visitor-invite-btn" onclick="dismissVisitorAndStart()">Start Growing 🌱</button>
+  </div>
+</div>
+
+<!-- Module 2: Passport Share Modal -->
+<div class="modal-overlay" id="passportModal">
+  <div class="modal" style="max-width: 380px;">
+    <div class="modal-icon">🪪</div>
+    <div class="modal-title" style="font-size:20px;">Plant Passport</div>
+    <div class="passport-tabs">
+      <button class="passport-tab active" id="tabStory" onclick="switchPassportTab('story')">Story</button>
+      <button class="passport-tab" id="tabSquare" onclick="switchPassportTab('square')">Square</button>
+    </div>
+    <div class="passport-preview" id="passportPreview"></div>
+    <button class="modal-btn" onclick="sharePassport()">Share</button>
+    <button class="modal-btn secondary" onclick="closePassportModal()">Close</button>
+  </div>
+</div>
+
+<!-- Module 3: Twin Grove Companion -->
+
+<button class="focus-toggle" id="focusToggle" onclick="toggleFocusMode()" aria-label="Toggle focus mode">🌿</button>
+<button class="audio-toggle" id="audioToggle" onclick="toggleAmbientAudio()" aria-label="Toggle ambient audio">🔊</button>
+<button class="focus-exit-btn" id="focusExitBtn" onclick="toggleFocusMode()">Exit Focus</button>
+<div class="focus-corner" id="focusCorner">🌙 Focus Mode</div>
 
 <!-- Notification -->
 <div class="notification" id="notification"></div>
@@ -2396,6 +2745,187 @@ function getFullPlantTitle() {
   const archetype = gameState.archetype;
   if (!archetype) return species;
   return `The ${archetype.prefix} ${species}`;
+}
+
+// ============================================================
+// MODULE 3: CO-OP "TWIN GROVE" (LOCAL SHADOW LINKING)
+// ============================================================
+function parseGroveHash() {
+  const hash = location.hash;
+  if (!hash || !hash.startsWith('#grove=')) return null;
+  try {
+    const payload = decodeURIComponent(hash.slice(7));
+    const state = JSON.parse(atob(payload));
+    if (!state.tree || !SEED_TYPES[state.tree]) return null;
+    return state;
+  } catch (e) { return null; }
+}
+
+function showGroveCompanion(groveState) {
+  const slot = document.getElementById('groveSlot');
+  const treeIcon = STAGE_INFO[groveState.stage]?.icon || '🌳';
+  document.getElementById('groveSlotTree').textContent = treeIcon;
+  document.getElementById('groveSlotLabel').textContent =
+    (groveState.owner || 'Friend') + "'s " + (SEED_TYPES[groveState.tree]?.name || 'Tree');
+  slot.style.display = 'flex';
+
+  const myHydrated = gameState.water > 50;
+  const theirHydrated = groveState.water > 50;
+  if (myHydrated && theirHydrated) {
+    setTimeout(() => {
+      createConfetti();
+      if (Math.random() < 0.10) {
+        spawnGoldenFruit();
+      } else {
+        showNotification('Twin Grove in bloom! 🌸');
+      }
+    }, 1200);
+  }
+}
+
+function spawnGoldenFruit() {
+  const garden = document.getElementById('garden');
+  const gf = document.createElement('div');
+  gf.className = 'golden-fruit';
+  gf.textContent = '🌟';
+  gf.style.left = (30 + Math.random() * 40) + '%';
+  gf.style.top = '30%';
+  garden.appendChild(gf);
+  setTimeout(() => gf.remove(), 1800);
+
+  gameState.essence += 15;
+  saveGame();
+  showNotification('🌟 Golden Fruit dropped! +15 essence');
+}
+
+function showGroveInfo() {
+  const grove = parseGroveHash();
+  if (!grove) return;
+  showModal('🌳', 'Twin Grove',
+    `${grove.owner || 'A friend'}'s ${SEED_TYPES[grove.tree]?.name || 'tree'} is growing beside yours.\n` +
+    `When both trees are well-watered, you may find a Golden Fruit!`
+  );
+}
+
+function generateGroveLink() {
+  if (!gameState.seedType) return;
+  const state = {
+    owner: gameState.ownerName,
+    tree: gameState.seedType,
+    stage: gameState.stage,
+    water: gameState.water
+  };
+  const payload = encodeURIComponent(btoa(JSON.stringify(state)));
+  const url = `${location.origin}${location.pathname}#grove=${payload}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Pipling — Twin Grove', text: 'Grow beside me! 🌱', url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showNotification('Grove link copied! 🌳'));
+  }
+}
+
+// ============================================================
+// MODULE 4: "FOCUS / LOFI COMPANION" MODE & SYNTHESIZED AUDIO
+// ============================================================
+let focusModeActive = false;
+let ambientAudioCtx = null;
+let ambientGain = null;
+let ambientMuted = false;
+
+function toggleFocusMode() {
+  focusModeActive = !focusModeActive;
+  document.body.classList.toggle('focus-mode', focusModeActive);
+  document.getElementById('focusToggle').textContent = focusModeActive ? '🌙' : '🌿';
+  document.getElementById('focusToggle').style.opacity = focusModeActive ? '0.35' : '0.75';
+  if (focusModeActive) {
+    startAmbientAudio();
+    showNotification('Focus mode on 🌙');
+  } else {
+    showNotification('Welcome back 🌿');
+  }
+}
+
+function toggleAmbientAudio() {
+  ambientMuted = !ambientMuted;
+  const btn = document.getElementById('audioToggle');
+  btn.textContent = ambientMuted ? '🔇' : '🔊';
+  btn.classList.toggle('muted', ambientMuted);
+  if (ambientGain && ambientAudioCtx) {
+    ambientGain.gain.setValueAtTime(ambientMuted ? 0 : 0.12, ambientAudioCtx.currentTime);
+  }
+  showNotification(ambientMuted ? 'Ambient sound off' : 'Ambient sound on');
+}
+
+function startAmbientAudio() {
+  if (ambientAudioCtx) {
+    ambientAudioCtx.resume();
+    return;
+  }
+  ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  ambientGain = ambientAudioCtx.createGain();
+  ambientGain.gain.value = ambientMuted ? 0 : 0.12;
+  ambientGain.connect(ambientAudioCtx.destination);
+
+  // Pink noise buffer for rain/wind
+  const bufferSize = ambientAudioCtx.sampleRate * 4;
+  const buffer = ambientAudioCtx.createBuffer(1, bufferSize, ambientAudioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    b0 = 0.99886 * b0 + white * 0.0555179;
+    b1 = 0.99332 * b1 + white * 0.0750759;
+    b2 = 0.96900 * b2 + white * 0.1538520;
+    b3 = 0.86650 * b3 + white * 0.3104856;
+    b4 = 0.55000 * b4 + white * 0.5329522;
+    b5 = -0.7616 * b5 - white * 0.0168980;
+    data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+    b6 = white * 0.115926;
+  }
+
+  const noiseSource = ambientAudioCtx.createBufferSource();
+  noiseSource.buffer = buffer;
+  noiseSource.loop = true;
+
+  const lowpass = ambientAudioCtx.createBiquadFilter();
+  lowpass.type = 'lowpass';
+  lowpass.frequency.value = 420;
+  lowpass.Q.value = 0.8;
+
+  // Slow LFO for gentle wind swell
+  const lfo = ambientAudioCtx.createOscillator();
+  lfo.frequency.value = 0.07;
+  const lfoGain = ambientAudioCtx.createGain();
+  lfoGain.gain.value = 0.03;
+  lfo.connect(lfoGain);
+  lfoGain.connect(ambientGain.gain);
+  lfo.start();
+
+  noiseSource.connect(lowpass);
+  lowpass.connect(ambientGain);
+  noiseSource.start();
+
+  // Distant bird chirps
+  function scheduleChirp() {
+    if (!ambientAudioCtx || ambientMuted) {
+      setTimeout(scheduleChirp, 8000 + Math.random() * 12000);
+      return;
+    }
+    const osc = ambientAudioCtx.createOscillator();
+    const chirpGain = ambientAudioCtx.createGain();
+    const freq = 1800 + Math.random() * 1200;
+    osc.frequency.setValueAtTime(freq, ambientAudioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.4, ambientAudioCtx.currentTime + 0.08);
+    chirpGain.gain.setValueAtTime(0, ambientAudioCtx.currentTime);
+    chirpGain.gain.linearRampToValueAtTime(0.06, ambientAudioCtx.currentTime + 0.02);
+    chirpGain.gain.exponentialRampToValueAtTime(0.001, ambientAudioCtx.currentTime + 0.12);
+    osc.connect(chirpGain);
+    chirpGain.connect(ambientAudioCtx.destination);
+    osc.start();
+    osc.stop(ambientAudioCtx.currentTime + 0.15);
+    setTimeout(scheduleChirp, 6000 + Math.random() * 16000);
+  }
+  scheduleChirp();
 }
 
 function applyPhenotype() {
@@ -3057,6 +3587,123 @@ function getCareLevel() {
   return 'Ancient Keeper';
 }
 
+// ============================================================
+// MODULE 1: CLIENT-SIDE DEEP LINK VISITOR MODE ("A Friend Needs You")
+// ============================================================
+function parseVisitorParams() {
+  const params = new URLSearchParams(location.search);
+  const friend = params.get('friend');
+  const tree = params.get('tree');
+  const need = params.get('need') || 'water';
+  if (!friend || !tree || !SEED_TYPES[tree]) return null;
+  return { friend: friend.slice(0, 24), tree, need };
+}
+
+function showVisitorView(v) {
+  document.getElementById('seedSelect').classList.add('hidden');
+  document.getElementById('gameContainer').style.display = 'none';
+  const view = document.getElementById('visitorView');
+  view.style.display = 'flex';
+
+  const seed = SEED_TYPES[v.tree];
+  document.getElementById('visitorTreeIcon').textContent = STAGE_INFO.tree.icon;
+  document.getElementById('visitorBanner').textContent = `${v.friend}'s ${seed.name} needs care!`;
+  const needLabels = { water: 'thirsty', sun: 'sun-starved', nutrients: 'hungry' };
+  document.getElementById('visitorSub').textContent =
+    `Their tree is ${needLabels[v.need] || 'thirsty'}. Tap the droplet to send a little rain their way.`;
+  document.getElementById('visitorInviteText').textContent =
+    `Plant your own seed beside ${v.friend}`;
+}
+
+function visitorWater() {
+  const view = document.getElementById('visitorView');
+  const btn = document.getElementById('dropBtn');
+  const rect = btn.getBoundingClientRect();
+  const viewRect = view.getBoundingClientRect();
+  const cx = rect.left - viewRect.left + rect.width / 2;
+  const cy = rect.top - viewRect.top + rect.height / 2;
+
+  for (let i = 0; i < 5; i++) {
+    const splash = document.createElement('div');
+    splash.className = 'visitor-splash';
+    splash.style.left = (cx - 10) + 'px';
+    splash.style.top = (cy - 10) + 'px';
+    splash.style.animationDelay = (i * 0.12) + 's';
+    view.appendChild(splash);
+    setTimeout(() => splash.remove(), 1100 + i * 120);
+  }
+
+  try {
+    const params = new URLSearchParams(location.search);
+    const friend = params.get('friend') || 'friend';
+    localStorage.setItem('pipling_helped_' + friend.toLowerCase(), 'true');
+    localStorage.setItem('pipling_visit_' + friend.toLowerCase(), JSON.stringify({ at: Date.now() }));
+  } catch (e) {}
+
+  btn.disabled = true;
+  btn.textContent = '💧✓';
+  document.querySelector('#visitorView .drop-label').textContent = 'Drop sent!';
+
+  setTimeout(() => {
+    document.getElementById('visitorInvite').classList.add('show');
+  }, 700);
+}
+
+function dismissVisitorAndStart() {
+  document.getElementById('visitorView').style.display = 'none';
+  window.history.replaceState({}, '', location.pathname);
+  document.getElementById('seedSelect').classList.remove('hidden');
+}
+
+function checkReciprocalVisit() {
+  if (!gameState.seedType) return;
+  try {
+    const now = Date.now();
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith('pipling_visit_')) continue;
+      const data = JSON.parse(localStorage.getItem(key) || '{}');
+      if (data.at && now - data.at < 24 * 60 * 60 * 1000) {
+        const friendName = key.replace('pipling_visit_', '');
+        gameState.essence += 2;
+        saveGame();
+        showModal('💧', `${capitalize(friendName)} dropped by!`,
+          `Your friend visited and left a drop of water for your tree. +2 essence!`);
+        localStorage.removeItem(key);
+        break;
+      }
+    }
+  } catch (e) {}
+}
+
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function generateSOSLink() {
+  if (!gameState.seedType) return;
+  const need = ['water', 'sun', 'nutrient'].reduce((lowest, key) =>
+    gameState[key] < gameState[lowest] ? key : lowest, 'water');
+  const needParam = need === 'nutrient' ? 'nutrients' : need;
+  const params = new URLSearchParams({
+    friend: gameState.ownerName,
+    tree: gameState.seedType,
+    need: needParam
+  });
+  const url = `${location.origin}${location.pathname}?${params.toString()}`;
+  const text = `${gameState.ownerName}'s ${SEED_TYPES[gameState.seedType].name} needs care! 💧 Tap to water it:\n${url}`;
+
+  if (navigator.share) {
+    navigator.share({ title: 'Pipling — A Friend Needs You', text, url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification('Help link copied! Send it to a friend 📋');
+    }).catch(() => showNotification('Copy: ' + url));
+  } else {
+    showNotification('Copy: ' + url);
+  }
+}
+
 function getPrimaryElement() {
   const counts = gameState.actionsCount;
   const max = Math.max(counts.water, counts.sun, counts.nutrients);
@@ -3064,6 +3711,205 @@ function getPrimaryElement() {
   if (max === counts.water) return 'Water';
   if (max === counts.sun) return 'Sun';
   return 'Earth';
+}
+
+// ============================================================
+// MODULE 2: HIGH-FIDELITY CANVAS "PLANT PASSPORT" CARD GENERATOR
+// ============================================================
+let passportPreset = 'story'; // 'story' | 'square'
+
+function switchPassportTab(preset) {
+  passportPreset = preset;
+  document.getElementById('tabStory').classList.toggle('active', preset === 'story');
+  document.getElementById('tabSquare').classList.toggle('active', preset === 'square');
+  renderPassportPreview();
+}
+
+async function renderPassportPreview() {
+  const canvas = await generatePassportCard(passportPreset);
+  const container = document.getElementById('passportPreview');
+  container.innerHTML = '';
+  canvas.style.width = 'auto';
+  canvas.style.height = '100%';
+  container.appendChild(canvas);
+}
+
+function openPassportModal() {
+  if (!gameState.seedType) return;
+  document.getElementById('passportModal').classList.add('active');
+  renderPassportPreview();
+}
+
+function closePassportModal() {
+  document.getElementById('passportModal').classList.remove('active');
+}
+
+async function generatePassportCard(preset) {
+  const W = 1080;
+  const H = preset === 'story' ? 1920 : 1080;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  await document.fonts.ready;
+
+  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.apple;
+  const info = STAGE_INFO[gameState.stage];
+  const season = SEASONS[currentSeason];
+  const isStory = preset === 'story';
+  const S = W / 1080; // scale factor for square layout
+
+  // Background: seasonal gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, season.sky.day);
+  grad.addColorStop(0.55, season.horizon.day);
+  grad.addColorStop(1, '#1a2415');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Soft glow behind plant
+  const glowY = isStory ? H * 0.38 : H * 0.42;
+  const glow = ctx.createRadialGradient(W / 2, glowY, 30, W / 2, glowY, 340);
+  glow.addColorStop(0, 'rgba(255,255,255,0.14)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Rounded card frame
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth = 3;
+  roundRect(ctx, 40, 40, W - 80, H - 80, 36);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Header: Pipling wordmark
+  ctx.font = `700 ${isStory ? 52 : 44}px -apple-system, BlinkMacSystemFont, sans-serif`;
+  ctx.fillStyle = 'rgba(248,250,246,0.85)';
+  ctx.fillText('🌱 Pipling', W / 2, isStory ? 130 : 110);
+
+  // Plant emoji — large and central
+  const plantY = isStory ? H * 0.40 : H * 0.46;
+  const plantSize = isStory ? 300 : 240;
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,255,255,0.25)';
+  ctx.shadowBlur = 60;
+  ctx.font = `${plantSize}px serif`;
+  ctx.fillText(info.icon, W / 2, plantY);
+  ctx.restore();
+
+  // Squirrel mood beside plant
+  ctx.font = `${isStory ? 80 : 64}px serif`;
+  ctx.fillText('🐿️', W * 0.72, plantY + plantSize * 0.28);
+
+  // Plant title
+  const titleY = isStory ? H * 0.60 : H * 0.72;
+  ctx.font = `400 ${isStory ? 72 : 56}px Bellefair, Georgia, serif`;
+  ctx.fillStyle = '#f8faf6';
+  ctx.fillText(getFullPlantTitle(), W / 2, titleY);
+
+  // Archetype badge
+  if (gameState.archetype) {
+    const badgeY = titleY + (isStory ? 70 : 56);
+    const badgeText = `✦ ${gameState.archetype.name.toUpperCase()} ✦`;
+    ctx.font = `700 ${isStory ? 30 : 26}px -apple-system, BlinkMacSystemFont, sans-serif`;
+    const tw = ctx.measureText(badgeText).width;
+    ctx.fillStyle = 'rgba(143,214,155,0.22)';
+    roundRect(ctx, W / 2 - tw / 2 - 24, badgeY - 26, tw + 48, 52, 26);
+    ctx.fill();
+    ctx.fillStyle = '#a5d6a7';
+    ctx.fillText(badgeText, W / 2, badgeY);
+  }
+
+  // Stats row
+  const statsY = isStory ? H * 0.74 : H * 0.86;
+  const stats = [
+    { label: 'AGE', value: `${getDaysOld()}d` },
+    { label: 'ESSENCE', value: `${gameState.essence} ✨` },
+    { label: 'CARE', value: getCareLevel() }
+  ];
+  const colW = W / 3;
+  stats.forEach((s, i) => {
+    const x = colW * i + colW / 2;
+    ctx.font = `500 ${isStory ? 24 : 20}px -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.fillStyle = 'rgba(248,250,246,0.55)';
+    ctx.fillText(s.label, x, statsY);
+    ctx.font = `700 ${isStory ? 40 : 32}px -apple-system, BlinkMacSystemFont, sans-serif`;
+    ctx.fillStyle = '#f8faf6';
+    ctx.fillText(s.value, x, statsY + (isStory ? 52 : 42));
+  });
+
+  // Divider
+  const divY = isStory ? H * 0.82 : H * 0.94;
+  ctx.strokeStyle = 'rgba(248,250,246,0.15)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W * 0.2, divY);
+  ctx.lineTo(W * 0.8, divY);
+  ctx.stroke();
+
+  // Footer watermark + link
+  const footY = isStory ? H * 0.90 : H * 0.975;
+  ctx.font = `400 ${isStory ? 32 : 26}px Bellefair, Georgia, serif`;
+  ctx.fillStyle = 'rgba(248,250,246,0.5)';
+  ctx.fillText('Pipling', W / 2, footY);
+  ctx.font = `400 ${isStory ? 24 : 20}px -apple-system, BlinkMacSystemFont, sans-serif`;
+  ctx.fillStyle = 'rgba(248,250,246,0.35)';
+  ctx.fillText('yaronbada.github.io/forest-companion', W / 2, footY + (isStory ? 46 : 36));
+
+  return canvas;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+async function sharePassport() {
+  const canvas = document.querySelector('#passportPreview canvas');
+  if (!canvas) return;
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  const file = new File([blob], 'pipling-passport.png', { type: 'image/png' });
+  const shareData = {
+    title: 'My Plant Passport',
+    text: `My ${getFullPlantTitle()} in Pipling 🌱 Grow yours:`,
+    url: 'https://yaronbada.github.io/forest-companion/',
+    files: [file]
+  };
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share(shareData);
+      closePassportModal();
+      showNotification('Passport shared! 🎉');
+      return;
+    } catch (e) {}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'pipling-passport.png';
+  a.click();
+  URL.revokeObjectURL(url);
+  try {
+    await navigator.clipboard.writeText(
+      `My ${getFullPlantTitle()} 🌱\nGrow your own at https://yaronbada.github.io/forest-companion/`
+    );
+    showNotification('Image saved & link copied! 📋');
+  } catch (e) {
+    showNotification('Image saved! 🪪');
+  }
+  closePassportModal();
 }
 
 async function generateShareCard() {
@@ -3254,22 +4100,11 @@ function generateSOSLink() {
 
 function checkReferral() {
   const params = new URLSearchParams(location.search);
-  if (params.get('action') !== 'help') return false;
+  const friend = params.get('friend');
+  const tree = params.get('tree');
+  if (!friend || !tree || !SEED_TYPES[tree]) return false;
 
-  const owner = params.get('owner') || 'A friend';
-  const species = params.get('species');
-  const stage = params.get('stage');
-
-  if (!species || !SEED_TYPES[species]) return false;
-
-  const speciesName = SEED_TYPES[species].name;
-  const stageName = stage && STAGE_NAMES[stage] ? STAGE_NAMES[stage] : 'tree';
-
-  document.getElementById('helpIcon').textContent = STAGE_INFO[stage]?.icon || '🌿';
-  document.getElementById('helpTitle').textContent = `${owner}'s ${speciesName} needs you`;
-  document.getElementById('helpText').textContent = `A ${stageName.toLowerCase()} is thirsty in the forest. Tap to send a drop of care and help it thrive.`;
-
-  document.getElementById('helpModal').classList.add('active');
+  showVisitorView({ friend, tree, need: params.get('need') || 'water' });
   return true;
 }
 
@@ -3291,6 +4126,12 @@ function dismissHelpAndStart() {
 
 // ===== INIT =====
 function init() {
+  const visitor = parseVisitorParams();
+  if (visitor) {
+    showVisitorView(visitor);
+    return;
+  }
+
   const hasSave = loadGame();
 
   if (hasSave && gameState.seedType) {
@@ -3304,9 +4145,15 @@ function init() {
     renderPlant();
     updateUI();
     applyPhenotype();
-    // Delay fruit render until layout settles
     setTimeout(renderTreeFruits, 300);
     startLoops();
+
+    const grove = parseGroveHash();
+    if (grove) {
+      showGroveCompanion(grove);
+    }
+
+    setTimeout(checkReciprocalVisit, 800);
     showNotification('Welcome back to your forest 🌿');
   } else {
     const isReferral = checkReferral();
