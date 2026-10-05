@@ -583,11 +583,22 @@
     transition: all 0.6s ease;
   }
 
-  .stage-seed .plant-svg { width: 46px; height: 46px; }
-  .stage-sprout .plant-svg { width: 70px; height: 90px; }
-  .stage-sapling .plant-svg { width: 120px; height: 160px; }
-  .stage-tree .plant-svg { width: 180px; height: 220px; }
-  .stage-ancient .plant-svg { width: 220px; height: 280px; }
+  .plant-img {
+    display: block;
+    border-radius: 24px;
+    background: #FAF8F5;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.15);
+    object-fit: cover;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: sway 5s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  .stage-seed .plant-img { width: 90px; height: 90px; }
+  .stage-sprout .plant-img { width: 130px; height: 130px; }
+  .stage-sapling .plant-img { width: 180px; height: 180px; }
+  .stage-tree .plant-img { width: 240px; height: 240px; }
+  .stage-ancient .plant-img { width: 280px; height: 280px; }
 
   .plant-shadow {
     position: absolute;
@@ -1813,7 +1824,7 @@
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 28px 16px;
+    padding: 16px 12px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1825,7 +1836,26 @@
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
   }
 
-  .seed-option-emoji { font-size: 40px; margin-bottom: 10px; line-height: 1; }
+  .seed-option-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #FAF8F5;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .seed-option-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .seed-option:hover .seed-option-img img { transform: scale(1.05); }
+
+  .seed-option-emoji { display: none; }
 
   .seed-option-name {
     font-family: var(--font-serif);
@@ -1883,35 +1913,25 @@
   <div class="seed-select-title">Choose Your Tree</div>
   <div class="seed-select-subtitle">Nurture a fruit tree through the seasons</div>
   <div class="seed-options">
-    <div class="seed-option" onclick="selectSeed('apple')">
-      <div class="seed-option-emoji">🍎</div>
-      <div class="seed-option-name">Apple Tree</div>
-      <div class="seed-option-desc">Classic and generous</div>
-    </div>
-    <div class="seed-option" onclick="selectSeed('orange')">
-      <div class="seed-option-emoji">🍊</div>
-      <div class="seed-option-name">Orange Tree</div>
-      <div class="seed-option-desc">Bright and sunny</div>
+    <div class="seed-option" onclick="selectSeed('lemon')">
+      <div class="seed-option-img"><img src="assets/meyer_lemon.png" alt="Meyer Lemon Tree" loading="lazy"></div>
+      <div class="seed-option-name">Meyer Lemon</div>
+      <div class="seed-option-desc">Bright citrus with sweet golden fruit</div>
     </div>
     <div class="seed-option" onclick="selectSeed('fig')">
-      <div class="seed-option-emoji">🫖</div>
-      <div class="seed-option-name">Fig Tree</div>
-      <div class="seed-option-desc">Sweet and ancient</div>
+      <div class="seed-option-img"><img src="assets/black_mission_fig.png" alt="Black Mission Fig" loading="lazy"></div>
+      <div class="seed-option-name">Mission Fig</div>
+      <div class="seed-option-desc">Velvety leaves, rich purple figs</div>
     </div>
     <div class="seed-option" onclick="selectSeed('peach')">
-      <div class="seed-option-emoji">🍑</div>
-      <div class="seed-option-name">Peach Tree</div>
-      <div class="seed-option-desc">Soft and delicate</div>
+      <div class="seed-option-img"><img src="assets/white_peach.png" alt="White Peach Tree" loading="lazy"></div>
+      <div class="seed-option-name">White Peach</div>
+      <div class="seed-option-desc">Blushing fruit and soft blossoms</div>
     </div>
-    <div class="seed-option" onclick="selectSeed('lemon')">
-      <div class="seed-option-emoji">🍋</div>
-      <div class="seed-option-name">Lemon Tree</div>
-      <div class="seed-option-desc">Zesty and fresh</div>
-    </div>
-    <div class="seed-option" onclick="selectSeed('plum')">
-      <div class="seed-option-emoji">🌙</div>
-      <div class="seed-option-name">Plum Tree</div>
-      <div class="seed-option-desc">Deep and rich</div>
+    <div class="seed-option" onclick="selectSeed('strawberry')">
+      <div class="seed-option-img"><img src="assets/alpine_strawberry.png" alt="Alpine Strawberry" loading="lazy"></div>
+      <div class="seed-option-name">Alpine Strawberry</div>
+      <div class="seed-option-desc">Trailing ruby berries and runners</div>
     </div>
   </div>
 </div>
@@ -1969,6 +1989,7 @@
 
       <!-- Plant -->
       <div class="plant-wrapper stage-seed" id="plantWrapper">
+        <img class="plant-img" id="plantImg" src="assets/meyer_lemon_seed.png" alt="Your plant" style="display:none;">
         <svg class="plant-svg plant-sway" id="plantSvg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
       <div class="plant-shadow" id="plantShadow"></div>
@@ -2190,12 +2211,10 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  apple: { name: 'Apple Tree', color: '#5d4037', leafColor: '#66bb6a', accentColor: '#ef5350', fruit: '🍎', fruitName: 'Apple' },
-  orange: { name: 'Orange Tree', color: '#6d4c41', leafColor: '#43a047', accentColor: '#ff9800', fruit: '🍊', fruitName: 'Orange' },
-  fig: { name: 'Fig Tree', color: '#4e342e', leafColor: '#7cb342', accentColor: '#8d6e63', fruit: '🫐', fruitName: 'Fig' },
-  peach: { name: 'Peach Tree', color: '#5d4037', leafColor: '#81c784', accentColor: '#f48fb1', fruit: '🍑', fruitName: 'Peach' },
-  lemon: { name: 'Lemon Tree', color: '#6d4c41', leafColor: '#66bb6a', accentColor: '#fdd835', fruit: '🍋', fruitName: 'Lemon' },
-  plum: { name: 'Plum Tree', color: '#4a3b4a', leafColor: '#7cb342', accentColor: '#ab47bc', fruit: '🍇', fruitName: 'Plum' }
+  lemon: { name: 'Meyer Lemon', color: '#5d4037', leafColor: '#66bb6a', accentColor: '#fdd835', fruit: '🍋', fruitName: 'Lemon', img: 'assets/meyer_lemon.png' },
+  fig: { name: 'Mission Fig', color: '#4e342e', leafColor: '#7cb342', accentColor: '#8d6e63', fruit: '🫐', fruitName: 'Fig', img: 'assets/black_mission_fig.png' },
+  peach: { name: 'White Peach', color: '#5d4037', leafColor: '#81c784', accentColor: '#f48fb1', fruit: '🍑', fruitName: 'Peach', img: 'assets/white_peach.png' },
+  strawberry: { name: 'Alpine Strawberry', color: '#6d4c41', leafColor: '#66bb6a', accentColor: '#ef5350', fruit: '🍓', fruitName: 'Strawberry', img: 'assets/alpine_strawberry.png' }
 };
 
 // ===== FRUIT SYSTEM CONFIG =====
@@ -2337,7 +2356,7 @@ let envLoop = null;
 let seasonLoop = null;
 
 // ===== LOCAL STORAGE =====
-const SAVE_KEY = 'forest_companion_v3';
+const SAVE_KEY = 'forest_companion_v4';
 
 function saveGame() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(gameState)); } catch (e) {}
@@ -2357,6 +2376,11 @@ function loadGame() {
     if (typeof gameState.essence !== 'number') gameState.essence = 0;
     if (!gameState.unlockedItems) gameState.unlockedItems = [];
     if (!gameState.equippedItems) gameState.equippedItems = [];
+    // Migrate old seed types to new ones
+    const seedMigrations = { apple: 'lemon', orange: 'peach', plum: 'strawberry', cherry: 'peach', willow: 'fig', oak: 'lemon', pine: 'lemon' };
+    if (gameState.seedType && seedMigrations[gameState.seedType]) {
+      gameState.seedType = seedMigrations[gameState.seedType];
+    }
     return true;
   } catch (e) { return false; }
 }
@@ -2407,7 +2431,7 @@ function playEvolutionSound() {
 
 // ===== SVG PLANTS =====
 function getPlantSVG(stage, seedType) {
-  const c = SEED_TYPES[seedType] || SEED_TYPES.apple;
+  const c = SEED_TYPES[seedType] || SEED_TYPES.lemon;
   const leaf = c.leafColor;
   const trunk = c.color;
   const fruit = c.accentColor;
@@ -3193,12 +3217,35 @@ function evolve(newStage) {
 
 // ===== RENDERING =====
 function renderPlant() {
-  const svg = document.getElementById('plantSvg');
   const wrapper = document.getElementById('plantWrapper');
   const shadow = document.getElementById('plantShadow');
-  svg.innerHTML = getPlantSVG(gameState.stage, gameState.seedType);
+  const img = document.getElementById('plantImg');
+  const svg = document.getElementById('plantSvg');
+
   wrapper.className = `plant-wrapper stage-${gameState.stage}`;
   if (shadow) shadow.className = `plant-shadow stage-${gameState.stage}`;
+
+  // Use watercolor image if seed type has assets, otherwise fallback to SVG
+  const seed = SEED_TYPES[gameState.seedType];
+  if (seed && seed.img) {
+    // Map stage to lifecycle asset
+    const assetMap = {
+      seed: 'seed',
+      sprout: 'sprout',
+      sapling: 'sapling',
+      tree: 'mature',
+      ancient: 'mature'
+    };
+    const assetState = assetMap[gameState.stage] || 'seed';
+    const baseName = seed.img.replace('assets/', '').replace('.png', '');
+    img.src = `assets/${baseName}_${assetState}.png`;
+    img.style.display = 'block';
+    svg.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+    svg.style.display = 'block';
+    svg.innerHTML = getPlantSVG(gameState.stage, gameState.seedType);
+  }
 }
 
 function updateUI() {
@@ -3754,7 +3801,7 @@ async function generatePassportCard(preset) {
 
   await document.fonts.ready;
 
-  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.apple;
+  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.lemon;
   const info = STAGE_INFO[gameState.stage];
   const season = SEASONS[currentSeason];
   const isStory = preset === 'story';
@@ -3922,7 +3969,7 @@ async function generateShareCard() {
 
   await document.fonts.ready;
 
-  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.oak;
+  const seed = SEED_TYPES[gameState.seedType] || SEED_TYPES.lemon;
   const info = STAGE_INFO[gameState.stage];
   const season = SEASONS[currentSeason];
 
