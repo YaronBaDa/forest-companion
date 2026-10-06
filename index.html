@@ -5,9 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Pipling</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0c120a">
+<meta name="theme-color" content="#f5e6d3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:title" content="Pipling — Grow Your Own Fruit Tree">
+<meta property="og:description" content="A cozy botanical Tamagotchi. Nurture a seed into a tree.">
+<meta property="og:image" content="https://yaronbada.github.io/forest-companion/assets/meyer_lemon.png">
+<meta property="og:url" content="https://yaronbada.github.io/forest-companion/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pipling — Grow Your Own Fruit Tree">
+<meta name="twitter:description" content="A cozy botanical Tamagotchi. Nurture a seed into a tree.">
+<meta name="twitter:image" content="https://yaronbada.github.io/forest-companion/assets/meyer_lemon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -2037,6 +2046,210 @@
 
   .notification.show { transform: translateX(-50%) translateY(0); }
 
+  /* ===== STREAK BADGE ===== */
+  .streak-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--parchment);
+    border: 1px solid var(--border-warm);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-light);
+    box-shadow: 0 2px 8px rgba(74, 55, 40, 0.1);
+  }
+
+  /* ===== GROVE BOOK ===== */
+  .grove-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 4px;
+  }
+
+  .grove-card {
+    background: var(--paper-dark);
+    border: 2px solid var(--border-warm);
+    border-radius: 16px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .grove-card.current {
+    border-color: var(--nutrient);
+    box-shadow: 0 0 0 2px rgba(168, 184, 136, 0.3);
+  }
+
+  .grove-card.locked {
+    opacity: 0.4;
+  }
+
+  .grove-card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .grove-card-name {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .grove-card-stage {
+    font-size: 11px;
+    color: var(--ink-light);
+  }
+
+  .grove-card-days {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .grove-card-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--nutrient);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== INSTALL BANNER ===== */
+  .install-banner {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--parchment-solid);
+    border: 2px solid var(--border-warm);
+    border-radius: 20px;
+    padding: 16px 20px;
+    z-index: 800;
+    box-shadow: 0 8px 32px rgba(74, 55, 40, 0.2);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 340px;
+    width: calc(100% - 40px);
+    text-align: center;
+  }
+
+  .install-banner.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .install-text {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .install-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .install-btn {
+    flex: 1;
+    background: #a8b888;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+
+  .install-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border-warm);
+    color: var(--ink-light);
+  }
+
+  /* ===== TUTORIAL ===== */
+  .tutorial-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 900;
+    display: none;
+    cursor: pointer;
+  }
+
+  .tutorial-overlay.active {
+    display: block;
+  }
+
+  .tutorial-ring {
+    position: absolute;
+    border: 3px solid var(--nutrient);
+    border-radius: 20px;
+    animation: tutorial-pulse 1.5s ease-in-out infinite;
+    pointer-events: none;
+    transition: all 0.4s ease;
+  }
+
+  @keyframes tutorial-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(168, 184, 136, 0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(168, 184, 136, 0); }
+  }
+
+  .tutorial-bubble {
+    position: absolute;
+    background: var(--parchment-solid);
+    border: 2px solid var(--border-warm);
+    border-radius: 16px;
+    padding: 12px 18px;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--ink);
+    max-width: 260px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(74, 55, 40, 0.2);
+    pointer-events: none;
+  }
+
+  .tutorial-hint {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--ink-faint);
+    pointer-events: none;
+  }
+
+  /* ===== WILTED OVERLAY ===== */
+  .wilted-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(139, 90, 43, 0.25);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 5;
+  }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 380px) {
     .garden { height: 300px; }
@@ -2093,7 +2306,11 @@
     <div class="brand">
       <div class="brand-title">Pipling</div>
     </div>
-    <button class="settings-btn" onclick="openSettings()">⚙️</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="streak-badge" id="streakBadge" style="display:none;"></div>
+      <button class="settings-btn" onclick="openGroveBook()" title="My Grove">📚</button>
+      <button class="settings-btn" onclick="openSettings()">⚙️</button>
+    </div>
   </div>
 
   <!-- Stage Header -->
@@ -2345,6 +2562,44 @@
 <!-- Notification -->
 <div class="notification" id="notification"></div>
 
+<!-- Streak Broken Modal -->
+<div class="modal-overlay" id="streakBrokenModal">
+  <div class="modal">
+    <div class="modal-icon">💔</div>
+    <div class="modal-title">Streak Ended</div>
+    <div class="modal-text" id="streakBrokenText">Your streak ended.</div>
+    <button class="modal-btn" onclick="restoreStreak()">Restore (10 ✨)</button>
+    <button class="modal-btn secondary" onclick="dismissStreakBroken()">Start Fresh</button>
+  </div>
+</div>
+
+<!-- Grove Book Modal -->
+<div class="modal-overlay" id="groveBookModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-icon">📚</div>
+    <div class="modal-title">My Grove</div>
+    <div class="modal-text" id="groveBookProgress" style="text-align:center;font-weight:600;color:var(--ink-light);margin-bottom:16px;"></div>
+    <div class="grove-grid" id="groveBookGrid"></div>
+    <button class="modal-btn" onclick="closeGroveBook()" style="margin-top:16px;">Close</button>
+  </div>
+</div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="installBanner">
+  <div class="install-text">🌱 Add Pipling to your home screen?</div>
+  <div class="install-actions">
+    <button class="install-btn" onclick="doInstall()">Install</button>
+    <button class="install-btn secondary" onclick="dismissInstall()">Not now</button>
+  </div>
+</div>
+
+<!-- Tutorial Overlay -->
+<div class="tutorial-overlay" id="tutorialOverlay" onclick="advanceTutorial()">
+  <div class="tutorial-ring" id="tutorialRing"></div>
+  <div class="tutorial-bubble" id="tutorialBubble"></div>
+  <div class="tutorial-hint">Tap anywhere to continue</div>
+</div>
+
 <script>
 // ===== CONSTANTS =====
 const STAGES = ['seed', 'sprout', 'sapling', 'tree', 'ancient'];
@@ -2494,8 +2749,16 @@ let gameState = {
   // Fruit system
   fruitProgress: 0,
   essence: 0,
-  unlockedItems: [],
-  equippedItems: []
+    unlockedItems: [],
+  equippedItems: [],
+  // Streak system
+  lastVisitDate: null,
+  streakCount: 0,
+  bestStreak: 0,
+  // Collection
+  groveHistory: [],
+  // Wilting
+  wiltedAt: null
 };
 
 let audioCtx = null;
@@ -2504,7 +2767,7 @@ let envLoop = null;
 let seasonLoop = null;
 
 // ===== LOCAL STORAGE =====
-const SAVE_KEY = 'forest_companion_v4';
+const SAVE_KEY = 'forest_companion_v5';
 
 function saveGame() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(gameState)); } catch (e) {}
@@ -2524,6 +2787,9 @@ function loadGame() {
     if (typeof gameState.essence !== 'number') gameState.essence = 0;
     if (!gameState.unlockedItems) gameState.unlockedItems = [];
     if (!gameState.equippedItems) gameState.equippedItems = [];
+    if (!gameState.groveHistory) gameState.groveHistory = [];
+    if (typeof gameState.streakCount !== 'number') gameState.streakCount = 0;
+    if (typeof gameState.bestStreak !== 'number') gameState.bestStreak = 0;
     // Migrate old seed types to new ones
     const seedMigrations = { apple: 'lemon', orange: 'peach', plum: 'strawberry', cherry: 'peach', willow: 'fig', oak: 'lemon', pine: 'lemon' };
     if (gameState.seedType && seedMigrations[gameState.seedType]) {
@@ -2536,6 +2802,10 @@ function loadGame() {
 // ===== AUDIO =====
 function initAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function vibrate(ms) {
+  try { if (navigator.vibrate) navigator.vibrate(ms || 50); } catch (e) {}
 }
 
 function playTone(freq, duration, type, volume) {
@@ -2575,6 +2845,11 @@ function playEvolutionSound() {
   [523, 659, 784, 1047, 1319].forEach((note, i) => {
     setTimeout(() => playTone(note, 0.4, 'sine', 0.09), i * 150);
   });
+}
+
+function playHarvestSound() {
+  playTone(880, 0.08, 'square', 0.06);
+  setTimeout(() => playTone(1100, 0.12, 'square', 0.05), 80);
 }
 
 // ===== SVG PLANTS =====
@@ -3082,6 +3357,7 @@ function updateArchetypeUI() {
 // ===== GAME ACTIONS =====
 function selectSeed(type) {
   initAudio();
+  vibrate(50);
   gameState.seedType = type;
   gameState.createdAt = Date.now();
   gameState.fruitProgress = 0;
@@ -3090,17 +3366,20 @@ function selectSeed(type) {
   updateEnvironment();
   renderPlant();
   updateUI();
+  updateStreakUI();
   startLoops();
   saveGame();
   showMascotMessage(`I can't wait to grow ${SEED_TYPES[type].fruitName.toLowerCase()}s with you! 🌱`, 3000);
   showNotification(`${SEED_TYPES[type].name} planted`);
   playTone(440, 0.2, 'sine', 0.08);
+  setTimeout(startTutorial, 600);
   setTimeout(() => playTone(554, 0.2, 'sine', 0.08), 100);
   setTimeout(() => playTone(659, 0.3, 'sine', 0.08), 200);
 }
 
 function actionWater() {
   initAudio();
+  vibrate(50);
   gameState.water = Math.min(100, gameState.water + 15);
   gameState.growth = Math.min(100, gameState.growth + 5);
   recordAction('water');
@@ -3118,6 +3397,7 @@ function actionWater() {
 
 function actionSun() {
   initAudio();
+  vibrate(50);
   gameState.sun = Math.min(100, gameState.sun + 15);
   gameState.growth = Math.min(100, gameState.growth + 5);
   recordAction('sun');
@@ -3134,6 +3414,7 @@ function actionSun() {
 
 function actionNutrient() {
   initAudio();
+  vibrate(50);
   gameState.nutrient = Math.min(100, gameState.nutrient + 15);
   gameState.growth = Math.min(100, gameState.growth + 8);
   recordAction('nutrients');
@@ -3189,8 +3470,10 @@ function createRain() {
 function createSunRays() {
   const garden = document.getElementById('garden');
   const flare = document.getElementById('sunFlare');
-  flare.classList.add('active');
-  setTimeout(() => flare.classList.remove('active'), 2500);
+  if (flare) {
+    flare.classList.add('active');
+    setTimeout(() => flare.classList.remove('active'), 2500);
+  }
 
   // Floating sun orbs
   for (let i = 0; i < 6; i++) {
@@ -3271,6 +3554,7 @@ function evolve(newStage) {
   gameState.stage = newStage;
   gameState.stageIndex = STAGES.indexOf(newStage);
   gameState.growth = 0;
+  vibrate(80);
 
   const flash = document.getElementById('evolutionFlash');
   flash.classList.add('active');
@@ -3289,6 +3573,16 @@ function evolve(newStage) {
 
   renderPlant();
   updateUI();
+
+  // Show install prompt after first evolution
+  if (newStage === 'sprout') {
+    setTimeout(showInstallPrompt, 2000);
+  }
+
+  // Record to grove history when reaching ancient
+  if (newStage === 'ancient') {
+    recordGroveHistory('completed');
+  }
 
   // Mascot celebrates evolution
   const mascotMsgs = {
@@ -3325,6 +3619,11 @@ function renderPlant() {
   wrapper.className = `plant-wrapper stage-${gameState.stage}`;
   if (shadow) shadow.className = `plant-shadow stage-${gameState.stage}`;
 
+  // Wilted state
+  const isWilted = !!gameState.wiltedAt;
+  if (img) img.style.filter = isWilted ? 'sepia(0.8) brightness(0.7)' : '';
+  if (svg) svg.style.filter = isWilted ? 'sepia(0.8) brightness(0.7)' : '';
+
   // Use watercolor image if seed type has assets, otherwise fallback to SVG
   const seed = SEED_TYPES[gameState.seedType];
   if (seed && seed.img) {
@@ -3338,7 +3637,17 @@ function renderPlant() {
     };
     const assetState = assetMap[gameState.stage] || 'seed';
     const baseName = seed.img.replace('assets/', '').replace('.png', '');
-    img.src = `assets/${baseName}_${assetState}.png`;
+    const imgPath = `assets/${baseName}_${assetState}.png`;
+    img.onerror = () => {
+      img.style.display = 'none';
+      svg.style.display = 'block';
+      svg.innerHTML = getPlantSVG(gameState.stage, gameState.seedType);
+    };
+    img.onload = () => {
+      img.style.display = 'block';
+      svg.style.display = 'none';
+    };
+    img.src = imgPath;
     img.style.display = 'block';
     svg.style.display = 'none';
   } else {
@@ -3415,6 +3724,7 @@ function startLoops() {
     gameState.sun = Math.max(0, gameState.sun - 1.5);
     gameState.nutrient = Math.max(0, gameState.nutrient - 1);
     updateUI();
+    checkWilting();
     saveGame();
 
     if (gameState.water < 15) showNotification('Your plant needs water');
@@ -3629,6 +3939,7 @@ function renderTreeFruits() {
 
 function harvestFruit() {
   if (gameState.fruitProgress < FRUIT_CONFIG.waterToGrow) return;
+  vibrate(60);
 
   const fruitName = getFruitName();
   const essence = FRUIT_CONFIG.harvestEssence;
@@ -3636,6 +3947,7 @@ function harvestFruit() {
   gameState.fruitProgress = 0;
 
   showNotification(`Harvested ${fruitName}! +${essence} essence`);
+  playHarvestSound();
   createConfetti();
 
   // Show reward modal
@@ -3937,6 +4249,12 @@ async function generatePassportCard(preset) {
   ctx.fillStyle = 'rgba(248,250,246,0.85)';
   ctx.fillText('🌱 Pipling', W / 2, isStory ? 130 : 110);
 
+  // Headline
+  const headline = `I grew a ${seed.name} in Pipling!`;
+  ctx.font = `400 ${isStory ? 42 : 36}px Bellefair, Georgia, serif`;
+  ctx.fillStyle = 'rgba(248,250,246,0.9)';
+  ctx.fillText(headline, W / 2, isStory ? 200 : 170);
+
   // Plant emoji — large and central
   const plantY = isStory ? H * 0.40 : H * 0.46;
   const plantSize = isStory ? 300 : 240;
@@ -4001,7 +4319,7 @@ async function generatePassportCard(preset) {
   const footY = isStory ? H * 0.90 : H * 0.975;
   ctx.font = `400 ${isStory ? 32 : 26}px Bellefair, Georgia, serif`;
   ctx.fillStyle = 'rgba(248,250,246,0.5)';
-  ctx.fillText('Pipling', W / 2, footY);
+  ctx.fillText('Start your own garden →', W / 2, footY);
   ctx.font = `400 ${isStory ? 24 : 20}px -apple-system, BlinkMacSystemFont, sans-serif`;
   ctx.fillStyle = 'rgba(248,250,246,0.35)';
   ctx.fillText('yaronbada.github.io/forest-companion', W / 2, footY + (isStory ? 46 : 36));
@@ -4271,13 +4589,246 @@ function dismissHelpAndStart() {
   window.history.replaceState({}, '', location.pathname);
 }
 
-// ===== INIT =====
+// ===== STREAK SYSTEM =====
+function checkStreak() {
+  if (!gameState.lastVisitDate) {
+    gameState.lastVisitDate = new Date().toDateString();
+    gameState.streakCount = 1;
+    saveGame();
+    return;
+  }
+  const today = new Date().toDateString();
+  const last = gameState.lastVisitDate;
+  if (last === today) return; // Already visited today
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (last === yesterday.toDateString()) {
+    gameState.streakCount++;
+    if (gameState.streakCount > gameState.bestStreak) gameState.bestStreak = gameState.streakCount;
+    showStreakReward();
+  } else {
+    // Streak broken
+    if (gameState.streakCount >= 3) {
+      showStreakBrokenModal();
+    }
+    gameState.streakCount = 1;
+  }
+  gameState.lastVisitDate = today;
+  saveGame();
+}
+
+function showStreakReward() {
+  const s = gameState.streakCount;
+  let reward = 0, msg = '';
+  if (s === 3) { reward = 5; msg = '3-day streak! +5 essence ✨'; }
+  else if (s === 7) { reward = 15; msg = '7-day streak! Golden Fruit! +15 essence ✨'; }
+  else if (s === 30) { reward = 50; msg = '30-day streak! Legendary Gardener! +50 essence ✨'; }
+  else { msg = `Day ${s} streak! 🔥`; }
+  if (reward > 0) gameState.essence += reward;
+  saveGame();
+  setTimeout(() => showNotification(msg), 1200);
+}
+
+function showStreakBrokenModal() {
+  const broken = gameState.streakCount;
+  const modal = document.getElementById('streakBrokenModal');
+  if (!modal) return;
+  document.getElementById('streakBrokenText').textContent =
+    `Your ${broken}-day streak ended. Use 10 essence to restore it?`;
+  modal.classList.add('active');
+}
+
+function restoreStreak() {
+  if (gameState.essence < 10) { showNotification('Not enough essence ✨'); return; }
+  gameState.essence -= 10;
+  gameState.streakCount = parseInt(document.getElementById('streakBrokenText').dataset.broken) || 1;
+  document.getElementById('streakBrokenModal').classList.remove('active');
+  saveGame();
+  updateEssenceUI();
+  showNotification('Streak restored! 🔥');
+}
+
+function dismissStreakBroken() {
+  document.getElementById('streakBrokenModal').classList.remove('active');
+}
+
+function updateStreakUI() {
+  const el = document.getElementById('streakBadge');
+  if (!el) return;
+  if (gameState.streakCount > 0) {
+    el.textContent = `🔥 Day ${gameState.streakCount}`;
+    el.style.display = 'flex';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+// ===== WILTING =====
+function checkWilting() {
+  if (!gameState.seedType) return;
+  const allZero = gameState.water <= 0 && gameState.sun <= 0 && gameState.nutrient <= 0;
+  if (allZero && !gameState.wiltedAt) {
+    gameState.wiltedAt = Date.now();
+    saveGame();
+    showModal('😔', 'Your plant is wilting!', 'Water it within 24 hours or it returns to a seed.');
+    renderPlant();
+  } else if (!allZero && gameState.wiltedAt) {
+    gameState.wiltedAt = null;
+    saveGame();
+    renderPlant();
+  }
+  // 24h wilted = back to seed
+  if (gameState.wiltedAt && Date.now() - gameState.wiltedAt > 24 * 60 * 60 * 1000) {
+    gameState.stage = 'seed';
+    gameState.stageIndex = 0;
+    gameState.growth = 0;
+    gameState.wiltedAt = null;
+    recordGroveHistory('wilted');
+    saveGame();
+    renderPlant();
+    updateUI();
+    showModal('🌰', 'Back to Seed', 'Your plant returned to a seed. A fresh start awaits!');
+  }
+}
+
+// ===== GROVE HISTORY =====
+function recordGroveHistory(reason) {
+  if (!gameState.seedType) return;
+  const entry = {
+    species: gameState.seedType,
+    stage: gameState.stage,
+    daysAlive: getDaysOld(),
+    endedAt: Date.now(),
+    reason: reason || 'completed'
+  };
+  if (!gameState.groveHistory) gameState.groveHistory = [];
+  gameState.groveHistory.push(entry);
+  saveGame();
+}
+
+function openGroveBook() {
+  vibrate(50);
+  const modal = document.getElementById('groveBookModal');
+  const grid = document.getElementById('groveBookGrid');
+  const progress = document.getElementById('groveBookProgress');
+  grid.innerHTML = '';
+  const species = Object.keys(SEED_TYPES);
+  const grown = gameState.groveHistory || [];
+  const current = gameState.seedType ? [{ species: gameState.seedType, stage: gameState.stage, daysAlive: getDaysOld(), current: true }] : [];
+  const all = [...current, ...grown];
+  const uniqueSpecies = new Set(all.map(e => e.species));
+  progress.textContent = `${uniqueSpecies.size}/${species.length} species grown`;
+  species.forEach(key => {
+    const s = SEED_TYPES[key];
+    const entries = all.filter(e => e.species === key);
+    const isCurrent = entries.some(e => e.current);
+    const card = document.createElement('div');
+    card.className = 'grove-card' + (isCurrent ? ' current' : '') + (entries.length === 0 ? ' locked' : '');
+    const stageLabel = isCurrent ? STAGE_NAMES[gameState.stage] : (entries.length > 0 ? STAGE_NAMES[entries[0].stage] : '???');
+    const daysLabel = isCurrent ? `${getDaysOld()}d` : (entries.length > 0 ? `${entries[0].daysAlive}d` : '');
+    card.innerHTML = `
+      <div class="grove-card-img">${entries.length > 0 || isCurrent ? `<img src="${s.img}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : '❓'}</div>
+      <div class="grove-card-name">${entries.length > 0 || isCurrent ? s.name : '???'}</div>
+      <div class="grove-card-stage">${entries.length > 0 || isCurrent ? stageLabel : 'Not grown'}</div>
+      ${daysLabel ? `<div class="grove-card-days">${daysLabel}</div>` : ''}
+      ${isCurrent ? '<div class="grove-card-badge">Growing</div>' : ''}
+    `;
+    grid.appendChild(card);
+  });
+  modal.classList.add('active');
+}
+
+function closeGroveBook() {
+  document.getElementById('groveBookModal').classList.remove('active');
+}
+
+// ===== PWA INSTALL PROMPT =====
+let deferredInstallPrompt = null;
+
+function setupInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+  });
+}
+
+function showInstallPrompt() {
+  if (!deferredInstallPrompt || localStorage.getItem('pipling_install_prompted')) return;
+  localStorage.setItem('pipling_install_prompted', 'true');
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.classList.add('show');
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').classList.remove('show');
+}
+
+async function doInstall() {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  if (outcome === 'accepted') showNotification('Added to home screen! 🌱');
+  dismissInstall();
+  deferredInstallPrompt = null;
+}
+
+// ===== TUTORIAL =====
+let tutorialStep = 0;
+const TUTORIAL_STEPS = [
+  { target: 'waterBtn', text: 'Tap Water to give your seed a drink 💧', pos: 'above' },
+  { target: 'statsRow', text: 'Keep water, sun, and nutrients above 20% for healthy growth', pos: 'above' },
+  { target: 'passportBtn', text: 'Share your plant\'s journey with friends! 🪪', pos: 'above' }
+];
+
+function startTutorial() {
+  if (localStorage.getItem('pipling_tutorial_seen')) return;
+  tutorialStep = 0;
+  showTutorialStep();
+}
+
+function showTutorialStep() {
+  const overlay = document.getElementById('tutorialOverlay');
+  if (!overlay) return;
+  if (tutorialStep >= TUTORIAL_STEPS.length) {
+    overlay.classList.remove('active');
+    localStorage.setItem('pipling_tutorial_seen', 'true');
+    return;
+  }
+  const step = TUTORIAL_STEPS[tutorialStep];
+  const target = document.getElementById(step.target) || document.querySelector('.' + step.target);
+  const bubble = document.getElementById('tutorialBubble');
+  const ring = document.getElementById('tutorialRing');
+  if (!target || !bubble || !ring) return;
+  overlay.classList.add('active');
+  const rect = target.getBoundingClientRect();
+  ring.style.left = (rect.left - 8) + 'px';
+  ring.style.top = (rect.top - 8) + 'px';
+  ring.style.width = (rect.width + 16) + 'px';
+  ring.style.height = (rect.height + 16) + 'px';
+  bubble.textContent = step.text;
+  bubble.style.left = '50%';
+  bubble.style.transform = 'translateX(-50%)';
+  const bubbleY = rect.top - 80;
+  bubble.style.top = Math.max(10, bubbleY) + 'px';
+}
+
+function advanceTutorial() {
+  tutorialStep++;
+  showTutorialStep();
+}
+
+// ===== WILTED PLANT RENDERING =====
+function getWiltedOverlay() {
+  return gameState.wiltedAt ? `<div class="wilted-overlay"></div>` : '';
+}
 function init() {
   const visitor = parseVisitorParams();
   if (visitor) {
     showVisitorView(visitor);
     return;
   }
+
+  setupInstallPrompt();
 
   const hasSave = loadGame();
 
@@ -4290,6 +4841,9 @@ function init() {
     applyPhenotype();
     setTimeout(renderTreeFruits, 300);
     startLoops();
+    checkStreak();
+    checkWilting();
+    updateStreakUI();
 
     const grove = parseGroveHash();
     if (grove) {
@@ -4302,6 +4856,7 @@ function init() {
     const isReferral = checkReferral();
     if (!isReferral) {
       // Fresh start — seed select visible
+      setTimeout(startTutorial, 800);
     }
   }
 }
