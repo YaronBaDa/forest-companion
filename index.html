@@ -2669,6 +2669,9 @@
     <button class="growth-btn share" id="shareBtn" onclick="openPassportModal()">
       <span>🪪</span> Passport
     </button>
+    <button class="growth-btn cutting" id="cuttingBtn" onclick="openCuttingModal()" style="display:none;">
+      <span>✂</span> Cutting
+    </button>
     <button class="growth-btn sos hidden" id="sosBtn" onclick="generateSOSLink()">
       <span>💧</span> Call Rain
     </button>
@@ -2736,6 +2739,38 @@
     <div class="share-preview" id="sharePreview"></div>
     <button class="modal-btn" onclick="shareCard()">Share Card</button>
     <button class="modal-btn secondary" onclick="closeShareModal()">Close</button>
+  </div>
+</div>
+
+<!-- Cutting / Grafting Modal -->
+<div class="modal-overlay" id="cuttingModal">
+  <div class="modal" style="max-width: 340px;">
+    <div class="modal-icon">✂</div>
+    <div class="modal-title" style="font-family:var(--font-display);font-size:22px;">Snip a Cutting</div>
+    <div class="modal-text" style="font-family:var(--font-body);font-size:14px;line-height:1.5;">
+      Share a living piece of your specimen. When planted, it will inherit your plant's traits.
+    </div>
+    <div class="modal-text" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;color:var(--ink-muted);margin-bottom:16px;" id="cuttingInfo">
+      GENERATION: 1 // PARENT: UNKNOWN
+    </div>
+    <button class="modal-btn" onclick="shareCutting()">Share Cutting Link</button>
+    <button class="modal-btn secondary" onclick="closeCuttingModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- Grafting / Receive Cutting Modal -->
+<div class="modal-overlay" id="graftingModal">
+  <div class="modal" style="max-width: 340px;">
+    <div class="modal-icon">🌱</div>
+    <div class="modal-title" style="font-family:var(--font-display);font-size:22px;">A Dormant Cutting</div>
+    <div class="modal-text" style="font-family:var(--font-body);font-size:14px;line-height:1.5;" id="graftingText">
+      A dormant cutting from a friend's grove.
+    </div>
+    <div class="modal-text" style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;color:var(--ink-muted);margin-bottom:16px;" id="graftingMeta">
+      GENERATION: 2 // TRAITS: UNKNOWN
+    </div>
+    <button class="modal-btn" onclick="plantCutting()">Plant in Pot</button>
+    <button class="modal-btn secondary" onclick="dismissGrafting()">Not Now</button>
   </div>
 </div>
 
@@ -3005,6 +3040,9 @@ let gameState = {
   bestStreak: 0,
   // Collection
   groveHistory: [],
+  // Lineage
+  generation: 0,
+  parentName: null,
   // Wilting
   wiltedAt: null
 };
@@ -3038,6 +3076,8 @@ function loadGame() {
     if (!gameState.groveHistory) gameState.groveHistory = [];
     if (typeof gameState.streakCount !== 'number') gameState.streakCount = 0;
     if (typeof gameState.bestStreak !== 'number') gameState.bestStreak = 0;
+    if (typeof gameState.generation !== 'number') gameState.generation = 0;
+    if (typeof gameState.parentName !== 'string') gameState.parentName = null;
     // Migrate old seed types to new ones
     const seedMigrations = { apple: 'lemon', orange: 'peach', plum: 'strawberry', cherry: 'peach', willow: 'fig', oak: 'lemon', pine: 'lemon' };
     if (gameState.seedType && seedMigrations[gameState.seedType]) {
@@ -3970,6 +4010,16 @@ function updateUI() {
     sosBtn.classList.remove('hidden');
   } else {
     sosBtn.classList.add('hidden');
+  }
+
+  // Show cutting button at sprout+ stage
+  const cuttingBtn = document.getElementById('cuttingBtn');
+  if (cuttingBtn) {
+    if (gameState.stageIndex >= 1) {
+      cuttingBtn.style.display = 'flex';
+    } else {
+      cuttingBtn.style.display = 'none';
+    }
   }
 
   updateArchetypeUI();
@@ -5014,6 +5064,115 @@ function updateStreakUI() {
   }
 }
 
+// ===== CUTTING / PROPAGATION SYSTEM =====
+function openCuttingModal() {
+  if (!gameState.seedType || gameState.stageIndex < 1) {
+    showNotification('Your plant must reach Sprout stage first');
+    return;
+  }
+  vibrate(50);
+  const modal = document.getElementById('cuttingModal');
+  const gen = (gameState.generation || 0) + 1;
+  const parent = gameState.parentName || gameState.ownerName || 'Unknown';
+  document.getElementById('cuttingInfo').textContent = 
+    `GENERATION: ${gen} // PARENT: ${parent.toUpperCase()}`;
+  modal.classList.add('active');
+}
+
+function closeCuttingModal() {
+  document.getElementById('cuttingModal').classList.remove('active');
+}
+
+function shareCutting() {
+  const gen = (gameState.generation || 0) + 1;
+  const parent = gameState.ownerName || 'Unknown';
+  const payload = {
+    species: gameState.seedType,
+    generation: gen,
+    parentName: parent,
+    traits: gameState.archetype ? gameState.archetype.name : 'Balanced',
+    timestamp: Date.now()
+  };
+  const encoded = btoa(JSON.stringify(payload));
+  const url = `${location.origin}${location.pathname}?cutting=${encoded}`;
+  
+  const text = `🌱 A cutting from my ${SEED_TYPES[gameState.seedType].name} in Pipling!\n` +
+    `Generation ${gen}, grafted from ${parent}. Plant it in your own grove:\n${url}`;
+  
+  if (navigator.share) {
+    navigator.share({ title: 'Pipling — Snip a Cutting', text, url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification('Cutting link copied! 🌱');
+    }).catch(() => {
+      showNotification('Copy: ' + url);
+    });
+  }
+  closeCuttingModal();
+}
+
+// Detect incoming cutting
+function checkCuttingParam() {
+  const params = new URLSearchParams(location.search);
+  const cutting = params.get('cutting');
+  if (!cutting) return null;
+  try {
+    const payload = JSON.parse(atob(cutting));
+    if (!payload.species || !SEED_TYPES[payload.species]) return null;
+    return payload;
+  } catch (e) { return null; }
+}
+
+function showGraftingModal(payload) {
+  document.getElementById('seedSelect').classList.add('hidden');
+  document.getElementById('gameContainer').style.display = 'none';
+  const modal = document.getElementById('graftingModal');
+  const seed = SEED_TYPES[payload.species];
+  document.getElementById('graftingText').textContent = 
+    `A dormant ${seed.name} cutting from ${payload.parentName}'s grove. ` +
+    `It carries the essence of generation ${payload.generation}.`;
+  document.getElementById('graftingMeta').textContent = 
+    `GENERATION: ${payload.generation} // TRAITS: ${payload.traits || 'UNKNOWN'}`;
+  modal.classList.add('active');
+  // Store for planting
+  window._pendingCutting = payload;
+}
+
+function plantCutting() {
+  const payload = window._pendingCutting;
+  if (!payload) return;
+  // Clean URL
+  window.history.replaceState({}, '', location.pathname);
+  // Start at sprout stage with inherited traits
+  gameState.seedType = payload.species;
+  gameState.stage = 'sprout';
+  gameState.stageIndex = 1;
+  gameState.generation = payload.generation;
+  gameState.parentName = payload.parentName;
+  gameState.growth = 50; // Head start
+  gameState.totalGrowth = 20;
+  gameState.water = 60;
+  gameState.sun = 60;
+  gameState.nutrient = 60;
+  document.getElementById('graftingModal').classList.remove('active');
+  document.getElementById('gameContainer').style.display = 'flex';
+  updateEnvironment();
+  renderPlant();
+  updateUI();
+  updateStreakUI();
+  startLoops();
+  saveGame();
+  showNotification(`🌱 ${SEED_TYPES[payload.species].name} grafted! Generation ${payload.generation}`);
+  showMascotMessage(`A gift from ${payload.parentName}! Let's grow together! 🌱`, 4000);
+  playEvolutionSound();
+}
+
+function dismissGrafting() {
+  document.getElementById('graftingModal').classList.remove('active');
+  window.history.replaceState({}, '', location.pathname);
+  document.getElementById('seedSelect').classList.remove('hidden');
+}
+
 // ===== WILTING =====
 function checkWilting() {
   if (!gameState.seedType) return;
@@ -5179,6 +5338,13 @@ function init() {
   const visitor = parseVisitorParams();
   if (visitor) {
     showVisitorView(visitor);
+    return;
+  }
+
+  // Check for incoming cutting
+  const cutting = checkCuttingParam();
+  if (cutting) {
+    showGraftingModal(cutting);
     return;
   }
 
