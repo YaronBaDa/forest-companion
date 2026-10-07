@@ -22,25 +22,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f5e6d3;
-    --paper-dark: #e8d5c0;
-    --parchment: rgba(245, 230, 211, 0.88);
-    --parchment-solid: #f5e6d3;
-    --ink: #4a3728;
-    --ink-light: #7a6248;
-    --ink-faint: #a89878;
-    --border-warm: #c4a882;
-    --water: #7ab8c4;
-    --water-soft: rgba(122, 184, 196, 0.25);
-    --sun: #d4a574;
-    --sun-soft: rgba(212, 165, 116, 0.25);
-    --nutrient: #a8b888;
-    --nutrient-soft: rgba(168, 184, 136, 0.25);
-    --soil-dark: #4e342e;
-    --soil-mid: #6d4c41;
-    --soil-light: #8d6e63;
-    --grass: #7a9a5a;
-    --grass-light: #a8c47a;
+    /* Seraphinianus palette */
+    --vellum: #F4EEDD;
+    --vellum-dark: #E8E0CC;
+    --vellum-deep: #D4C9A8;
+    --ink: #2C221E;
+    --ink-light: #5A4A3E;
+    --ink-faint: #8A7A6E;
+    --vermilion: #B85450;
+    --verdigris: #4A7C6F;
+    --brass: #A89060;
+    --brass-light: #C4B08A;
+    --border-ink: #3A2E28;
+    --water: #5A8A7A;
+    --water-soft: rgba(90, 138, 122, 0.15);
+    --sun: #B85450;
+    --sun-soft: rgba(184, 84, 80, 0.15);
+    --nutrient: #4A7C6F;
+    --nutrient-soft: rgba(74, 124, 111, 0.15);
     --font-serif: 'Bellefair', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
@@ -48,7 +47,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   body {
-    background: var(--paper);
+    background: var(--vellum);
     color: var(--ink);
     font-family: var(--font-sans);
     min-height: 100vh;
@@ -57,39 +56,102 @@
     flex-direction: column;
     align-items: center;
     -webkit-font-smoothing: antialiased;
+    /* Aged parchment texture */
     background-image:
-      radial-gradient(ellipse at 20% 10%, rgba(255,240,220,0.4) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 90%, rgba(230,210,180,0.3) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      radial-gradient(ellipse at 20% 50%, rgba(212, 201, 168, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(232, 224, 204, 0.4) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
 
   /* ===== HEADER ===== */
   .header {
     width: 100%;
     max-width: 420px;
-    padding: 12px 20px 10px;
+    padding: 8px 16px 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--parchment);
-    border-bottom: 1px solid var(--border-warm);
-    box-shadow: 0 2px 8px rgba(74, 55, 40, 0.06);
+    background: rgba(244,238,221,0.92);
+    border-bottom: 1px solid var(--border-ink);
+    height: 48px;
     flex-wrap: nowrap;
     gap: 8px;
+    backdrop-filter: blur(4px);
+    position: relative;
+    z-index: 100;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
+  }
+
+  .brand-title {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--ink);
+    line-height: 1;
+    text-shadow: none;
+    -webkit-text-stroke: 0;
   }
 
   .header-icons {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     flex-shrink: 0;
+  }
+
+  .header-icons button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-ink);
+    background: transparent;
+    color: var(--ink-light);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .header-icons button:hover { border-color: var(--ink); }
+
+  .stage-chip {
+    background: var(--verdigris);
+    border: none;
+    border-radius: 8px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #F4EEDD;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* Stage header merged into header — remove separate card */
+  .stage-header {
+    display: none;
+  }
+
+  /* Specimen name in header */
+  .specimen-name {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-light);
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .brand-title {
@@ -114,8 +176,8 @@
   .landing-logo-mark {
     width: 72px;
     height: 72px;
-    background: var(--parchment);
-    border: 2px solid var(--border-warm);
+    background: rgba(244,238,221,0.9);
+    border: 2px solid var(--border-ink);
     border-radius: 22px;
     display: flex;
     align-items: center;
@@ -174,8 +236,8 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--parchment);
-    border-bottom: 1px solid var(--border-warm);
+    background: rgba(244,238,221,0.9);
+    border-bottom: 1px solid var(--border-ink);
     box-shadow: 0 2px 8px rgba(74, 55, 40, 0.06);
   }
 
@@ -183,7 +245,7 @@
     width: 44px;
     height: 44px;
     background: rgba(255,255,255,0.6);
-    border: 2px solid var(--border-warm);
+    border: 2px solid var(--border-ink);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -236,6 +298,7 @@
   .archetype-badge.hidden { display: none; }
 
   /* ===== GARDEN (Dynamic Environment) ===== */
+  /* ===== SERAPHINIANUS FIELD PLATE ===== */
   .garden-wrap {
     width: 100%;
     max-width: 420px;
@@ -244,129 +307,78 @@
 
   .garden {
     position: relative;
-    height: 420px;
+    height: 55vh;
+    min-height: 380px;
     border-radius: 0;
     overflow: hidden;
     border: none;
     transition: filter 1.2s ease;
     box-shadow: none;
-    background: transparent;
+    background: var(--vellum);
+    border-top: 1px solid var(--border-ink);
+    border-bottom: 1px solid var(--border-ink);
   }
 
-  /* Vintage storybook background — full bleed */
-  .storybook-bg {
+  .field-plate-frame {
     position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse at 50% 100%, rgba(122, 154, 90, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 20% 80%, rgba(200, 170, 130, 0.2) 0%, transparent 40%),
-      radial-gradient(ellipse at 80% 80%, rgba(180, 160, 120, 0.15) 0%, transparent 40%),
-      linear-gradient(180deg, #e8dcc8 0%, #d4c4a8 30%, #c4b498 60%, #b0a080 100%);
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border: 1px solid var(--border-ink);
+    pointer-events: none;
+    z-index: 3;
   }
 
-  /* Rolling meadow hills */
-  .meadow-hill {
+  .field-plate-frame::before {
+    content: '';
     position: absolute;
-    border-radius: 50% 50% 0 0;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    border: 1px solid rgba(58, 46, 40, 0.15);
+  }
+
+  .measurement-arcs {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+    background-image:
+      radial-gradient(circle at 30% 20%, transparent 60%, rgba(44, 34, 30, 0.04) 60.5%, transparent 61%),
+      radial-gradient(circle at 70% 80%, transparent 70%, rgba(44, 34, 30, 0.03) 70.5%, transparent 71%),
+      radial-gradient(circle at 50% 50%, transparent 40%, rgba(44, 34, 30, 0.02) 40.5%, transparent 41%);
+  }
+
+  .crosshatch {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
     z-index: 1;
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(44, 34, 30, 0.015) 20px, rgba(44, 34, 30, 0.015) 21px),
+      repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(44, 34, 30, 0.01) 20px, rgba(44, 34, 30, 0.01) 21px);
   }
-  .meadow-hill-back {
-    width: 180%;
-    height: 160px;
-    left: -40%;
-    bottom: 120px;
-    background: linear-gradient(180deg, #b8c89a 0%, #98a87a 100%);
-    opacity: 0.6;
+
+  .plate-annotation {
+    position: absolute;
+    font-family: var(--font-serif);
+    font-size: 10px;
+    font-style: italic;
+    color: var(--ink-faint);
+    z-index: 5;
+    pointer-events: none;
+    letter-spacing: 0.5px;
   }
-  .meadow-hill-front {
-    width: 200%;
-    height: 120px;
-    left: -50%;
-    bottom: 80px;
-    background: linear-gradient(180deg, #a8b888 0%, #889868 100%);
-    opacity: 0.8;
-  }
+
+  .plate-annotation-tl { top: 12px; left: 16px; }
+  .plate-annotation-tr { top: 12px; right: 16px; }
+  .plate-annotation-bl { bottom: 12px; left: 16px; }
+  .plate-annotation-br { bottom: 12px; right: 16px; font-size: 9px; }
+
+  
+  /* Rolling meadow hills */
 
   /* Dirt path */
-  .dirt-path {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 180px;
-    background: linear-gradient(180deg, #c4a882 0%, #a89070 50%, #987860 100%);
-    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
-    z-index: 2;
-    opacity: 0.9;
-  }
-  .dirt-path::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 140px;
-    background: linear-gradient(180deg, #b09878 0%, #907860 50%, #806850 100%);
-    clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
-    opacity: 0.7;
-  }
 
   /* Wildflowers on the meadow */
-  .wildflower {
-    position: absolute;
-    z-index: 3;
-    font-size: 18px;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-  }
 
   /* Sky elements */
-  .storybook-sky {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 45%;
-    background: linear-gradient(180deg, #e8f0e8 0%, #d8e0d0 100%);
-    z-index: 0;
-  }
-
-  .storybook-sun {
-    position: absolute;
-    top: 20px;
-    right: 24px;
-    width: 56px;
-    height: 56px;
-    z-index: 2;
-  }
-  .storybook-sun::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, #f0d4a0 0%, #e0c090 40%, rgba(224,192,144,0) 70%);
-    border-radius: 50%;
-  }
-  .storybook-sun::after {
-    content: '';
-    position: absolute;
-    inset: -12px;
-    background: repeating-conic-gradient(from 0deg, rgba(240,212,160,0.3) 0deg 8deg, transparent 8deg 16deg);
-    border-radius: 50%;
-    animation: sun-spin 24s linear infinite;
-  }
-
-  .storybook-cloud {
-    position: absolute;
-    background: rgba(255,255,255,0.85);
-    border-radius: 999px;
-    filter: blur(2px);
-    z-index: 1;
-  }
-  .storybook-cloud-1 { width: 80px; height: 28px; top: 30px; left: 20px; }
-  .storybook-cloud-2 { width: 60px; height: 22px; top: 50px; right: 80px; }
-  .storybook-cloud-3 { width: 100px; height: 32px; top: 15px; left: 100px; }
 
   /* Dynamic sky layer */
   .sky-gradient {
@@ -804,9 +816,9 @@
     top: 12px;
     right: 12px;
     z-index: 20;
-    background: var(--parchment);
+    background: rgba(244,238,221,0.9);
     backdrop-filter: blur(8px);
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
     border-radius: 20px;
     padding: 5px 12px;
     font-size: 11px;
@@ -1037,76 +1049,110 @@
     100% { transform: scale(3.5); opacity: 0; }
   }
 
-  /* ===== STATS ===== */
-  .stats-row {
+  /* ===== CARE DIALS (unified stat + action) ===== */
+  .dials-row {
     width: 100%;
     max-width: 420px;
-    padding: 16px 20px 8px;
+    padding: 8px 20px;
     display: flex;
-    gap: 16px;
+    gap: 10px;
   }
 
-  .stat-item {
+  .care-dial {
     flex: 1;
+    background: rgba(244,238,221,0.9);
+    border: 1px solid var(--border-ink);
+    border-radius: 4px;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    background: var(--parchment);
-    border: 1px solid var(--border-warm);
-    border-radius: 16px;
-    padding: 10px 12px;
-    box-shadow: 0 2px 8px rgba(74, 55, 40, 0.08);
-  }
-
-  .stat-top {
-    display: flex;
     align-items: center;
     gap: 6px;
-  }
-
-  .stat-emoji { font-size: 14px; line-height: 1; }
-
-  .stat-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ink-faint);
-  }
-
-  .stat-track {
-    height: 6px;
-    background: rgba(74, 55, 40, 0.12);
-    border-radius: 999px;
-    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
     position: relative;
-    border: none;
+    box-shadow: 2px 2px 0 rgba(44, 34, 30, 0.08);
+    font-family: inherit;
+    border-top: 2px solid transparent;
   }
 
-  .stat-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.5s ease;
-    position: relative;
-  }
-  .stat-fill::after {
+  .care-dial::before {
     content: '';
     position: absolute;
-    top: 1px; left: 4px; right: 4px;
-    height: 2px;
-    border-radius: 999px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px solid rgba(58, 46, 40, 0.08);
+    pointer-events: none;
   }
 
-  .stat-fill.water { background: linear-gradient(90deg, #8ec8d4, #6ab0c0); box-shadow: none; }
-  .stat-fill.sun { background: linear-gradient(90deg, #e8c898, #d4a574); box-shadow: none; }
-  .stat-fill.nutrient { background: linear-gradient(90deg, #b8c898, #a8b888); box-shadow: none; }
+  .care-dial:active {
+    transform: scale(0.97);
+    box-shadow: 1px 1px 0 rgba(44, 34, 30, 0.15);
+  }
 
-  .stat-value {
+  .care-dial.cooldown {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .care-dial.water { border-top-color: var(--water); }
+  .care-dial.sun { border-top-color: var(--sun); }
+  .care-dial.nutrient { border-top-color: var(--nutrient); }
+
+  .dial-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .dial-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-light);
+  }
+
+  .dial-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(44, 34, 30, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dial-track::after {
+    content: '';
+    position: absolute;
+    left: 35%;
+    width: 35%;
+    top: 0; bottom: 0;
+    background: rgba(168, 184, 136, 0.15);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+
+  .dial-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  .care-dial.water .dial-fill { background: var(--water); }
+  .care-dial.sun .dial-fill { background: var(--sun); }
+  .care-dial.nutrient .dial-fill { background: var(--nutrient); }
+
+  .dial-value {
     font-size: 11px;
     font-weight: 600;
-    color: var(--ink-light);
-    margin-top: 2px;
+    color: var(--ink);
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .dial-sweetspot {
+    font-size: 8px;
+    color: var(--ink-faint);
+    letter-spacing: 0.5px;
   }
 
   /* ===== ACTIONS ===== */
@@ -1121,8 +1167,8 @@
 
   .action-btn {
     position: relative;
-    background: var(--parchment);
-    border: 1px solid var(--border-warm);
+    background: rgba(244,238,221,0.9);
+    border: 1px solid var(--border-ink);
     border-radius: 18px;
     padding: 18px 8px 14px;
     display: flex;
@@ -1299,9 +1345,9 @@
     top: 12px;
     left: 12px;
     z-index: 20;
-    background: var(--parchment);
+    background: rgba(244,238,221,0.9);
     backdrop-filter: blur(8px);
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
     border-radius: 20px;
     padding: 5px 12px;
     font-size: 12px;
@@ -1316,7 +1362,7 @@
   }
 
   .essence-badge:hover {
-    background: var(--parchment-solid);
+    background: #F4EEDD;
     transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(74, 55, 40, 0.15);
   }
@@ -1556,8 +1602,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid var(--border-warm);
-    background: var(--parchment);
+    border: 1px solid var(--border-ink);
+    background: rgba(244,238,221,0.9);
     color: var(--ink-light);
     font-size: 16px;
     cursor: pointer;
@@ -1592,9 +1638,9 @@
     bottom: 16px;
     left: 16px;
     z-index: 150;
-    background: var(--parchment);
+    background: rgba(244,238,221,0.9);
     backdrop-filter: blur(8px);
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
     border-radius: 20px;
     color: var(--ink-light);
     font-size: 12px;
@@ -1692,8 +1738,8 @@
   }
 
   .growth-btn {
-    background: var(--parchment);
-    border: 1px solid var(--border-warm);
+    background: rgba(244,238,221,0.9);
+    border: 1px solid var(--border-ink);
     border-radius: 16px;
     padding: 12px;
     display: flex;
@@ -1775,8 +1821,8 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--paper-dark);
-    border: 2px solid var(--border-warm);
+    background: var(--vellum-dark);
+    border: 2px solid var(--border-ink);
     transition: all 0.4s ease;
     position: relative;
   }
@@ -1796,7 +1842,7 @@
   .journey-line {
     flex: 1;
     height: 2px;
-    background: var(--paper-dark);
+    background: var(--vellum-dark);
     border-radius: 1px;
     margin-top: -14px;
     position: relative;
@@ -1839,8 +1885,8 @@
   }
 
   .modal {
-    background: var(--parchment-solid);
-    border: 2px solid var(--border-warm);
+    background: #F4EEDD;
+    border: 2px solid var(--border-ink);
     border-radius: 24px;
     padding: 32px 28px;
     width: 100%;
@@ -1895,7 +1941,7 @@
 
   .modal-btn.secondary {
     background: transparent;
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
     color: var(--ink-light);
     margin-top: 10px;
   }
@@ -1933,7 +1979,7 @@
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 20px;
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
   }
 
   .share-preview canvas {
@@ -1945,7 +1991,7 @@
   .seed-select {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--paper);
+    background: var(--vellum);
     z-index: 500;
     display: flex;
     flex-direction: column;
@@ -1953,66 +1999,78 @@
     justify-content: center;
     padding: 24px;
     background-image:
-      radial-gradient(ellipse at 20% 10%, rgba(255,240,220,0.4) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 90%, rgba(230,210,180,0.3) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+      radial-gradient(ellipse at 20% 50%, rgba(212, 201, 168, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(232, 224, 204, 0.4) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
 
   .seed-select.hidden { display: none; }
 
   .seed-select-title {
     font-family: var(--font-serif);
-    font-size: 32px;
-    margin-bottom: 6px;
+    font-size: 28px;
+    margin-bottom: 4px;
     text-align: center;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     color: var(--ink);
+    font-weight: 700;
   }
 
   .seed-select-subtitle {
-    font-size: 14px;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    font-style: italic;
     color: var(--ink-light);
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     text-align: center;
-    font-weight: 400;
+    letter-spacing: 0.5px;
   }
 
   .seed-options {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    gap: 12px;
     width: 100%;
     max-width: 340px;
   }
 
   .seed-option {
-    background: var(--parchment-solid);
-    border: 2px solid var(--border-warm);
-    border-radius: 20px;
-    padding: 16px 12px;
+    background: rgba(244,238,221,0.9);
+    border: 1px solid var(--border-ink);
+    border-radius: 4px;
+    padding: 12px 10px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 16px rgba(74, 55, 40, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 2px 2px 0 rgba(44, 34, 30, 0.1);
   }
 
   .seed-option:hover {
-    border-color: var(--ink-light);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(74, 55, 40, 0.15);
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0 rgba(44, 34, 30, 0.2);
+  }
+
+  .seed-option::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px; right: 3px; bottom: 3px;
+    border: 1px solid rgba(58, 46, 40, 0.1);
+    pointer-events: none;
   }
 
   .seed-option-img {
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 16px;
+    border-radius: 4px;
     overflow: hidden;
     background: #FAF8F5;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(74, 55, 40, 0.08);
+    border: 1px solid rgba(44, 34, 30, 0.08);
   }
   .seed-option-img img {
     width: 100%;
@@ -2020,14 +2078,15 @@
     object-fit: cover;
     transition: transform 0.3s ease;
   }
-  .seed-option:hover .seed-option-img img { transform: scale(1.05); }
+  .seed-option:hover .seed-option-img img { transform: scale(1.03); }
 
   .seed-option-emoji { display: none; }
 
   .seed-option-name {
     font-family: var(--font-serif);
-    font-size: 16px;
-    margin-bottom: 4px;
+    font-size: 13px;
+    font-style: italic;
+    margin-bottom: 2px;
     letter-spacing: 0.3px;
     color: var(--ink);
   }
@@ -2040,8 +2099,8 @@
     top: 20px;
     left: 50%;
     transform: translateX(-50%) translateY(-120px);
-    background: var(--parchment-solid);
-    border: 1px solid var(--border-warm);
+    background: #F4EEDD;
+    border: 1px solid var(--border-ink);
     border-radius: 14px;
     padding: 12px 20px;
     font-size: 13px;
@@ -2060,8 +2119,8 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background: var(--parchment);
-    border: 1px solid var(--border-warm);
+    background: rgba(244,238,221,0.9);
+    border: 1px solid var(--border-ink);
     border-radius: 20px;
     padding: 4px 10px;
     font-size: 11px;
@@ -2081,8 +2140,8 @@
   }
 
   .grove-card {
-    background: var(--paper-dark);
-    border: 2px solid var(--border-warm);
+    background: var(--vellum-dark);
+    border: 2px solid var(--border-ink);
     border-radius: 16px;
     padding: 10px;
     text-align: center;
@@ -2150,8 +2209,8 @@
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
     left: 50%;
     transform: translateX(-50%) translateY(120px);
-    background: var(--parchment-solid);
-    border: 2px solid var(--border-warm);
+    background: #F4EEDD;
+    border: 2px solid var(--border-ink);
     border-radius: 20px;
     padding: 14px 18px;
     z-index: 800;
@@ -2193,7 +2252,7 @@
 
   .install-btn.secondary {
     background: transparent;
-    border: 1px solid var(--border-warm);
+    border: 1px solid var(--border-ink);
     color: var(--ink-light);
   }
 
@@ -2226,8 +2285,8 @@
 
   .tutorial-bubble {
     position: absolute;
-    background: var(--parchment-solid);
-    border: 2px solid var(--border-warm);
+    background: #F4EEDD;
+    border: 2px solid var(--border-ink);
     border-radius: 16px;
     padding: 12px 18px;
     font-family: var(--font-serif);
@@ -2346,8 +2405,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--parchment-solid);
-    border-top: 1px solid var(--border-warm);
+    background: #F4EEDD;
+    border-top: 1px solid var(--border-ink);
     display: flex;
     justify-content: space-around;
     padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
@@ -2403,31 +2462,31 @@
 <!-- Seed Selection -->
 <div class="seed-select" id="seedSelect">
   <div class="landing-logo">
-    <div class="landing-logo-mark">🌱</div>
+    <div class="landing-logo-mark">◈</div>
     <div class="landing-logo-text">Pipling</div>
   </div>
-  <div class="seed-select-title">Choose Your Tree</div>
-  <div class="seed-select-subtitle">Nurture a fruit tree through the seasons</div>
+  <div class="seed-select-title">Codex Botanica</div>
+  <div class="seed-select-subtitle">Select a specimen to cultivate</div>
   <div class="seed-options">
     <div class="seed-option" onclick="selectSeed('lemon')">
       <div class="seed-option-img"><img src="assets/meyer_lemon.png" alt="Meyer Lemon Tree" loading="lazy"></div>
-      <div class="seed-option-name">Meyer Lemon</div>
-      <div class="seed-option-desc">Bright citrus with sweet golden fruit</div>
+      <div class="seed-option-name">Citrus × meyeri</div>
+      <div class="seed-option-desc">Meyer Lemon</div>
     </div>
     <div class="seed-option" onclick="selectSeed('fig')">
-      <div class="seed-option-img"><img src="assets/black_mission_fig.png" alt="Black Mission Fig" loading="lazy"></div>
-      <div class="seed-option-name">Mission Fig</div>
-      <div class="seed-option-desc">Velvety leaves, rich purple figs</div>
+      <div class="seed-option-img"><img src="assets/black_mission_fig.png" alt="Mission Fig Tree" loading="lazy"></div>
+      <div class="seed-option-name">Ficus carica</div>
+      <div class="seed-option-desc">Mission Fig</div>
     </div>
     <div class="seed-option" onclick="selectSeed('peach')">
       <div class="seed-option-img"><img src="assets/white_peach.png" alt="White Peach Tree" loading="lazy"></div>
-      <div class="seed-option-name">White Peach</div>
-      <div class="seed-option-desc">Blushing fruit and soft blossoms</div>
+      <div class="seed-option-name">Prunus persica</div>
+      <div class="seed-option-desc">White Peach</div>
     </div>
     <div class="seed-option" onclick="selectSeed('strawberry')">
       <div class="seed-option-img"><img src="assets/alpine_strawberry.png" alt="Alpine Strawberry" loading="lazy"></div>
-      <div class="seed-option-name">Alpine Strawberry</div>
-      <div class="seed-option-desc">Trailing ruby berries and runners</div>
+      <div class="seed-option-name">Fragaria vesca</div>
+      <div class="seed-option-desc">Alpine Strawberry</div>
     </div>
   </div>
 </div>
@@ -2438,14 +2497,14 @@
   <div class="header">
     <div class="brand">
       <div class="brand-title">Pipling</div>
-      <div class="stage-chip" id="stageChip">Seed</div>
     </div>
+    <div class="specimen-name" id="specimenName">Select a specimen</div>
     <div class="header-icons">
       <div class="streak-badge" id="streakBadge" style="display:none;"></div>
-      <button class="focus-toggle" id="focusToggle" onclick="toggleFocusMode()" aria-label="Toggle focus mode">🌿</button>
-      <button class="audio-toggle" id="audioToggle" onclick="toggleAmbientAudio()" aria-label="Toggle ambient audio">🔊</button>
-      <button class="settings-btn" onclick="openGroveBook()" title="My Grove">📚</button>
-      <button class="settings-btn" onclick="openSettings()">⚙️</button>
+      <button onclick="toggleAmbientAudio()" title="Audio" id="audioToggleBtn">♪</button>
+      <button onclick="toggleFocusMode()" title="Focus" id="focusToggleBtn">◈</button>
+      <button onclick="openGroveBook()" title="Codex">📚</button>
+      <button onclick="openSettings()" title="Settings">⚙</button>
     </div>
   </div>
 
@@ -2459,30 +2518,19 @@
     </div>
   </div>
 
-  <!-- Garden -->
+  <!-- Specimen Plate -->
   <div class="garden-wrap">
     <div class="garden" id="garden">
-      <!-- Vintage storybook background -->
-      <div class="storybook-bg"></div>
-      <div class="storybook-sky"></div>
-      <div class="storybook-sun"></div>
-      <div class="storybook-cloud storybook-cloud-1"></div>
-      <div class="storybook-cloud storybook-cloud-2"></div>
-      <div class="storybook-cloud storybook-cloud-3"></div>
+      <!-- Seraphinianus field-plate frame -->
+      <div class="field-plate-frame"></div>
+      <div class="measurement-arcs"></div>
+      <div class="crosshatch"></div>
+      <div class="plate-annotation plate-annotation-tl">Fig. 1</div>
+      <div class="plate-annotation plate-annotation-tr">Tab. XCII</div>
+      <div class="plate-annotation plate-annotation-bl">Ex Bibliotheca Botanica</div>
+      <div class="plate-annotation plate-annotation-br">Anno Domini MDCCXCIII</div>
 
-      <!-- Rolling meadow -->
-      <div class="meadow-hill meadow-hill-back"></div>
-      <div class="meadow-hill meadow-hill-front"></div>
-      <div class="dirt-path"></div>
-
-      <!-- Garden plots — empty slots for future grafting -->
-      <div class="garden-plot" style="top: 55%; left: 12%;" data-plot="0"></div>
-      <div class="garden-plot" style="top: 58%; right: 10%;" data-plot="1"></div>
-      <div class="garden-plot" style="top: 52%; left: 28%;" data-plot="2"></div>
-      <div class="garden-plot" style="top: 60%; right: 25%;" data-plot="3"></div>
-      <div class="garden-plot" style="top: 48%; left: 45%;" data-plot="4"></div>
-
-      <!-- Dynamic overlays (subtle, for time/season) -->
+      <!-- Subtle season/time tint -->
       <div class="season-overlay" id="seasonOverlay"></div>
       <div class="time-overlay" id="timeOverlay"></div>
       <div class="stars-layer" id="starsLayer" style="display:none;"></div>
@@ -2538,53 +2586,28 @@
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-row" id="statsRow">
-    <div class="stat-item">
-      <div class="stat-top">
-        <span class="stat-emoji">💧</span>
-        <span class="stat-label">Water</span>
-      </div>
-      <div class="stat-track">
-        <div class="stat-fill water" id="waterBar" style="width:50%"></div>
-      </div>
-      <div class="stat-value" id="waterValue">50%</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-top">
-        <span class="stat-emoji">☀️</span>
-        <span class="stat-label">Sun</span>
-      </div>
-      <div class="stat-track">
-        <div class="stat-fill sun" id="sunBar" style="width:50%"></div>
-      </div>
-      <div class="stat-value" id="sunValue">50%</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-top">
-        <span class="stat-emoji">🌱</span>
-        <span class="stat-label">Nutrients</span>
-      </div>
-      <div class="stat-track">
-        <div class="stat-fill nutrient" id="nutrientBar" style="width:50%"></div>
-      </div>
-      <div class="stat-value" id="nutrientValue">50%</div>
-    </div>
-  </div>
-
-  <!-- Actions -->
-  <div class="actions-row">
-    <button class="action-btn water" id="waterBtn" onclick="actionWater()">
-      <span class="action-icon">💧</span>
-      <span class="action-name">Water</span>
+  <!-- Care Dials (unified stat + action) -->
+  <div class="dials-row">
+    <button class="care-dial water" id="waterBtn" onclick="actionWater()">
+      <span class="dial-icon">💧</span>
+      <span class="dial-label">Water</span>
+      <div class="dial-track"><div class="dial-fill" id="waterBar" style="width:50%"></div></div>
+      <span class="dial-value" id="waterValue">50%</span>
+      <span class="dial-sweetspot">35-70%</span>
     </button>
-    <button class="action-btn sun" id="sunBtn" onclick="actionSun()">
-      <span class="action-icon">☀️</span>
-      <span class="action-name">Sun</span>
+    <button class="care-dial sun" id="sunBtn" onclick="actionSun()">
+      <span class="dial-icon">☀️</span>
+      <span class="dial-label">Sun</span>
+      <div class="dial-track"><div class="dial-fill" id="sunBar" style="width:50%"></div></div>
+      <span class="dial-value" id="sunValue">50%</span>
+      <span class="dial-sweetspot">35-70%</span>
     </button>
-    <button class="action-btn nutrient" id="nutrientBtn" onclick="actionNutrient()">
-      <span class="action-icon">🧪</span>
-      <span class="action-name">Feed</span>
+    <button class="care-dial nutrient" id="nutrientBtn" onclick="actionNutrient()">
+      <span class="dial-icon">🧪</span>
+      <span class="dial-label">Essence</span>
+      <div class="dial-track"><div class="dial-fill" id="nutrientBar" style="width:50%"></div></div>
+      <span class="dial-value" id="nutrientValue">50%</span>
+      <span class="dial-sweetspot">35-70%</span>
     </button>
   </div>
 
@@ -2786,10 +2809,10 @@ const STAGE_INFO = {
 };
 
 const SEED_TYPES = {
-  lemon: { name: 'Meyer Lemon', color: '#5d4037', leafColor: '#66bb6a', accentColor: '#fdd835', fruit: '🍋', fruitName: 'Lemon', img: 'assets/meyer_lemon.png' },
-  fig: { name: 'Mission Fig', color: '#4e342e', leafColor: '#7cb342', accentColor: '#8d6e63', fruit: '🫐', fruitName: 'Fig', img: 'assets/black_mission_fig.png' },
-  peach: { name: 'White Peach', color: '#5d4037', leafColor: '#81c784', accentColor: '#f48fb1', fruit: '🍑', fruitName: 'Peach', img: 'assets/white_peach.png' },
-  strawberry: { name: 'Alpine Strawberry', color: '#6d4c41', leafColor: '#66bb6a', accentColor: '#ef5350', fruit: '🍓', fruitName: 'Strawberry', img: 'assets/alpine_strawberry.png' }
+  lemon: { name: 'Meyer Lemon', latin: 'Citrus × meyeri', color: '#5d4037', leafColor: '#66bb6a', accentColor: '#fdd835', fruit: '🍋', fruitName: 'Lemon', img: 'assets/meyer_lemon.png' },
+  fig: { name: 'Mission Fig', latin: 'Ficus carica \'Mission\'', color: '#4e342e', leafColor: '#7cb342', accentColor: '#8d6e63', fruit: '🫐', fruitName: 'Fig', img: 'assets/black_mission_fig.png' },
+  peach: { name: 'White Peach', latin: 'Prunus persica \'Alba\'', color: '#5d4037', leafColor: '#81c784', accentColor: '#f48fb1', fruit: '🍑', fruitName: 'Peach', img: 'assets/white_peach.png' },
+  strawberry: { name: 'Alpine Strawberry', latin: 'Fragaria vesca', color: '#6d4c41', leafColor: '#66bb6a', accentColor: '#ef5350', fruit: '🍓', fruitName: 'Strawberry', img: 'assets/alpine_strawberry.png' }
 };
 
 // ===== FRUIT SYSTEM CONFIG =====
@@ -3177,34 +3200,37 @@ function updateEnvironment() {
   currentSeason = season;
   currentTimeOfDay = tod;
 
-  const s = SEASONS[season];
-
-  // Season overlay (subtle tint only — storybook bg stays)
+  // Season overlay (subtle ink-tone shift)
   const overlay = document.getElementById('seasonOverlay');
   if (overlay) {
-    overlay.style.background = s.overlay;
+    const tints = {
+      spring: 'rgba(184, 84, 80, 0.02)',
+      summer: 'rgba(168, 144, 96, 0.03)',
+      autumn: 'rgba(168, 144, 96, 0.05)',
+      winter: 'rgba(90, 138, 122, 0.03)'
+    };
+    overlay.style.background = tints[season] || 'transparent';
   }
 
-  // Time darkness overlay (very subtle for vintage feel)
+  // Time darkness overlay (ink-tone shift, not sky color)
   const timeOverlay = document.getElementById('timeOverlay');
   if (timeOverlay) {
     const darkness = 1 - dayFactor;
-    timeOverlay.style.background = `rgba(74, 55, 40, ${darkness * 0.12})`;
+    timeOverlay.style.background = `rgba(44, 34, 30, ${darkness * 0.12})`;
   }
 
-  // Stars hidden in storybook style
+  // Stars hidden in manuscript style
   const stars = document.getElementById('starsLayer');
-  if (stars) {
-    stars.style.display = 'none';
-  }
+  if (stars) stars.style.display = 'none';
 
   // Env badge
   const badge = document.getElementById('envBadge');
   const icon = document.getElementById('envIcon');
   const text = document.getElementById('envText');
   if (badge && icon && text) {
-    icon.textContent = s.icon;
-    text.textContent = `${s.name} ${TIME_LABELS[tod]}`;
+    const seasonGlyphs = { spring: '✿', summer: '☀', autumn: '❦', winter: '❄' };
+    icon.textContent = seasonGlyphs[season] || '✿';
+    text.textContent = `${SEASONS[season].name} ${TIME_LABELS[tod]}`;
   }
 }
 
@@ -3864,10 +3890,13 @@ function renderPlant() {
 
 function updateUI() {
   const info = STAGE_INFO[gameState.stage];
+  const seed = SEED_TYPES[gameState.seedType];
 
-  // Update stage chip in header
-  const stageChip = document.getElementById('stageChip');
-  if (stageChip) stageChip.textContent = info.name;
+  // Update specimen name in header
+  const specName = document.getElementById('specimenName');
+  if (specName && seed) {
+    specName.textContent = `${seed.latin || seed.name} — ${STAGE_NAMES[gameState.stage]}`;
+  }
 
   // Dynamic status line
   const desc = getDynamicStatusLine();
@@ -3901,11 +3930,11 @@ function updateStatBar(id, value) {
   if (!bar || !val) return;
   bar.style.width = value + '%';
   val.textContent = Math.round(value) + '%';
-  // Color by state
-  if (value < 25) { bar.style.background = '#c47a4a'; bar.style.opacity = '1'; }
-  else if (value < 40) { bar.style.background = '#d4a574'; bar.style.opacity = '1'; }
-  else if (value <= 70) { bar.style.background = 'var(--nutrient)'; bar.style.opacity = '1'; }
-  else { bar.style.background = '#7ab8c4'; bar.style.opacity = '0.7'; }
+  // Color by state: low (vermilion), balanced (verdigris), over (pale)
+  if (value < 25) { bar.style.background = 'var(--vermilion)'; }
+  else if (value < 35) { bar.style.background = '#d4a574'; }
+  else if (value <= 70) { bar.style.background = 'var(--verdigris)'; }
+  else { bar.style.background = 'var(--water)'; }
 }
 
 function getDynamicStatusLine() {
